@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Stitch Fit · The Logo System</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/brand.css">
+<style>
+  .hero-mark {
+    display: flex; justify-content: center; align-items: center;
+    padding: 40px 0 56px;
+  }
+  .hero-mark img {
+    width: 360px; height: 360px; border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 30px 60px -20px rgba(43,58,46,0.22);
+  }
+
+  .lockup-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 24px; margin-top: 32px;
+  }
+  .lockup {
+    border: 0.5px solid var(--stone);
+    padding: 56px 32px 24px;
+    background: var(--paper);
+    display: flex; flex-direction: column; align-items: center;
+    min-height: 280px; justify-content: center;
+    position: relative;
+  }
+  .lockup.dark { background: var(--forest); border-color: rgba(196,184,164,0.2); }
+  .lockup img { width: 180px; height: 180px; object-fit: cover; border-radius: 50%; }
+  .lockup-label {
+    position: absolute; top: 18px; left: 24px;
+    font-size: 8px; letter-spacing: 0.24em; color: var(--moss);
+  }
+  .lockup.dark .lockup-label { color: var(--camel); }
+  .lockup-caption {
+    margin-top: 24px;
+    font-family: var(--font-display); font-style: italic; font-size: 15px; color: var(--moss);
+  }
+  .lockup.dark .lockup-caption { color: var(--stone); }
+
+  /* Clearspace diagram */
+  .clearspace-stage {
+    background: var(--paper); padding: 60px; margin-top: 32px;
+    border: 0.5px solid var(--stone);
+    display: flex; justify-content: center;
+  }
+  .cs-wrap { position: relative; display: inline-block; padding: 60px; }
+  .cs-wrap::before, .cs-wrap::after {
+    content: ''; position: absolute; border: 0.5px dashed var(--cognac);
+  }
+  .cs-wrap::before { inset: 30px; }
+  .cs-wrap::after  { inset: 0; }
+  .cs-wrap img { width: 200px; height: 200px; border-radius: 50%; object-fit: cover; display: block; }
+  .cs-x {
+    position: absolute; background: var(--cognac); color: var(--bone);
+    font-family: var(--font-display); font-style: italic; font-size: 14px;
+    width: 24px; height: 24px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .cs-x.tl { top: 18px; left: 18px; }
+  .cs-x.br { bottom: 18px; right: 18px; }
+  .cs-label {
+    position: absolute; font-size: 8px; letter-spacing: 0.22em; color: var(--moss);
+  }
+  .cs-label.top    { top: -22px; left: 50%; transform: translateX(-50%); }
+  .cs-label.bottom { bottom: -22px; left: 50%; transform: translateX(-50%); }
+
+  /* Sizing scale */
+  .scale-row {
+    display: flex; align-items: flex-end; justify-content: space-around;
+    margin-top: 32px; padding: 40px; background: var(--paper);
+    border: 0.5px solid var(--stone);
+  }
+  .scale-item { text-align: center; }
+  .scale-item img { border-radius: 50%; object-fit: cover; display: block; margin: 0 auto 14px; }
+  .scale-cap { font-size: 8px; letter-spacing: 0.2em; color: var(--moss); }
+  .scale-min { font-family: var(--font-display); font-style: italic; font-size: 13px; color: var(--cognac); margin-top: 4px; }
+
+  /* Don'ts grid */
+  .dont-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+    margin-top: 24px;
+  }
+  .dont-card {
+    background: var(--paper); border: 0.5px solid var(--stone);
+    aspect-ratio: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; padding: 16px;
+    position: relative; overflow: hidden;
+  }
+  .dont-card img { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; }
+  .dont-card.stretched img { width: 110px; height: 70px; border-radius: 30% / 50%; }
+  .dont-card.tilted img    { transform: rotate(18deg); }
+  .dont-card.outline img   { filter: grayscale(1) brightness(0.4); }
+  .dont-card.recolor img   { filter: hue-rotate(180deg) saturate(2); }
+  .dont-card.shadowed { background: var(--cognac); }
+  .dont-card.busy { background: repeating-linear-gradient(45deg, var(--cognac) 0 6px, var(--stone) 6px 12px); }
+  .dont-card::before {
+    content: '✕'; position: absolute; top: 8px; right: 10px;
+    color: var(--cognac); font-size: 14px;
+  }
+  .dont-caption {
+    position: absolute; bottom: 8px; left: 0; right: 0;
+    text-align: center; font-size: 8px; letter-spacing: 0.16em; color: var(--moss);
+  }
+  .dont-card.shadowed .dont-caption,
+  .dont-card.busy .dont-caption { color: var(--bone); }
+</style>
+</head>
+<body>
+
+<!-- LOGO PAGE A — INTRODUCTION -->
+<section class="page">
+  <div class="page-header">
+    <div class="ph-left">
+      <img class="ph-mark" src="../assets/stitch-fit-logo.jpeg" alt="">
+      <div class="ph-name">STITCH FIT</div>
+    </div>
+    <div class="ph-section">The Logo System</div>
+    <div class="ph-num">01</div>
+  </div>
+
+  <a class="back-link" href="../index.html">← Back to Contents</a>
+
+  <div class="section-intro">
+    <div class="eyebrow">FOLDER 01 · THE LOGO SYSTEM</div>
+    <h1 class="display h1 italic">A mark, woven.</h1>
+    <p class="lead" style="margin-top: 24px;">
+      The Stitch Fit mark is a single interlocking emblem — two threads finding each other and holding. It is at once initial, knot, and weave. Use it generously, but never carelessly.
+    </p>
+  </div>
+
+  <div class="hero-mark">
+    <img src="../assets/stitch-fit-logo.jpeg" alt="Stitch Fit primary mark">
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-top: 16px;">
+    <div>
+      <div class="eyebrow" style="margin-bottom: 10px;">CONCEPT</div>
+      <p class="body-text">Two threads — one warm, one stark — cross at the centre to suggest a stitch caught mid-pass. The form is geometric, modernist, but the proportions are tailored: this is a mark for a cloth merchant, not a tech brand.</p>
+    </div>
+    <div>
+      <div class="eyebrow" style="margin-bottom: 10px;">CONSTRUCTION</div>
+      <p class="body-text">Built on an eight-unit grid inside a perfect circle, the stroke weight is fixed and the angles are square. The wordmark sits below with a fine rule punctuating the form.</p>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <div>FOLDER 01 · LOGO SYSTEM</div>
+    <div>PAGE 01 · INTRODUCTION</div>
+  </div>
+</section>
+
+<!-- LOGO PAGE B — LOCKUPS -->
+<section class="page alt">
+  <div class="page-header">
+    <div class="ph-left">
+      <img class="ph-mark" src="../assets/stitch-fit-logo.jpeg" alt="">
+      <div class="ph-name">STITCH FIT</div>
+    </div>
+    <div class="ph-section">Lockups</div>
+    <div class="ph-num">01·B</div>
+  </div>
+
+  <div class="section-intro">
+    <div class="eyebrow">USE THE LIGHT VERSION ON BONE, PAPER, OR LIGHT PHOTOGRAPHY</div>
+    <h2 class="display" style="font-size: 36px;">The light and dark versions.</h2>
+  </div>
+
+  <div class="lockup-grid">
+    <div class="lockup">
+      <div class="lockup-label">LIGHT — PRIMARY</div>
+      <img src="../assets/stitch-fit-logo.jpeg" alt="">
+      <div class="lockup-caption">on bone &amp; paper</div>
+    </div>
+    <div class="lockup dark">
+      <div class="lockup-label">DARK — REVERSED</div>
+      <img src="../assets/stitch-fit-logo-forest.png" alt="" style="object-fit: fill">
+      <div class="lockup-caption">on forest &amp; dark photography</div>
+    </div>
+  </div>
+
+  <div style="margin-top: 56px;">
+    <div class="eyebrow" style="margin-bottom: 14px;">SIZE &amp; SCALE</div>
+    <p class="body-text" style="margin-bottom: 16px;">The mark performs across scales — from a 12mm hangtag stamp to a six-foot exterior signage application. Below is the system at the working ratio you will use most.</p>
+  </div>
+
+  <div class="scale-row">
+    <div class="scale-item">
+      <img src="../assets/stitch-fit-logo.jpeg" alt="" style="width: 180px; height: 180px;">
+      <div class="scale-cap">PRIMARY · LARGE</div>
+      <div class="scale-min">180px+</div>
+    </div>
+    <div class="scale-item">
+      <img src="../assets/stitch-fit-logo.jpeg" alt="" style="width: 96px; height: 96px;">
+      <div class="scale-cap">SECONDARY</div>
+      <div class="scale-min">96px</div>
+    </div>
+    <div class="scale-item">
+      <img src="../assets/stitch-fit-logo.jpeg" alt="" style="width: 48px; height: 48px;">
+      <div class="scale-cap">UI / FAVICON</div>
+      <div class="scale-min">48px</div>
+    </div>
+    <div class="scale-item">
+      <img src="../assets/stitch-fit-logo.jpeg" alt="" style="width: 24px; height: 24px;">
+      <div class="scale-cap">MINIMUM</div>
+      <div class="scale-min">24px</div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <div>FOLDER 01 · LOGO SYSTEM</div>
+    <div>PAGE 02 · LOCKUPS &amp; SCALE</div>
+  </div>
+</section>
+
+<!-- LOGO PAGE C — CLEARSPACE -->
+<section class="page">
+  <div class="page-header">
+    <div class="ph-left">
+      <img class="ph-mark" src="../assets/stitch-fit-logo.jpeg" alt="">
+      <div class="ph-name">STITCH FIT</div>
+    </div>
+    <div class="ph-section">Clearspace</div>
+    <div class="ph-num">01·C</div>
+  </div>
+
+  <div class="section-intro">
+    <div class="eyebrow">RESPECT THE BREATHING ROOM</div>
+    <h2 class="display" style="font-size: 36px;">Clearspace is defined by <span class="italic">x</span> — the radius of the mark.</h2>
+    <p class="lead" style="margin-top: 18px;">Reserve at minimum <em>1x</em> of empty space on every side. Allow more wherever budget for whitespace exists. The mark is loudest in silence.</p>
+  </div>
+
+  <div class="clearspace-stage">
+    <div class="cs-wrap">
+      <div class="cs-label top">1x CLEARSPACE</div>
+      <div class="cs-label bottom">1x CLEARSPACE</div>
+      <div class="cs-x tl">x</div>
+      <div class="cs-x br">x</div>
+      <img src="../assets/stitch-fit-logo.jpeg" alt="">
+    </div>
+  </div>
+
+  <div style="margin-top: 56px;">
+    <div class="eyebrow" style="margin-bottom: 18px;">EIGHT WAYS TO MISUSE THE MARK</div>
+    <p class="body-text" style="margin-bottom: 8px;">Do not stretch, tilt, outline, recolour, shadow, or place the mark on a busy field. These ruin the engineering of the weave.</p>
+  </div>
+
+  <div class="dont-grid">
+    <div class="dont-card stretched">
+      <img src="../assets/stitch-fit-logo.jpeg" alt="">
+      <div class="dont-caption">DO NOT STRETCH</div>
+    </div>
+    <div class="dont-card tilted">
+      <img src="../assets/stitch-fit-logo.jpeg" alt="">
+      <div class="dont-caption">DO NOT TILT</div>
+    </div>
+    <div class="dont-card recolor">
+      <img src="../assets/stitch-fit-logo.jpeg" alt="">
+      <div class="dont-caption">DO NOT RECOLOUR</div>
+    </div>
+    <div class="dont-card busy">
+      <img src="../assets/stitch-fit-logo.jpeg" alt="" style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover;">
+      <div class="dont-caption">DO NOT PLACE ON PATTERN</div>
+    </div>
+    <div class="dont-card shadowed">
+      <img src="../assets/stitch-fit-logo.jpeg" alt="">
+      <div class="dont-caption">DO NOT DROP SHADOW</div>
+    </div>
+    <div class="dont-card outline">
+      <img src="../assets/stitch-fit-logo.jpeg" alt="">
+      <div class="dont-caption">DO NOT OUTLINE</div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <div>FOLDER 01 · LOGO SYSTEM</div>
+    <div>PAGE 03 · CLEARSPACE &amp; MISUSE</div>
+  </div>
+</section>
+
+</body>
+</html>

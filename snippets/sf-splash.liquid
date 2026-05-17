@@ -1,0 +1,21 @@
+{%- doc -%}
+  Thorgal-style splash. No button. Auto-dissolves after ~2.5s.
+  Lifecycle handled by assets/stitch-fit.js.
+{%- enddoc -%}
+
+<div class="sf-splash" role="presentation" aria-hidden="true">
+  <div class="sf-splash__inner">
+    <div class="sf-splash__mark">
+      <img
+        src="{{ 'stitch-fit-logo-forest.png' | asset_url }}"
+        alt=""
+        width="220"
+        height="220"
+        loading="eager"
+        decoding="async">
+    </div>
+    <div class="sf-splash__wordmark">STITCH&nbsp;&nbsp;FIT</div>
+    <div class="sf-splash__tagline">Wear the vibe.</div>
+    <div class="sf-splash__est">EST. 1928</div>
+  </div>
+</div>

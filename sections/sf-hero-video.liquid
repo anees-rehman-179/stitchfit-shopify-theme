@@ -1,0 +1,65 @@
+<section class="sf-hero" data-sf-reveal>
+  <div class="sf-hero__media">
+    {%- if section.settings.video != blank -%}
+      <video
+        autoplay
+        muted
+        loop
+        playsinline
+        {% if section.settings.poster %}poster="{{ section.settings.poster | image_url: width: 1920 }}"{% endif %}>
+        <source src="{{ section.settings.video }}" type="video/mp4">
+      </video>
+    {%- elsif section.settings.poster -%}
+      <img
+        src="{{ section.settings.poster | image_url: width: 1920 }}"
+        width="{{ section.settings.poster.width }}"
+        height="{{ section.settings.poster.height }}"
+        alt=""
+        loading="eager"
+        fetchpriority="high">
+    {%- else -%}
+      {% render 'sf-placeholder', label: 'HERO-VIDEO  1920×1080  mp4  autoplay muted loop', ratio: '16/9', kind: 'video' %}
+    {%- endif -%}
+    <div class="sf-hero__scrim"></div>
+  </div>
+
+  <div class="sf-hero__content">
+    {%- if section.settings.eyebrow != blank -%}
+      <div class="sf-eyebrow sf-hero__eyebrow">{{ section.settings.eyebrow }}</div>
+    {%- endif -%}
+    <h1 class="sf-hero__headline">{{ section.settings.headline | default: 'Wear the vibe.' }}</h1>
+    {%- if section.settings.subhead != blank -%}
+      <p class="sf-hero__sub">{{ section.settings.subhead }}</p>
+    {%- endif -%}
+    {%- if section.settings.cta_label != blank -%}
+      <a href="{{ section.settings.cta_link | default: '/collections/all' }}" class="button sf-hero__cta">
+        {{ section.settings.cta_label }}
+      </a>
+    {%- endif -%}
+  </div>
+
+  <div class="sf-hero__scroll-cue" aria-hidden="true">
+    <span>SCROLL</span>
+    <span class="sf-hero__scroll-line"></span>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Stitch Fit Hero Video",
+  "tag": "section",
+  "class": "sf-hero-section",
+  "settings": [
+    { "type": "url", "id": "video", "label": "Video URL (.mp4)", "info": "Direct .mp4 URL. Leave blank to show placeholder or poster only." },
+    { "type": "image_picker", "id": "poster", "label": "Poster image (fallback / pre-video)" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "STITCH FIT  ·  EST. 1928" },
+    { "type": "text", "id": "headline", "label": "Headline", "default": "Wear the vibe." },
+    { "type": "textarea", "id": "subhead", "label": "Subhead" },
+    { "type": "text", "id": "cta_label", "label": "CTA label", "default": "Shop the collection" },
+    { "type": "url", "id": "cta_link", "label": "CTA link" }
+  ],
+  "presets": [
+    { "name": "Stitch Fit Hero Video", "category": "Stitch Fit" }
+  ]
+}
+{% endschema %}

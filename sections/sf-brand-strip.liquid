@@ -1,0 +1,22 @@
+<section class="sf-strip" data-sf-reveal>
+  <p class="sf-strip__quote">{{ section.settings.quote }}</p>
+</section>
+
+{% schema %}
+{
+  "name": "SF Brand Statement",
+  "tag": "section",
+  "class": "sf-strip-section",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "quote",
+      "label": "Statement",
+      "default": "Born from a manufacturing floor in Gujranwala. Built for the man who knows the difference."
+    }
+  ],
+  "presets": [
+    { "name": "SF Brand Statement", "category": "Stitch Fit" }
+  ]
+}
+{% endschema %}

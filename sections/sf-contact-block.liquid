@@ -1,0 +1,83 @@
+<section class="sf-contact" data-sf-reveal>
+  <div class="sf-contact__info">
+    <div class="sf-eyebrow">{{ section.settings.eyebrow | default: 'Get in touch' }}</div>
+    <h2>{{ section.settings.heading | default: 'Talk to us.' }}</h2>
+
+    <ul class="sf-contact__details">
+      {%- if section.settings.address != blank -%}
+        <li>{{ section.settings.address | newline_to_br }}</li>
+      {%- endif -%}
+      {%- if section.settings.phone != blank -%}
+        <li><a href="tel:{{ section.settings.phone | replace: ' ', '' }}">{{ section.settings.phone }}</a></li>
+      {%- endif -%}
+      {%- if section.settings.email != blank -%}
+        <li><a href="mailto:{{ section.settings.email }}">{{ section.settings.email }}</a></li>
+      {%- endif -%}
+    </ul>
+
+    {%- if section.settings.map_embed != blank -%}
+      <iframe
+        class="sf-contact__map"
+        src="{{ section.settings.map_embed }}"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="Map of {{ section.settings.address | default: shop.name | escape }}"></iframe>
+    {%- endif -%}
+  </div>
+
+  <div class="sf-contact__form">
+    {%- form 'contact', class: 'sf-contact__form-inner' -%}
+      {%- if form.posted_successfully? -%}
+        <p class="sf-contact__success">Thanks — we'll be in touch shortly.</p>
+      {%- endif -%}
+      {%- if form.errors -%}
+        <p class="sf-contact__error">{{ form.errors | default_errors }}</p>
+      {%- endif -%}
+
+      <label for="ContactName">Name</label>
+      <input type="text" name="contact[name]" id="ContactName" required>
+
+      <label for="ContactEmail">Email</label>
+      <input type="email" name="contact[email]" id="ContactEmail" required>
+
+      <label for="ContactPhone">Phone (optional)</label>
+      <input type="tel" name="contact[phone]" id="ContactPhone">
+
+      <label for="ContactMessage">Message</label>
+      <textarea name="contact[body]" id="ContactMessage" rows="5" required></textarea>
+
+      <button type="submit" class="button">{{ section.settings.submit_label | default: 'Send message' }}</button>
+    {%- endform -%}
+  </div>
+</section>
+
+{% stylesheet %}
+  .sf-contact__form { display: flex; flex-direction: column; }
+  .sf-contact__form-inner { display: flex; flex-direction: column; gap: 16px; }
+  .sf-contact__form-inner label { font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--sf-moss); }
+  .sf-contact__form-inner input,
+  .sf-contact__form-inner textarea { width: 100%; }
+  .sf-contact__form-inner button { align-self: flex-start; margin-top: 8px; }
+  .sf-contact__success { color: var(--sf-primary); font-size: 14px; }
+  .sf-contact__error { color: #b03030; font-size: 14px; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Stitch Fit Contact",
+  "tag": "section",
+  "class": "sf-contact-section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Get in touch" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Talk to us." },
+    { "type": "textarea", "id": "address", "label": "Address", "default": "Climax Knitting Industry, S.I.E #1, Plot 94-B, Near Jinnah Road, Gujranwala 52250" },
+    { "type": "text", "id": "phone", "label": "Phone", "default": "+92 321 0900786" },
+    { "type": "text", "id": "email", "label": "Email", "default": "info@stitchfit.com.pk" },
+    { "type": "url", "id": "map_embed", "label": "Google Maps embed URL", "info": "Use the 'embed' src URL from Google Maps → Share → Embed a map." },
+    { "type": "text", "id": "submit_label", "label": "Submit button label", "default": "Send message" }
+  ],
+  "presets": [
+    { "name": "Stitch Fit Contact", "category": "Stitch Fit" }
+  ]
+}
+{% endschema %}

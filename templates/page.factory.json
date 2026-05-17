@@ -1,0 +1,14 @@
+{
+  "sections": {
+    "factory_editorial": {
+      "type": "sf-factory-editorial",
+      "settings": {
+        "hero_heading": "Inside the factory.",
+        "pullquote": "For many years, we made knitwear for the world's most demanding brands. Now we put our name on it.",
+        "body": "<p>Started in 2009 with a single knitting machine in Gujranwala's Small Industrial Estate. Today we run a floor of skilled hands — pattern, knit, link, finish — making knitwear for global brands and, now, our own label.</p><p>Stitch Fit exists to bring that craft direct to the man who knows the difference.</p>",
+        "closing": "Made here. Made by hand. Made to last."
+      }
+    }
+  },
+  "order": ["factory_editorial"]
+}

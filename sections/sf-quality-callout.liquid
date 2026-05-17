@@ -1,0 +1,78 @@
+<section class="sf-quality" data-sf-reveal>
+  <div class="sf-quality__head">
+    <div class="sf-eyebrow sf-eyebrow--light">{{ section.settings.eyebrow | default: 'Craft & Quality' }}</div>
+    <h2>{{ section.settings.title | default: 'Quality knitwear made by skilled hands.' }}</h2>
+  </div>
+
+  <div class="sf-quality__grid">
+    {%- for block in section.blocks -%}
+      <div class="sf-quality__item" data-sf-reveal {{ block.shopify_attributes }}>
+        <div class="sf-quality__icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            {%- case block.settings.icon -%}
+              {%- when 'yarn' -%}
+                <circle cx="24" cy="24" r="14"/>
+                <path d="M14 18c4 4 8 8 14 6"/>
+                <path d="M16 28c6-2 10 2 14 6"/>
+              {%- when 'gauge' -%}
+                <circle cx="24" cy="24" r="14"/>
+                <path d="M24 14v10l7 5"/>
+              {%- when 'craft' -%}
+                <path d="M12 36L36 12"/>
+                <path d="M16 12h20v20"/>
+              {%- else -%}
+                <circle cx="24" cy="24" r="14"/>
+            {%- endcase -%}
+          </svg>
+        </div>
+        <h3>{{ block.settings.title }}</h3>
+        <p>{{ block.settings.body }}</p>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "SF Quality Pillars",
+  "tag": "section",
+  "class": "sf-quality-section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Craft & Quality" },
+    { "type": "text", "id": "title", "label": "Heading", "default": "Quality knitwear made by skilled hands." }
+  ],
+  "blocks": [
+    {
+      "type": "pillar",
+      "name": "Pillar",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "yarn",  "label": "Yarn" },
+            { "value": "gauge", "label": "Gauge" },
+            { "value": "craft", "label": "Craft" }
+          ],
+          "default": "yarn"
+        },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "body", "label": "Body" }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    {
+      "name": "SF Quality Pillars",
+      "category": "Stitch Fit",
+      "blocks": [
+        { "type": "pillar", "settings": { "icon": "yarn",  "title": "Premium Yarn",   "body": "Long-staple fibres selected for softness and durability." } },
+        { "type": "pillar", "settings": { "icon": "gauge", "title": "True Gauge",     "body": "Knit at the right tension. Holds shape wash after wash." } },
+        { "type": "pillar", "settings": { "icon": "craft", "title": "Hand Finished",  "body": "Every piece checked by hand before it ships." } }
+      ]
+    }
+  ]
+}
+{% endschema %}
