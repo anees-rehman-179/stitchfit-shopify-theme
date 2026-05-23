@@ -1,0 +1,26 @@
+/* Stitch Fit — Canela font face declarations.
+   The .woff2 files live alongside this stylesheet in assets/. */
+
+@font-face {
+  font-family: 'Canela';
+  src: url('Canela-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Canela';
+  src: url('Canela-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Canela';
+  src: url('Canela-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}

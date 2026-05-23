@@ -400,6 +400,9 @@
       {{ navigation_bar }}
     </div>
   {% endif %}
+
+  {%- comment -%} Stitch Fit custom navigation overlay — replaces Horizon's nav visually {%- endcomment -%}
+  {% render 'sf-nav', section: section %}
 </header-component>
 
 <script

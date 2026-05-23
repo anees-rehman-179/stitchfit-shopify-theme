@@ -1,0 +1,614 @@
+<article class="sf-size-guide">
+  {%- comment -%} Hero (compact, text only) {%- endcomment -%}
+  <div class="sf-size-guide__hero" data-sf-reveal>
+    <div class="sf-eyebrow">{{ section.settings.hero_eyebrow | default: 'How to choose' }}</div>
+    <h1>{{ section.settings.hero_heading | default: 'Find your perfect fit.' }}</h1>
+    {%- if section.settings.hero_subhead != blank -%}
+      <p class="sf-size-guide__subhead">{{ section.settings.hero_subhead }}</p>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} How to measure {%- endcomment -%}
+  <div class="sf-size-guide__measure">
+    <div class="sf-size-guide__measure-media" data-sf-reveal-left>
+      {%- if section.settings.measure_image -%}
+        <img
+          src="{{ section.settings.measure_image | image_url: width: 1200 }}"
+          width="{{ section.settings.measure_image.width }}"
+          height="{{ section.settings.measure_image.height }}"
+          loading="lazy"
+          alt="">
+      {%- else -%}
+        {% render 'sf-placeholder', label: 'HOW-TO-MEASURE  ·  4:5', ratio: '4/5' %}
+      {%- endif -%}
+    </div>
+    <div class="sf-size-guide__measure-copy" data-sf-reveal-right>
+      <div class="sf-eyebrow">{{ section.settings.measure_eyebrow | default: 'Measure yourself' }}</div>
+      <h2>{{ section.settings.measure_heading | default: "Four numbers. That's all you need." }}</h2>
+      <ol class="sf-size-guide__measure-list">
+        <li>
+          <span class="sf-size-guide__measure-num">01</span>
+          <div>
+            <h3>{{ section.settings.step1_title | default: 'Chest' }}</h3>
+            <p>{{ section.settings.step1_body | default: 'Measure around the fullest part of your chest, under the arms. Keep the tape level and snug — not tight.' }}</p>
+          </div>
+        </li>
+        <li>
+          <span class="sf-size-guide__measure-num">02</span>
+          <div>
+            <h3>{{ section.settings.step2_title | default: 'Length' }}</h3>
+            <p>{{ section.settings.step2_body | default: 'From the top of the shoulder seam, straight down to where you want the hem to fall.' }}</p>
+          </div>
+        </li>
+        <li>
+          <span class="sf-size-guide__measure-num">03</span>
+          <div>
+            <h3>{{ section.settings.step3_title | default: 'Shoulder' }}</h3>
+            <p>{{ section.settings.step3_body | default: 'Across the back, from the edge of one shoulder to the other.' }}</p>
+          </div>
+        </li>
+        <li>
+          <span class="sf-size-guide__measure-num">04</span>
+          <div>
+            <h3>{{ section.settings.step4_title | default: 'Sleeve' }}</h3>
+            <p>{{ section.settings.step4_body | default: 'From the shoulder seam to the wrist, with the arm slightly bent.' }}</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  {%- comment -%} Size charts (tabbed) {%- endcomment -%}
+  <div class="sf-size-guide__charts" data-sf-reveal>
+    <div class="sf-size-guide__charts-head">
+      <div class="sf-eyebrow">{{ section.settings.charts_eyebrow | default: 'Size charts' }}</div>
+      <h2>{{ section.settings.charts_heading | default: 'Find your size, by category.' }}</h2>
+    </div>
+
+    {%- assign category_blocks = section.blocks | where: 'type', 'category' -%}
+    {%- if category_blocks.size > 0 -%}
+      <div class="sf-size-tabs" data-sf-size-tabs>
+        <div class="sf-size-tabs__list" role="tablist" aria-label="Size chart categories">
+          {%- for block in category_blocks -%}
+            <button
+              type="button"
+              role="tab"
+              id="sf-size-tab-{{ block.id }}"
+              aria-controls="sf-size-panel-{{ block.id }}"
+              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+              tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
+              class="sf-size-tabs__tab{% if forloop.first %} is-active{% endif %}"
+              data-sf-size-tab>
+              {{ block.settings.name | default: 'Category' }}
+            </button>
+          {%- endfor -%}
+        </div>
+
+        {%- for block in category_blocks -%}
+          <div
+            role="tabpanel"
+            id="sf-size-panel-{{ block.id }}"
+            aria-labelledby="sf-size-tab-{{ block.id }}"
+            class="sf-size-tabs__panel{% if forloop.first %} is-active{% endif %}"
+            {% unless forloop.first %}hidden{% endunless %}
+            data-sf-size-panel
+            {{ block.shopify_attributes }}>
+            <div class="sf-size-table-wrap">
+              <table class="sf-size-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Size</th>
+                    <th scope="col">Chest (in)</th>
+                    <th scope="col">Chest (cm)</th>
+                    <th scope="col">Length (in)</th>
+                    <th scope="col">Length (cm)</th>
+                    <th scope="col">Sleeve (in)</th>
+                    <th scope="col">Sleeve (cm)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {%- assign rows = block.settings.rows | newline_to_br | split: '<br />' -%}
+                  {%- for row in rows -%}
+                    {%- assign clean_row = row | strip -%}
+                    {%- if clean_row != blank -%}
+                      {%- assign cells = clean_row | split: '|' -%}
+                      <tr>
+                        {%- for cell in cells -%}
+                          <td>{{ cell | strip }}</td>
+                        {%- endfor -%}
+                      </tr>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </tbody>
+              </table>
+            </div>
+            {%- if block.settings.note != blank -%}
+              <p class="sf-size-table__note">{{ block.settings.note }}</p>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} Fit guide — 3 cards {%- endcomment -%}
+  {%- assign fit_blocks = section.blocks | where: 'type', 'fit' -%}
+  {%- if fit_blocks.size > 0 -%}
+    <div class="sf-size-guide__fits" data-sf-reveal>
+      <div class="sf-size-guide__fits-head">
+        <div class="sf-eyebrow">{{ section.settings.fits_eyebrow | default: 'Three fits' }}</div>
+        <h2>{{ section.settings.fits_heading | default: 'Pick the silhouette that suits you.' }}</h2>
+      </div>
+      <div class="sf-size-guide__fits-grid" data-sf-stagger>
+        {%- for block in fit_blocks -%}
+          <article class="sf-fit-card" data-sf-reveal data-sf-delay="{{ forloop.index0 | times: 120 }}" {{ block.shopify_attributes }}>
+            <div class="sf-fit-card__media">
+              {%- if block.settings.image -%}
+                <img
+                  src="{{ block.settings.image | image_url: width: 800 }}"
+                  width="{{ block.settings.image.width }}"
+                  height="{{ block.settings.image.height }}"
+                  loading="lazy"
+                  alt="">
+              {%- else -%}
+                {%- assign fit_label = 'FIT-' | append: block.settings.name | upcase | replace: ' ', '-' -%}
+                {% render 'sf-placeholder', label: fit_label, ratio: '4/5' %}
+              {%- endif -%}
+            </div>
+            <h3 class="sf-fit-card__name">{{ block.settings.name | default: 'Fit name' }}</h3>
+            <p class="sf-fit-card__body">{{ block.settings.body | default: 'A short description of the fit and who it suits.' }}</p>
+          </article>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} Care card {%- endcomment -%}
+  <div class="sf-size-guide__care" data-sf-reveal>
+    <div class="sf-size-guide__care-inner">
+      <div class="sf-eyebrow sf-eyebrow--light">{{ section.settings.care_eyebrow | default: 'Knitwear care' }}</div>
+      <h2>{{ section.settings.care_heading | default: 'Make it last.' }}</h2>
+      <ul class="sf-size-guide__care-list">
+        <li>{{ section.settings.care_1 | default: 'Cold wash, inside out. Gentle cycle only.' }}</li>
+        <li>{{ section.settings.care_2 | default: 'Dry flat on a towel. Never hang knitwear wet.' }}</li>
+        <li>{{ section.settings.care_3 | default: 'No tumble drying. Skip the iron unless really needed.' }}</li>
+        <li>{{ section.settings.care_4 | default: 'Store folded, not on a hanger. Hangers stretch the shoulders.' }}</li>
+      </ul>
+    </div>
+  </div>
+</article>
+
+{% stylesheet %}
+  .sf-size-guide { background: var(--sf-base); }
+
+  /* Hero */
+  .sf-size-guide__hero {
+    text-align: center;
+    padding: 96px 24px 48px;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .sf-size-guide__hero h1 {
+    font-family: var(--sf-font-display);
+    font-weight: 300;
+    font-size: clamp(36px, 5vw, 56px);
+    letter-spacing: 0.04em;
+    color: var(--sf-text);
+    margin: 16px 0 24px;
+  }
+  .sf-size-guide__subhead {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--sf-text);
+    opacity: 0.8;
+    margin: 0;
+  }
+
+  /* How to measure */
+  .sf-size-guide__measure {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 64px 48px 96px;
+    align-items: center;
+  }
+  .sf-size-guide__measure-media {
+    aspect-ratio: 4 / 5;
+    border-radius: var(--sf-radius-card);
+    overflow: hidden;
+  }
+  .sf-size-guide__measure-media img,
+  .sf-size-guide__measure-media .sf-placeholder {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0;
+  }
+  .sf-size-guide__measure-copy h2 {
+    font-family: var(--sf-font-display);
+    font-weight: 300;
+    font-size: clamp(28px, 3.4vw, 40px);
+    letter-spacing: 0.03em;
+    margin: 16px 0 32px;
+  }
+  .sf-size-guide__measure-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .sf-size-guide__measure-list li {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+  .sf-size-guide__measure-num {
+    font-family: var(--sf-font-display);
+    font-weight: 300;
+    font-size: 28px;
+    color: var(--sf-accent);
+    letter-spacing: 0.04em;
+    line-height: 1;
+    padding-top: 4px;
+  }
+  .sf-size-guide__measure-list h3 {
+    font-family: var(--sf-font-display);
+    font-weight: 400;
+    font-size: 18px;
+    letter-spacing: 0.04em;
+    margin: 0 0 6px;
+  }
+  .sf-size-guide__measure-list p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--sf-text);
+    opacity: 0.8;
+    margin: 0;
+  }
+
+  /* Size charts (tabs) */
+  .sf-size-guide__charts {
+    background: var(--sf-paper);
+    padding: 96px 48px;
+  }
+  .sf-size-guide__charts-head {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .sf-size-guide__charts-head h2 {
+    font-family: var(--sf-font-display);
+    font-weight: 300;
+    font-size: clamp(28px, 3.4vw, 40px);
+    letter-spacing: 0.03em;
+    margin: 16px 0 0;
+  }
+  .sf-size-tabs {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .sf-size-tabs__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    justify-content: center;
+    border-bottom: 1px solid rgba(43, 58, 46, 0.15);
+    margin-bottom: 32px;
+  }
+  .sf-size-tabs__tab {
+    background: transparent;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    color: var(--sf-text);
+    font-family: var(--sf-font-body);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 16px 24px;
+    cursor: pointer;
+    transition: color 200ms var(--sf-ease), border-color 200ms var(--sf-ease);
+    opacity: 0.6;
+    margin-bottom: -1px;
+  }
+  .sf-size-tabs__tab:hover { opacity: 1; }
+  .sf-size-tabs__tab.is-active {
+    color: var(--sf-primary);
+    border-bottom-color: var(--sf-accent);
+    opacity: 1;
+  }
+  .sf-size-tabs__tab:focus-visible {
+    outline: 2px solid var(--sf-accent);
+    outline-offset: 4px;
+  }
+  .sf-size-tabs__panel { animation: sf-fade-in 300ms var(--sf-ease); }
+  .sf-size-tabs__panel[hidden] { display: none; }
+  @keyframes sf-fade-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+  .sf-size-table-wrap {
+    overflow-x: auto;
+    border-radius: var(--sf-radius-card);
+    background: var(--sf-base);
+    box-shadow: 0 1px 2px rgba(26,31,27,.04), 0 8px 24px rgba(26,31,27,.06);
+  }
+  .sf-size-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--sf-font-body);
+    font-size: 14px;
+    min-width: 640px;
+  }
+  .sf-size-table thead {
+    background: var(--sf-primary);
+    color: var(--sf-base);
+  }
+  .sf-size-table th {
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 16px 12px;
+    text-align: left;
+  }
+  .sf-size-table tbody tr {
+    border-bottom: 1px solid rgba(43, 58, 46, 0.08);
+  }
+  .sf-size-table tbody tr:last-child { border-bottom: 0; }
+  .sf-size-table tbody tr:nth-child(even) {
+    background: rgba(196, 184, 164, 0.15);
+  }
+  .sf-size-table td {
+    padding: 14px 12px;
+    color: var(--sf-text);
+  }
+  .sf-size-table td:first-child {
+    font-weight: 500;
+    color: var(--sf-primary);
+  }
+  .sf-size-table__note {
+    margin: 16px 0 0;
+    font-size: 13px;
+    color: var(--sf-moss);
+    font-style: italic;
+    text-align: center;
+  }
+
+  /* Fit guide */
+  .sf-size-guide__fits {
+    padding: 96px 48px;
+  }
+  .sf-size-guide__fits-head {
+    text-align: center;
+    margin-bottom: 64px;
+  }
+  .sf-size-guide__fits-head h2 {
+    font-family: var(--sf-font-display);
+    font-weight: 300;
+    font-size: clamp(28px, 3.4vw, 40px);
+    letter-spacing: 0.03em;
+    margin: 16px 0 0;
+  }
+  .sf-size-guide__fits-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .sf-fit-card__media {
+    aspect-ratio: 4 / 5;
+    border-radius: var(--sf-radius-card);
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .sf-fit-card__media img,
+  .sf-fit-card__media .sf-placeholder {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0;
+  }
+  .sf-fit-card__name {
+    font-family: var(--sf-font-display);
+    font-weight: 400;
+    font-size: 22px;
+    letter-spacing: 0.04em;
+    margin: 0 0 8px;
+  }
+  .sf-fit-card__body {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--sf-text);
+    opacity: 0.8;
+    margin: 0;
+  }
+
+  /* Care band */
+  .sf-size-guide__care {
+    background: var(--sf-primary);
+    color: var(--sf-base);
+    padding: 80px 48px;
+  }
+  .sf-size-guide__care-inner {
+    max-width: 880px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .sf-size-guide__care h2 {
+    font-family: var(--sf-font-display);
+    font-weight: 300;
+    font-size: clamp(28px, 3.4vw, 40px);
+    letter-spacing: 0.04em;
+    color: var(--sf-base);
+    margin: 16px 0 32px;
+  }
+  .sf-size-guide__care-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px 48px;
+    text-align: left;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .sf-size-guide__care-list li {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--sf-base);
+    opacity: 0.9;
+    padding-left: 24px;
+    position: relative;
+  }
+  .sf-size-guide__care-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 12px;
+    height: 1px;
+    background: var(--sf-badge);
+  }
+
+  @media (max-width: 900px) {
+    .sf-size-guide__measure { grid-template-columns: 1fr; gap: 48px; padding: 48px 24px 80px; }
+    .sf-size-guide__fits-grid { grid-template-columns: 1fr; gap: 48px; }
+    .sf-size-guide__charts { padding: 64px 24px; }
+    .sf-size-guide__care-list { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .sf-size-guide__hero { padding: 64px 20px 32px; }
+    .sf-size-tabs__tab { padding: 12px 14px; font-size: 11px; letter-spacing: 0.14em; }
+    .sf-size-guide__care { padding: 64px 20px; }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    var roots = document.querySelectorAll('[data-sf-size-tabs]');
+    roots.forEach(function (root) {
+      var tabs = Array.prototype.slice.call(root.querySelectorAll('[data-sf-size-tab]'));
+      var panels = Array.prototype.slice.call(root.querySelectorAll('[data-sf-size-panel]'));
+      if (!tabs.length || !panels.length) return;
+
+      function activate(index) {
+        tabs.forEach(function (tab, i) {
+          var isActive = i === index;
+          tab.classList.toggle('is-active', isActive);
+          tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+          tab.setAttribute('tabindex', isActive ? '0' : '-1');
+        });
+        panels.forEach(function (panel, i) {
+          var isActive = i === index;
+          panel.classList.toggle('is-active', isActive);
+          if (isActive) {
+            panel.removeAttribute('hidden');
+          } else {
+            panel.setAttribute('hidden', '');
+          }
+        });
+      }
+
+      tabs.forEach(function (tab, index) {
+        tab.addEventListener('click', function () {
+          activate(index);
+          tab.focus();
+        });
+        tab.addEventListener('keydown', function (event) {
+          var key = event.key;
+          if (key !== 'ArrowRight' && key !== 'ArrowLeft' && key !== 'Home' && key !== 'End') return;
+          event.preventDefault();
+          var nextIndex = index;
+          if (key === 'ArrowRight') nextIndex = (index + 1) % tabs.length;
+          if (key === 'ArrowLeft') nextIndex = (index - 1 + tabs.length) % tabs.length;
+          if (key === 'Home') nextIndex = 0;
+          if (key === 'End') nextIndex = tabs.length - 1;
+          activate(nextIndex);
+          tabs[nextIndex].focus();
+        });
+      });
+    });
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "SF Size Guide",
+  "tag": "section",
+  "class": "sf-size-guide-section",
+  "settings": [
+    { "type": "header", "content": "Hero" },
+    { "type": "text", "id": "hero_eyebrow", "label": "Hero eyebrow", "default": "How to choose" },
+    { "type": "text", "id": "hero_heading", "label": "Hero heading", "default": "Find your perfect fit." },
+    { "type": "textarea", "id": "hero_subhead", "label": "Hero subhead", "default": "Stitch Fit knitwear is built to a true gauge, pre-washed, and finished by hand. Use this guide to land your size in one go." },
+
+    { "type": "header", "content": "How to measure" },
+    { "type": "image_picker", "id": "measure_image", "label": "Illustration or photo" },
+    { "type": "text", "id": "measure_eyebrow", "label": "Eyebrow", "default": "Measure yourself" },
+    { "type": "text", "id": "measure_heading", "label": "Heading", "default": "Four numbers. That's all you need." },
+    { "type": "text", "id": "step1_title", "label": "Step 1 title", "default": "Chest" },
+    { "type": "textarea", "id": "step1_body", "label": "Step 1 body", "default": "Measure around the fullest part of your chest, under the arms. Keep the tape level and snug — not tight." },
+    { "type": "text", "id": "step2_title", "label": "Step 2 title", "default": "Length" },
+    { "type": "textarea", "id": "step2_body", "label": "Step 2 body", "default": "From the top of the shoulder seam, straight down to where you want the hem to fall." },
+    { "type": "text", "id": "step3_title", "label": "Step 3 title", "default": "Shoulder" },
+    { "type": "textarea", "id": "step3_body", "label": "Step 3 body", "default": "Across the back, from the edge of one shoulder to the other." },
+    { "type": "text", "id": "step4_title", "label": "Step 4 title", "default": "Sleeve" },
+    { "type": "textarea", "id": "step4_body", "label": "Step 4 body", "default": "From the shoulder seam to the wrist, with the arm slightly bent." },
+
+    { "type": "header", "content": "Size charts" },
+    { "type": "text", "id": "charts_eyebrow", "label": "Eyebrow", "default": "Size charts" },
+    { "type": "text", "id": "charts_heading", "label": "Heading", "default": "Find your size, by category." },
+
+    { "type": "header", "content": "Fit guide" },
+    { "type": "text", "id": "fits_eyebrow", "label": "Eyebrow", "default": "Three fits" },
+    { "type": "text", "id": "fits_heading", "label": "Heading", "default": "Pick the silhouette that suits you." },
+
+    { "type": "header", "content": "Knitwear care" },
+    { "type": "text", "id": "care_eyebrow", "label": "Eyebrow", "default": "Knitwear care" },
+    { "type": "text", "id": "care_heading", "label": "Heading", "default": "Make it last." },
+    { "type": "text", "id": "care_1", "label": "Care point 1", "default": "Cold wash, inside out. Gentle cycle only." },
+    { "type": "text", "id": "care_2", "label": "Care point 2", "default": "Dry flat on a towel. Never hang knitwear wet." },
+    { "type": "text", "id": "care_3", "label": "Care point 3", "default": "No tumble drying. Skip the iron unless really needed." },
+    { "type": "text", "id": "care_4", "label": "Care point 4", "default": "Store folded, not on a hanger. Hangers stretch the shoulders." }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Size chart category",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Category name" },
+        { "type": "textarea", "id": "rows", "label": "Table rows", "info": "One row per line. Use | to separate columns: Size | Chest (in) | Chest (cm) | Length (in) | Length (cm) | Sleeve (in) | Sleeve (cm)" },
+        { "type": "text", "id": "note", "label": "Footnote (optional)" }
+      ]
+    },
+    {
+      "type": "fit",
+      "name": "Fit card",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "name", "label": "Fit name" },
+        { "type": "textarea", "id": "body", "label": "Description" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SF Size Guide",
+      "category": "Stitch Fit",
+      "blocks": [
+        { "type": "category", "settings": { "name": "Polo Shirts", "rows": "XS | 36 | 91 | 26 | 66 | 8 | 20\nS | 38 | 96 | 27 | 68 | 8.5 | 22\nM | 40 | 102 | 28 | 71 | 9 | 23\nL | 42 | 107 | 29 | 73 | 9.5 | 24\nXL | 44 | 112 | 30 | 76 | 10 | 25\nXXL | 46 | 117 | 31 | 78 | 10.5 | 27", "note": "Polo shirts are cut close to the body. Size up for a relaxed fit." } },
+        { "type": "category", "settings": { "name": "Sweaters", "rows": "XS | 38 | 96 | 27 | 68 | 24 | 61\nS | 40 | 102 | 28 | 71 | 24.5 | 62\nM | 42 | 107 | 29 | 73 | 25 | 63\nL | 44 | 112 | 30 | 76 | 25.5 | 65\nXL | 46 | 117 | 31 | 78 | 26 | 66\nXXL | 48 | 122 | 32 | 81 | 26.5 | 67", "note": "Sweaters allow room for a base layer underneath." } },
+        { "type": "category", "settings": { "name": "Cardigans", "rows": "XS | 38 | 96 | 27 | 68 | 24 | 61\nS | 40 | 102 | 28 | 71 | 24.5 | 62\nM | 42 | 107 | 29 | 73 | 25 | 63\nL | 44 | 112 | 30 | 76 | 25.5 | 65\nXL | 46 | 117 | 31 | 78 | 26 | 66\nXXL | 48 | 122 | 32 | 81 | 26.5 | 67", "note": "Cardigans are sized for layering. Order your usual size." } },
+        { "type": "category", "settings": { "name": "T-Shirts", "rows": "XS | 36 | 91 | 26 | 66 | 7 | 18\nS | 38 | 96 | 27 | 68 | 7.5 | 19\nM | 40 | 102 | 28 | 71 | 8 | 20\nL | 42 | 107 | 29 | 73 | 8.5 | 22\nXL | 44 | 112 | 30 | 76 | 9 | 23\nXXL | 46 | 117 | 31 | 78 | 9.5 | 24", "note": "Pre-washed. The size you receive is the size it stays." } },
+        { "type": "fit", "settings": { "name": "Slim Fit", "body": "Closer through the chest and waist. For a tailored silhouette under blazers and overshirts." } },
+        { "type": "fit", "settings": { "name": "Regular Fit", "body": "Our default cut. Comfortable through the body with room to move. Wears well on its own." } },
+        { "type": "fit", "settings": { "name": "Relaxed Fit", "body": "Wider through the chest and dropped shoulders. For an easy, modern silhouette." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

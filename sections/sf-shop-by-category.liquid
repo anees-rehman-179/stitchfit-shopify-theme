@@ -1,0 +1,114 @@
+<section class="sf-categories" id="our-range">
+  <div class="sf-categories__head" data-sf-reveal>
+    <div class="sf-eyebrow">{{ section.settings.eyebrow | default: 'Our Range' }}</div>
+    <h2>{{ section.settings.title | default: 'Shop by Category' }}</h2>
+  </div>
+
+  {%- comment -%}
+    Infinite auto-scroll marquee. Cards are duplicated so the loop is seamless.
+    Pause on hover via CSS animation-play-state.
+  {%- endcomment -%}
+  <div class="sf-categories__marquee" aria-label="Category carousel">
+    <div class="sf-categories__track">
+      {%- comment -%} First set {%- endcomment -%}
+      {%- for block in section.blocks -%}
+        <a
+          href="{{ block.settings.link | default: '/collections/all' }}"
+          class="sf-category-card"
+          {{ block.shopify_attributes }}>
+          <div class="sf-category-card__media">
+            {%- if block.settings.image -%}
+              <img
+                src="{{ block.settings.image | image_url: width: 600 }}"
+                width="{{ block.settings.image.width }}"
+                height="{{ block.settings.image.height }}"
+                loading="lazy"
+                alt="{{ block.settings.title | escape }}">
+            {%- else -%}
+              {% render 'sf-placeholder', label: block.settings.title | default: 'CATEGORY' | upcase, ratio: '4/5' %}
+            {%- endif -%}
+            <div class="sf-category-card__hover" aria-hidden="true">
+              <span class="sf-category-card__hover-text">Explore</span>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 8h10M9 4l4 4-4 4"/>
+              </svg>
+            </div>
+          </div>
+          <div class="sf-category-card__body">
+            <span class="sf-category-card__label">{{ block.settings.title }}</span>
+            <span class="sf-category-card__count">{{ block.settings.count | default: '10 styles' }}</span>
+          </div>
+        </a>
+      {%- endfor -%}
+
+      {%- comment -%} Duplicate set for seamless infinite loop {%- endcomment -%}
+      {%- for block in section.blocks -%}
+        <a
+          href="{{ block.settings.link | default: '/collections/all' }}"
+          class="sf-category-card"
+          aria-hidden="true"
+          tabindex="-1">
+          <div class="sf-category-card__media">
+            {%- if block.settings.image -%}
+              <img
+                src="{{ block.settings.image | image_url: width: 600 }}"
+                width="{{ block.settings.image.width }}"
+                height="{{ block.settings.image.height }}"
+                loading="lazy"
+                alt="">
+            {%- else -%}
+              {% render 'sf-placeholder', label: block.settings.title | default: 'CATEGORY' | upcase, ratio: '4/5' %}
+            {%- endif -%}
+            <div class="sf-category-card__hover" aria-hidden="true">
+              <span class="sf-category-card__hover-text">Explore</span>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 8h10M9 4l4 4-4 4"/>
+              </svg>
+            </div>
+          </div>
+          <div class="sf-category-card__body">
+            <span class="sf-category-card__label">{{ block.settings.title }}</span>
+            <span class="sf-category-card__count">{{ block.settings.count | default: '10 styles' }}</span>
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Stitch Fit Categories",
+  "tag": "section",
+  "class": "sf-categories-section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Our Range" },
+    { "type": "text", "id": "title", "label": "Heading", "default": "Shop by Category" }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Category name" },
+        { "type": "text", "id": "count", "label": "Style count label", "default": "10 styles" },
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "url", "id": "link", "label": "Link to collection" }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Stitch Fit Categories",
+      "category": "Stitch Fit",
+      "blocks": [
+        { "type": "category", "settings": { "title": "Polo Shirts",          "count": "10 styles", "link": "/collections/polo-shirts" } },
+        { "type": "category", "settings": { "title": "Sweaters & Pullovers", "count": "10 styles", "link": "/collections/sweaters-pullovers" } },
+        { "type": "category", "settings": { "title": "Cardigans",            "count": "10 styles", "link": "/collections/cardigans" } },
+        { "type": "category", "settings": { "title": "T-Shirts & Henleys",   "count": "10 styles", "link": "/collections/t-shirts-henleys" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

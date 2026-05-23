@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stitch Fit — Brand Identity Kit</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/brand.css">
+<style>
+  /* Cover */
+  .cover {
+    background: var(--forest);
+    color: var(--bone);
+    display: flex; flex-direction: column; justify-content: space-between;
+    min-height: 1180px; padding: 64px 80px;
+  }
+  .cover-top { display: flex; justify-content: space-between; align-items: flex-start; }
+  .cover-corner { font-size: 9px; letter-spacing: 0.24em; color: var(--stone); line-height: 1.8; }
+  .cover-corner.right { text-align: right; }
+  .cover-center { display: flex; flex-direction: column; align-items: center; text-align: center; margin: 40px 0 0; }
+  .cover-logo {
+    width: 260px; height: 260px; border-radius: 50%;
+    object-fit: cover; object-position: center;
+    margin-bottom: 48px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+  }
+  .cover-eyebrow { font-size: 10px; letter-spacing: 0.32em; color: var(--cognac); margin-bottom: 28px; }
+  .cover-title { font-family: var(--font-display); font-style: italic; font-size: 80px; font-weight: 300; line-height: 1; color: var(--bone); margin-bottom: 28px; }
+  .cover-sub { font-size: 12px; letter-spacing: 0.28em; color: var(--stone); }
+  .cover-bottom {
+    border-top: 0.5px solid rgba(196,184,164,0.25);
+    padding-top: 22px; display: flex; justify-content: space-between;
+    font-size: 9px; letter-spacing: 0.22em; color: var(--camel);
+  }
+
+  /* CONTENTS */
+  .toc-grid { display: grid; grid-template-columns: 48px 1fr 110px; row-gap: 8px; }
+  .toc-row {
+    display: contents;
+  }
+  .toc-row > a {
+    display: contents;
+    text-decoration: none;
+  }
+  .toc-num, .toc-title, .toc-page {
+    padding: 20px 0;
+    border-bottom: 0.5px dotted var(--stone);
+    transition: background 0.15s, color 0.15s;
+  }
+  .toc-link {
+    grid-column: 1 / -1;
+    display: grid; grid-template-columns: 48px 1fr 110px;
+    text-decoration: none; color: inherit;
+    align-items: baseline;
+    transition: background 0.15s;
+  }
+  .toc-link:hover {
+    background: rgba(168,117,76,0.06);
+  }
+  .toc-link:hover .toc-title { color: var(--cognac); }
+  .toc-link > * {
+    padding: 22px 0;
+    border-bottom: 0.5px dotted var(--stone);
+  }
+  .toc-num { font-family: var(--font-display); font-style: italic; font-size: 22px; color: var(--cognac); font-weight: 400; }
+  .toc-title { font-family: var(--font-display); font-size: 24px; font-weight: 400; color: var(--ink); letter-spacing: 0.02em; }
+  .toc-title small {
+    display: block; font-family: var(--font-body); font-size: 10px;
+    font-weight: 300; letter-spacing: 0.14em; color: var(--moss);
+    text-transform: uppercase; margin-top: 5px;
+  }
+  .toc-page { text-align: right; font-size: 10px; letter-spacing: 0.2em; color: var(--stone); padding-top: 30px; }
+  .toc-page .arrow { color: var(--cognac); margin-left: 8px; }
+</style>
+</head>
+<body>
+
+<!-- ═════════ COVER ═════════ -->
+<section class="page cover">
+  <div class="cover-top">
+    <div class="cover-corner"></div>
+    <div class="cover-corner right">PHASE 1<br>BRAND FOUNDATION</div>
+  </div>
+
+  <div class="cover-center">
+    <img class="cover-logo" src="assets/stitch-fit-logo-forest.png" alt="Stitch Fit logo" style="object-fit: fill">
+    <div class="cover-eyebrow">BRAND IDENTITY KIT · 2026</div>
+    <div class="cover-title">Stitch Fit</div>
+    <div class="cover-sub">A FIELD GUIDE TO CRAFT, VOICE &amp; PRESENCE</div>
+  </div>
+
+  <div class="cover-bottom">
+    <div>GUJRANWALA · PAKISTAN</div>
+    <div>VOLUME I — FOUNDATION</div>
+  </div>
+</section>
+
+<!-- ═════════ CONTENTS ═════════ -->
+<section class="page">
+  <div class="page-header">
+    <div class="ph-left">
+      <img class="ph-mark" src="assets/stitch-fit-logo.jpeg" alt="">
+      <div class="ph-name">STITCH FIT</div>
+    </div>
+    <div class="ph-section">Contents</div>
+    <div class="ph-num">02</div>
+  </div>
+
+  <div class="section-intro">
+    <div class="eyebrow">A FIELD GUIDE · CLICK ANY SECTION TO OPEN</div>
+    <h1 class="display h1 italic">A handbook for craft, voice, and presence.</h1>
+    <p class="lead" style="margin-top: 24px;">
+      This kit is organised into folders — one per discipline. Each can be opened, printed, or handed off on its own. Together they hold the system that holds Stitch Fit together.
+    </p>
+  </div>
+
+  <div class="toc-grid">
+    <a class="toc-link" href="01 Logo/Logo System.html">
+      <div class="toc-num">01</div>
+      <div class="toc-title">The Logo System <small>Primary · Wordmark · Icon · Clearspace</small></div>
+      <div class="toc-page">FOLDER 01<span class="arrow">→</span></div>
+    </a>
+    <a class="toc-link" href="02 Colour Palette/Colour Palette.html">
+      <div class="toc-num">02</div>
+      <div class="toc-title">The Colour Palette <small>Forest · Cognac · Bone · Supporting neutrals</small></div>
+      <div class="toc-page">FOLDER 02<span class="arrow">→</span></div>
+    </a>
+    <a class="toc-link" href="03 Typography/Typography.html">
+      <div class="toc-num">03</div>
+      <div class="toc-title">Typography <small>Garamond · Inter · Type scale &amp; tracking</small></div>
+      <div class="toc-page">FOLDER 03<span class="arrow">→</span></div>
+    </a>
+    <a class="toc-link" href="04 Brand Voice/Brand Voice.html">
+      <div class="toc-num">04</div>
+      <div class="toc-title">Brand Voice <small>The gentleman's register · Pillars · Copy rules</small></div>
+      <div class="toc-page">FOLDER 04<span class="arrow">→</span></div>
+    </a>
+    <a class="toc-link" href="05 Tagline/Tagline Options.html">
+      <div class="toc-num">05</div>
+      <div class="toc-title">The Tagline <small>12 candidates for client sign-off</small></div>
+      <div class="toc-page">FOLDER 05<span class="arrow">→</span></div>
+    </a>
+    <a class="toc-link" href="06 Packaging/Packaging.html">
+      <div class="toc-num">06</div>
+      <div class="toc-title">Packaging Standards <small>Polybag · Tissue · Hang tag</small></div>
+      <div class="toc-page">FOLDER 06<span class="arrow">→</span></div>
+    </a>
+    
+  </div>
+
+  <div class="page-footer">
+    <div>STITCH FIT · BRAND IDENTITY KIT</div>
+    <div>PHASE 1 · INDEX</div>
+  </div>
+</section>
+
+</body>
+</html>

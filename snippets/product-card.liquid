@@ -108,6 +108,13 @@
   >
     {{ children }}
   </div>
+  {%- unless onboarding -%}
+    <div class="sf-card-popup" aria-hidden="true">
+      <p class="sf-card-popup__title">{{ product.title }}</p>
+      <p class="sf-card-popup__price">{{ product.price | money }}</p>
+      <a class="sf-card-popup__btn" href="{{ variant_to_link.url }}">View Product</a>
+    </div>
+  {%- endunless -%}
 </product-card>
 
 {% stylesheet %}

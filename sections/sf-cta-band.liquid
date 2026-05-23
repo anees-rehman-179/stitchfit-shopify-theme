@@ -1,0 +1,28 @@
+<section class="sf-cta-band">
+  <div class="sf-cta-box" data-sf-reveal>
+    <div class="sf-cta-box__text">
+      <div class="sf-eyebrow sf-eyebrow--light">{{ section.settings.eyebrow | default: 'The Collection' }}</div>
+      <h2>{{ section.settings.heading | default: 'Premium knitwear. Built by hand. Worn for life.' }}</h2>
+    </div>
+    <a href="{{ section.settings.link | default: '/collections/all' }}" class="sf-cta-box__btn">
+      {{ section.settings.cta | default: 'Shop the full range' }}
+    </a>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "SF CTA Band",
+  "tag": "section",
+  "class": "sf-cta-band-section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The Collection" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Premium knitwear. Built by hand. Worn for life." },
+    { "type": "text", "id": "cta", "label": "Button label", "default": "Shop the full range" },
+    { "type": "url", "id": "link", "label": "Button link" }
+  ],
+  "presets": [
+    { "name": "SF CTA Band", "category": "Stitch Fit" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,122 @@
+{%- assign banner_style = section.settings.banner_style | default: 'solid' -%}
+
+<div class="sf-collection-banner sf-collection-banner--{{ banner_style }}">
+  {%- if collection.image != blank and banner_style == 'image' -%}
+    <div class="sf-collection-banner__bg" aria-hidden="true">
+      {{- collection.image | image_url: width: 1600 | image_tag:
+          loading: 'eager',
+          fetchpriority: 'high',
+          widths: '600,900,1200,1600',
+          sizes: '100vw',
+          class: 'sf-collection-banner__bg-img'
+      -}}
+    </div>
+    <div class="sf-collection-banner__overlay" aria-hidden="true"></div>
+  {%- endif -%}
+
+  <div class="sf-collection-banner__inner">
+    {%- if section.settings.eyebrow != blank -%}
+      <span class="sf-eyebrow sf-eyebrow--banner">{{ section.settings.eyebrow }}</span>
+    {%- endif -%}
+    <h1 class="sf-collection-banner__title">{{ collection.title }}</h1>
+    {%- if collection.description != blank -%}
+      <p class="sf-collection-banner__desc">{{ collection.description | strip_html | truncatewords: 40 }}</p>
+    {%- endif -%}
+  </div>
+</div>
+
+{% stylesheet %}
+  .sf-collection-banner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: clamp(220px, 30vh, 360px);
+    background: var(--sf-primary, #2B3A2E);
+    overflow: hidden;
+  }
+
+  .sf-collection-banner__bg {
+    position: absolute;
+    inset: 0;
+  }
+
+  .sf-collection-banner__bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  .sf-collection-banner__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(43, 58, 46, 0.72);
+  }
+
+  .sf-collection-banner__inner {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: clamp(40px, 6vw, 80px) clamp(20px, 5vw, 60px);
+    max-width: 800px;
+    width: 100%;
+  }
+
+  .sf-eyebrow--banner {
+    color: var(--sf-accent, #A8754C);
+    display: block;
+    margin-bottom: 12px;
+  }
+
+  .sf-collection-banner__title {
+    font-family: var(--sf-font-display, 'Canela', Georgia, serif);
+    font-weight: 300;
+    font-size: clamp(32px, 5vw, 56px);
+    letter-spacing: 0.04em;
+    color: var(--sf-base, #EBE4D6);
+    margin: 0 0 16px;
+    line-height: 1.1;
+  }
+
+  .sf-collection-banner__desc {
+    font-size: 16px;
+    line-height: 1.6;
+    color: rgba(235, 228, 214, 0.72);
+    max-width: 60ch;
+    margin: 0 auto;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "SF Collection Banner",
+  "tag": "section",
+  "class": "sf-collection-banner-section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "banner_style",
+      "label": "Banner style",
+      "options": [
+        { "value": "solid", "label": "Solid forest green" },
+        { "value": "image", "label": "Collection image with overlay" }
+      ],
+      "default": "solid"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow label",
+      "default": "The Range"
+    }
+  ],
+  "presets": [
+    {
+      "name": "SF Collection Banner",
+      "category": "Stitch Fit"
+    }
+  ]
+}
+{% endschema %}

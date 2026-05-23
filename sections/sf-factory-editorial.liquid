@@ -1,0 +1,142 @@
+<article class="sf-factory">
+  {%- comment -%} Hero {%- endcomment -%}
+  <div class="sf-factory__hero" data-sf-reveal>
+    {%- if section.settings.hero_image -%}
+      <img
+        src="{{ section.settings.hero_image | image_url: width: 2000 }}"
+        width="{{ section.settings.hero_image.width }}"
+        height="{{ section.settings.hero_image.height }}"
+        alt=""
+        loading="eager">
+    {%- else -%}
+      {% render 'sf-placeholder', label: 'FACTORY-HERO  WIDE  16×9', ratio: '16/9' %}
+    {%- endif -%}
+    <div class="sf-factory__hero-overlay">
+      <h1 class="sf-factory__hero-headline">{{ section.settings.hero_heading | default: 'Inside the factory.' }}</h1>
+    </div>
+  </div>
+
+  {%- comment -%} Editorial intro: pull-quote + body {%- endcomment -%}
+  <div class="sf-factory__intro" data-sf-reveal>
+    <blockquote class="sf-factory__pullquote">
+      {{ section.settings.pullquote | default: "For many years, we made knitwear for the world's most demanding brands. Now we put our name on it." }}
+    </blockquote>
+    <div class="sf-factory__body">
+      {{ section.settings.body | default: "<p>Started in 2009 with a single knitting machine in Gujranwala's Small Industrial Estate. Today we run a floor of skilled hands — pattern, knit, link, finish — making knitwear for global brands and, now, our own label.</p><p>Stitch Fit exists to bring that craft direct to the man who knows the difference.</p>" }}
+    </div>
+  </div>
+
+  {%- comment -%} Three-portrait gallery — machine details {%- endcomment -%}
+  <div class="sf-factory__gallery sf-factory__gallery--three" data-sf-reveal>
+    {%- for n in (1..3) -%}
+      {%- assign img_key = 'gallery1_image_' | append: n -%}
+      {%- assign img = section.settings[img_key] -%}
+      <div class="sf-factory__tile">
+        {%- if img -%}
+          <img
+            src="{{ img | image_url: width: 1000 }}"
+            width="{{ img.width }}"
+            height="{{ img.height }}"
+            alt=""
+            loading="lazy">
+        {%- else -%}
+          {% render 'sf-placeholder', label: 'MACHINE-DETAIL-' | append: n, ratio: '4/5' %}
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+
+  {%- comment -%} Full-bleed factory floor {%- endcomment -%}
+  <div class="sf-factory__fullbleed" data-sf-reveal>
+    {%- if section.settings.fullbleed_image -%}
+      <img
+        src="{{ section.settings.fullbleed_image | image_url: width: 2400 }}"
+        width="{{ section.settings.fullbleed_image.width }}"
+        height="{{ section.settings.fullbleed_image.height }}"
+        alt=""
+        loading="lazy">
+    {%- else -%}
+      {% render 'sf-placeholder', label: 'FACTORY-FLOOR-WIDE  16×9', ratio: '16/9' %}
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} Mixed-row gallery {%- endcomment -%}
+  <div class="sf-factory__gallery sf-factory__gallery--mixed" data-sf-reveal>
+    {%- for n in (1..3) -%}
+      {%- assign img_key = 'gallery2_image_' | append: n -%}
+      {%- assign img = section.settings[img_key] -%}
+      <div class="sf-factory__tile">
+        {%- if img -%}
+          <img
+            src="{{ img | image_url: width: 1400 }}"
+            width="{{ img.width }}"
+            height="{{ img.height }}"
+            alt=""
+            loading="lazy">
+        {%- else -%}
+          {% render 'sf-placeholder', label: 'WORKER-HANDS-' | append: n, ratio: '3/4' %}
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+
+  {%- comment -%} Closing italic statement {%- endcomment -%}
+  <div class="sf-factory__closing" data-sf-reveal>
+    <p>{{ section.settings.closing | default: 'Made here. Made by hand. Made to last.' }}</p>
+  </div>
+</article>
+
+{% stylesheet %}
+  .sf-factory__hero img,
+  .sf-factory__fullbleed img,
+  .sf-factory__tile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .sf-factory__hero img { position: absolute; inset: 0; }
+  .sf-factory__hero { position: relative; }
+  .sf-factory__tile {
+    aspect-ratio: 4 / 5;
+    border-radius: var(--sf-radius-card);
+    overflow: hidden;
+  }
+  .sf-factory__gallery--mixed .sf-factory__tile:nth-child(2) { aspect-ratio: 3 / 4; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "SF Factory Editorial",
+  "tag": "section",
+  "class": "sf-factory-section",
+  "settings": [
+    { "type": "header", "content": "Hero" },
+    { "type": "image_picker", "id": "hero_image", "label": "Hero image (wide)" },
+    { "type": "text", "id": "hero_heading", "label": "Hero heading", "default": "Inside the factory." },
+
+    { "type": "header", "content": "Editorial intro" },
+    { "type": "textarea", "id": "pullquote", "label": "Pull quote" },
+    { "type": "richtext", "id": "body", "label": "Body copy" },
+
+    { "type": "header", "content": "Gallery — machine details" },
+    { "type": "image_picker", "id": "gallery1_image_1", "label": "Tile 1" },
+    { "type": "image_picker", "id": "gallery1_image_2", "label": "Tile 2" },
+    { "type": "image_picker", "id": "gallery1_image_3", "label": "Tile 3" },
+
+    { "type": "header", "content": "Full-bleed image" },
+    { "type": "image_picker", "id": "fullbleed_image", "label": "Wide image" },
+
+    { "type": "header", "content": "Gallery — worker hands" },
+    { "type": "image_picker", "id": "gallery2_image_1", "label": "Tile 1" },
+    { "type": "image_picker", "id": "gallery2_image_2", "label": "Tile 2" },
+    { "type": "image_picker", "id": "gallery2_image_3", "label": "Tile 3" },
+
+    { "type": "header", "content": "Closing statement" },
+    { "type": "textarea", "id": "closing", "label": "Closing line" }
+  ],
+  "presets": [
+    { "name": "SF Factory Editorial", "category": "Stitch Fit" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,127 @@
+<article class="sf-story-page">
+  {%- comment -%} Hero {%- endcomment -%}
+  <div class="sf-story-page__hero" data-sf-reveal>
+    {%- if section.settings.hero_image -%}
+      <img
+        src="{{ section.settings.hero_image | image_url: width: 2000 }}"
+        width="{{ section.settings.hero_image.width }}"
+        height="{{ section.settings.hero_image.height }}"
+        alt=""
+        loading="eager">
+    {%- else -%}
+      {% render 'sf-placeholder', label: 'OUR-STORY-HERO  ·  16:9', ratio: '16/9' %}
+    {%- endif -%}
+    <div class="sf-story-page__hero-overlay">
+      <h1>{{ section.settings.hero_heading | default: 'Our Story' }}</h1>
+    </div>
+  </div>
+
+  {%- comment -%} Founder / origin {%- endcomment -%}
+  <div class="sf-story-page__founder">
+    <div class="sf-story-page__founder-media" data-sf-reveal-left>
+      {%- if section.settings.founder_image -%}
+        <img
+          src="{{ section.settings.founder_image | image_url: width: 1200 }}"
+          width="{{ section.settings.founder_image.width }}"
+          height="{{ section.settings.founder_image.height }}"
+          alt=""
+          loading="lazy">
+      {%- else -%}
+        {% render 'sf-placeholder', label: 'FATHER-PHOTO  ·  4:5', ratio: '4/5' %}
+      {%- endif -%}
+    </div>
+    <div class="sf-story-page__founder-copy" data-sf-reveal-right>
+      <div class="sf-eyebrow">{{ section.settings.eyebrow | default: 'Our Story' }}</div>
+      <h2>{{ section.settings.founder_heading | default: 'Started in 2009 with one knitting machine in Gujranwala.' }}</h2>
+      {%- if section.settings.founder_body != blank -%}
+        {{ section.settings.founder_body }}
+      {%- else -%}
+        <p>We still craft knitwear with the same passion. For many years, we made knitwear for global brands. Now we're bringing the same quality to Pakistan under our own name.</p>
+        <p>We are a factory that finally decided to build a brand.</p>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- comment -%} Optional pull-quote {%- endcomment -%}
+  {%- if section.settings.pullquote != blank -%}
+    <div class="sf-strip" data-sf-reveal>
+      <p class="sf-strip__quote">{{ section.settings.pullquote }}</p>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} Timeline {%- endcomment -%}
+  <div class="sf-timeline" data-sf-reveal>
+    <div class="sf-timeline__head">
+      <div class="sf-eyebrow sf-eyebrow--light">Milestones</div>
+      <h2>{{ section.settings.timeline_heading | default: 'Three moments. One thread.' }}</h2>
+    </div>
+    <div class="sf-timeline__grid" data-sf-stagger>
+      <div class="sf-timeline__item" data-sf-reveal>
+        <div class="sf-timeline__year">2009</div>
+        <h3 class="sf-timeline__title">{{ section.settings.year1_title | default: 'First machine' }}</h3>
+        <p class="sf-timeline__body">{{ section.settings.year1_body | default: "A single knitting machine in Gujranwala's Small Industrial Estate." }}</p>
+      </div>
+      <div class="sf-timeline__item" data-sf-reveal>
+        <div class="sf-timeline__year">2015</div>
+        <h3 class="sf-timeline__title">{{ section.settings.year2_title | default: 'Export era' }}</h3>
+        <p class="sf-timeline__body">{{ section.settings.year2_body | default: 'Knitting for global brands. Years of quiet craft, learning by hand.' }}</p>
+      </div>
+      <div class="sf-timeline__item" data-sf-reveal>
+        <div class="sf-timeline__year">2026</div>
+        <h3 class="sf-timeline__title">{{ section.settings.year3_title | default: 'Stitch Fit launch' }}</h3>
+        <p class="sf-timeline__body">{{ section.settings.year3_body | default: 'The same quality, finally under our own name.' }}</p>
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} Closing full-bleed image {%- endcomment -%}
+  <div class="sf-story-page__closing">
+    {%- if section.settings.closing_image -%}
+      <img
+        src="{{ section.settings.closing_image | image_url: width: 2400 }}"
+        width="{{ section.settings.closing_image.width }}"
+        height="{{ section.settings.closing_image.height }}"
+        alt=""
+        loading="lazy">
+    {%- else -%}
+      {% render 'sf-placeholder', label: 'FACTORY-TEAM  ·  16:9', ratio: '16/9' %}
+    {%- endif -%}
+  </div>
+</article>
+
+{% schema %}
+{
+  "name": "SF Our Story",
+  "tag": "section",
+  "class": "sf-our-story-section",
+  "settings": [
+    { "type": "header", "content": "Hero" },
+    { "type": "image_picker", "id": "hero_image", "label": "Hero image" },
+    { "type": "text", "id": "hero_heading", "label": "Hero heading", "default": "Our Story" },
+
+    { "type": "header", "content": "Founder section" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Our Story" },
+    { "type": "image_picker", "id": "founder_image", "label": "Founder / father photo" },
+    { "type": "text", "id": "founder_heading", "label": "Founder heading" },
+    { "type": "richtext", "id": "founder_body", "label": "Founder body copy" },
+
+    { "type": "header", "content": "Pull-quote (optional)" },
+    { "type": "textarea", "id": "pullquote", "label": "Pull-quote text", "info": "Shows as a centred italic statement between the founder section and the timeline. Leave blank to hide." },
+
+    { "type": "header", "content": "Timeline" },
+    { "type": "text", "id": "timeline_heading", "label": "Timeline heading" },
+    { "type": "text", "id": "year1_title", "label": "2009 title" },
+    { "type": "textarea", "id": "year1_body", "label": "2009 body" },
+    { "type": "text", "id": "year2_title", "label": "2015 title" },
+    { "type": "textarea", "id": "year2_body", "label": "2015 body" },
+    { "type": "text", "id": "year3_title", "label": "2026 title" },
+    { "type": "textarea", "id": "year3_body", "label": "2026 body" },
+
+    { "type": "header", "content": "Closing image" },
+    { "type": "image_picker", "id": "closing_image", "label": "Closing image (wide)" }
+  ],
+  "presets": [
+    { "name": "SF Our Story", "category": "Stitch Fit" }
+  ]
+}
+{% endschema %}

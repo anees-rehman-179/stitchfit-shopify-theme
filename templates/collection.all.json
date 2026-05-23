@@ -1,10 +1,43 @@
 {
   "sections": {
-    "banner": {
-      "type": "sf-collection-banner",
+    "catalog-header": {
+      "type": "sf-catalog-header",
+      "blocks": {
+        "pill-polo": {
+          "type": "category_pill",
+          "settings": {
+            "label": "Polo Shirts",
+            "handle": "polo-shirts"
+          }
+        },
+        "pill-sweaters": {
+          "type": "category_pill",
+          "settings": {
+            "label": "Sweaters & Pullovers",
+            "handle": "sweaters-pullovers"
+          }
+        },
+        "pill-cardigans": {
+          "type": "category_pill",
+          "settings": {
+            "label": "Cardigans",
+            "handle": "cardigans"
+          }
+        },
+        "pill-tshirts": {
+          "type": "category_pill",
+          "settings": {
+            "label": "T-Shirts & Henleys",
+            "handle": "t-shirts-henleys"
+          }
+        }
+      },
+      "block_order": ["pill-polo", "pill-sweaters", "pill-cardigans", "pill-tshirts"],
       "settings": {
-        "banner_style": "solid",
-        "eyebrow": "The Range"
+        "eyebrow": "The Collection",
+        "heading": "Shop All",
+        "subhead": "Every piece, one place.",
+        "nav_label": "Shop by category"
       }
     },
     "main": {
@@ -122,24 +155,34 @@
       },
       "settings": {
         "layout_type": "grid",
-        "product_card_size": "medium",
+        "product_card_size": "small",
         "mobile_product_card_size": "small",
         "product_grid_width": "centered",
         "full_width_on_mobile": true,
         "enable_infinite_scroll": false,
-        "products_per_page": 12,
-        "columns_gap_horizontal": 16,
-        "columns_gap_vertical": 28,
+        "products_per_page": 16,
+        "columns_gap_horizontal": 12,
+        "columns_gap_vertical": 24,
         "padding-inline-start": 0,
         "padding-inline-end": 0,
         "color_scheme": "scheme-1",
         "padding-block-start": 8,
         "padding-block-end": 48
       }
+    },
+    "cta": {
+      "type": "sf-cta-band",
+      "settings": {
+        "eyebrow": "The Collection",
+        "heading": "Premium knitwear. Built by hand. Worn for life.",
+        "cta": "Our Story",
+        "link": "/pages/our-story"
+      }
     }
   },
   "order": [
-    "banner",
-    "main"
+    "catalog-header",
+    "main",
+    "cta"
   ]
 }

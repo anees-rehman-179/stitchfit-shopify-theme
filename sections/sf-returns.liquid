@@ -1,0 +1,449 @@
+<article class="sf-policy sf-policy--returns">
+  {%- comment -%} Hero {%- endcomment -%}
+  <div class="sf-policy__hero" data-sf-reveal>
+    <div class="sf-eyebrow">{{ section.settings.hero_eyebrow | default: 'Easy returns' }}</div>
+    <h1>{{ section.settings.hero_heading | default: 'Return & Exchange' }}</h1>
+    {%- if section.settings.hero_subhead != blank -%}
+      <p class="sf-policy__subhead">{{ section.settings.hero_subhead }}</p>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} Highlight cards {%- endcomment -%}
+  {%- assign highlight_blocks = section.blocks | where: 'type', 'highlight' -%}
+  {%- if highlight_blocks.size > 0 -%}
+    <div class="sf-policy__highlights" data-sf-reveal>
+      <div class="sf-policy__highlights-grid" data-sf-stagger>
+        {%- for block in highlight_blocks -%}
+          <div class="sf-policy-card" data-sf-reveal data-sf-delay="{{ forloop.index0 | times: 120 }}" {{ block.shopify_attributes }}>
+            <div class="sf-policy-card__icon" aria-hidden="true">
+              {%- case block.settings.icon -%}
+                {%- when 'calendar' -%}
+                  <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+                    <rect x="10" y="14" width="44" height="40" rx="3"/>
+                    <path d="M10 24h44M22 8v12M42 8v12"/>
+                  </svg>
+                {%- when 'swap' -%}
+                  <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 22h36l-8-8M50 42H14l8 8"/>
+                  </svg>
+                {%- when 'tag' -%}
+                  <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round">
+                    <path d="M32 8l24 24-24 24-24-24V8z"/>
+                    <circle cx="22" cy="22" r="3"/>
+                  </svg>
+                {%- when 'shield' -%}
+                  <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round">
+                    <path d="M32 8l20 8v16c0 12-8 20-20 24-12-4-20-12-20-24V16z"/>
+                    <path d="M24 32l6 6 12-12"/>
+                  </svg>
+                {%- else -%}
+                  <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.2">
+                    <circle cx="32" cy="32" r="20"/>
+                  </svg>
+              {%- endcase -%}
+            </div>
+            <h3 class="sf-policy-card__title">{{ block.settings.title }}</h3>
+            <p class="sf-policy-card__value">{{ block.settings.value }}</p>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} How it works (4 steps) {%- endcomment -%}
+  {%- assign step_blocks = section.blocks | where: 'type', 'step' -%}
+  {%- if step_blocks.size > 0 -%}
+    <div class="sf-returns__steps" data-sf-reveal>
+      <div class="sf-returns__steps-head">
+        <div class="sf-eyebrow">{{ section.settings.steps_eyebrow | default: 'How it works' }}</div>
+        <h2>{{ section.settings.steps_heading | default: 'Four steps. No back-and-forth.' }}</h2>
+      </div>
+      <div class="sf-returns__steps-grid" data-sf-stagger>
+        {%- for block in step_blocks -%}
+          <div class="sf-returns-step" data-sf-reveal data-sf-delay="{{ forloop.index0 | times: 100 }}" {{ block.shopify_attributes }}>
+            <span class="sf-returns-step__num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+            <h3 class="sf-returns-step__title">{{ block.settings.title }}</h3>
+            <p class="sf-returns-step__body">{{ block.settings.body }}</p>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} What can / can't be returned {%- endcomment -%}
+  <div class="sf-returns__conditions" data-sf-reveal>
+    <div class="sf-returns__conditions-grid">
+      <div class="sf-returns__conditions-col">
+        <div class="sf-eyebrow">{{ section.settings.yes_eyebrow | default: 'Returnable' }}</div>
+        <h2>{{ section.settings.yes_heading | default: 'What we accept.' }}</h2>
+        {%- if section.settings.yes_list != blank -%}
+          <div class="sf-returns__list sf-returns__list--yes">
+            {{ section.settings.yes_list }}
+          </div>
+        {%- else -%}
+          <ul class="sf-returns__list sf-returns__list--yes">
+            <li>Unworn items with original tags attached</li>
+            <li>Items in their original packaging</li>
+            <li>Returned within 14 days of delivery</li>
+            <li>Full-price items (any colour, any size)</li>
+          </ul>
+        {%- endif -%}
+      </div>
+      <div class="sf-returns__conditions-col">
+        <div class="sf-eyebrow">{{ section.settings.no_eyebrow | default: 'Not eligible' }}</div>
+        <h2>{{ section.settings.no_heading | default: "What we can't take back." }}</h2>
+        {%- if section.settings.no_list != blank -%}
+          <div class="sf-returns__list sf-returns__list--no">
+            {{ section.settings.no_list }}
+          </div>
+        {%- else -%}
+          <ul class="sf-returns__list sf-returns__list--no">
+            <li>Worn, washed, or altered items</li>
+            <li>Items without original tags or packaging</li>
+            <li>Final-sale and marked-down pieces</li>
+            <li>Gift cards and custom-made orders</li>
+          </ul>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} Start a return CTA {%- endcomment -%}
+  <div class="sf-returns__cta" data-sf-reveal>
+    <div class="sf-returns__cta-inner">
+      <div class="sf-eyebrow">{{ section.settings.cta_eyebrow | default: 'Ready to return?' }}</div>
+      <h2 class="sf-returns__cta-heading">{{ section.settings.cta_heading | default: 'Start a return or exchange.' }}</h2>
+      {%- if section.settings.cta_subhead != blank -%}
+        <p class="sf-returns__cta-subhead">{{ section.settings.cta_subhead }}</p>
+      {%- endif -%}
+      <div class="sf-returns__cta-btns">
+        {%- if section.settings.whatsapp_number != blank -%}
+          <a href="https://wa.me/{{ section.settings.whatsapp_number | remove: '+' | remove: ' ' }}?text={{ section.settings.whatsapp_message | default: 'Hi, I want to start a return for order #' | url_encode }}"
+            class="sf-returns__cta-btn sf-returns__cta-btn--whatsapp"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Start a return via WhatsApp">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+            WhatsApp
+          </a>
+        {%- endif -%}
+        {%- if section.settings.email_address != blank -%}
+          <a href="mailto:{{ section.settings.email_address }}?subject={{ section.settings.email_subject | default: 'Return Request' | url_encode }}"
+            class="sf-returns__cta-btn sf-returns__cta-btn--email"
+            aria-label="Start a return via email">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2" y="4" width="20" height="16" rx="2"/>
+              <path d="m2 7 10 7 10-7"/>
+            </svg>
+            Email us
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} Final note {%- endcomment -%}
+  {%- if section.settings.final_note != blank -%}
+    <div class="sf-returns__note" data-sf-reveal>
+      <p>{{ section.settings.final_note }}</p>
+    </div>
+  {%- endif -%}
+</article>
+
+{% stylesheet %}
+  .sf-policy--returns { background: var(--sf-base); }
+
+  /* Steps */
+  .sf-returns__steps {
+    background: var(--sf-card);
+    padding: 96px 48px;
+  }
+  .sf-returns__steps-head {
+    text-align: center;
+    margin-bottom: 64px;
+  }
+  .sf-returns__steps-head h2 {
+    font-family: var(--sf-font-display);
+    font-weight: 300;
+    font-size: clamp(28px, 3.4vw, 40px);
+    letter-spacing: 0.03em;
+    margin: 16px 0 0;
+  }
+  .sf-returns__steps-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .sf-returns-step {
+    background: var(--sf-base);
+    border-radius: var(--sf-radius-card);
+    padding: 32px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .sf-returns-step__num {
+    display: block;
+    font-family: var(--sf-font-display);
+    font-weight: 300;
+    font-size: 56px;
+    line-height: 1;
+    color: var(--sf-badge);
+    margin-bottom: 24px;
+    letter-spacing: 0.04em;
+  }
+  .sf-returns-step__title {
+    font-family: var(--sf-font-display);
+    font-weight: 400;
+    font-size: 20px;
+    letter-spacing: 0.04em;
+    color: var(--sf-primary);
+    margin: 0 0 8px;
+  }
+  .sf-returns-step__body {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--sf-text);
+    opacity: 0.85;
+    margin: 0;
+  }
+
+  /* Conditions */
+  .sf-returns__conditions {
+    padding: 96px 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .sf-returns__conditions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+  }
+  .sf-returns__conditions-col h2 {
+    font-family: var(--sf-font-display);
+    font-weight: 300;
+    font-size: clamp(24px, 2.8vw, 32px);
+    letter-spacing: 0.03em;
+    margin: 16px 0 24px;
+  }
+  .sf-returns__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .sf-returns__list li {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--sf-text);
+    padding: 12px 0 12px 32px;
+    position: relative;
+    border-bottom: 1px solid rgba(43, 58, 46, 0.08);
+  }
+  .sf-returns__list li:last-child { border-bottom: 0; }
+  .sf-returns__list--yes li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 18px;
+    width: 14px;
+    height: 8px;
+    border-left: 2px solid var(--sf-accent);
+    border-bottom: 2px solid var(--sf-accent);
+    transform: rotate(-45deg);
+  }
+  .sf-returns__list--no li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 22px;
+    width: 14px;
+    height: 2px;
+    background: var(--sf-moss);
+    opacity: 0.5;
+  }
+
+  /* Start a return CTA */
+  .sf-returns__cta {
+    background: var(--sf-card, #C4B8A4);
+    padding: 80px 48px;
+    text-align: center;
+  }
+  .sf-returns__cta-inner {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+  .sf-returns__cta-heading {
+    font-family: var(--sf-font-display);
+    font-weight: 300;
+    font-size: clamp(28px, 3.4vw, 40px);
+    letter-spacing: 0.03em;
+    color: var(--sf-primary);
+    margin: 12px 0 8px;
+  }
+  .sf-returns__cta-subhead {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--sf-text);
+    opacity: 0.8;
+    margin: 0 0 32px;
+  }
+  .sf-returns__cta-btns {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .sf-returns__cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 52px;
+    padding: 0 28px;
+    border-radius: 999px;
+    font-family: var(--sf-font-body);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    transition: opacity 200ms ease, transform 150ms ease;
+  }
+  .sf-returns__cta-btn:focus-visible {
+    outline: 3px solid var(--sf-accent);
+    outline-offset: 3px;
+  }
+  .sf-returns__cta-btn--whatsapp {
+    background: var(--sf-primary);
+    color: var(--sf-base);
+  }
+  .sf-returns__cta-btn--email {
+    background: transparent;
+    color: var(--sf-primary);
+    border: 2px solid var(--sf-primary);
+  }
+  .sf-returns__cta-btn:hover {
+    opacity: 0.85;
+    transform: translateY(-1px);
+  }
+  @media (max-width: 600px) {
+    .sf-returns__cta { padding: 56px 24px; }
+    .sf-returns__cta-btns { flex-direction: column; align-items: center; }
+    .sf-returns__cta-btn { width: 100%; max-width: 320px; justify-content: center; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sf-returns__cta-btn { transition: none; }
+  }
+
+  /* Final note */
+  .sf-returns__note {
+    background: var(--sf-primary);
+    color: var(--sf-base);
+    padding: 64px 48px;
+    text-align: center;
+  }
+  .sf-returns__note p {
+    font-family: var(--sf-font-display);
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(18px, 2vw, 24px);
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+    color: var(--sf-base);
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 1024px) {
+    .sf-returns__steps-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 900px) {
+    .sf-returns__conditions-grid { grid-template-columns: 1fr; gap: 48px; }
+    .sf-returns__conditions { padding: 64px 24px; }
+    .sf-returns__steps { padding: 64px 24px; }
+  }
+  @media (max-width: 600px) {
+    .sf-returns__steps-grid { grid-template-columns: 1fr; }
+    .sf-returns__note { padding: 48px 20px; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "SF Returns & Exchange",
+  "tag": "section",
+  "class": "sf-returns-section",
+  "settings": [
+    { "type": "header", "content": "Hero" },
+    { "type": "text", "id": "hero_eyebrow", "label": "Eyebrow", "default": "Easy returns" },
+    { "type": "text", "id": "hero_heading", "label": "Heading", "default": "Return & Exchange" },
+    { "type": "textarea", "id": "hero_subhead", "label": "Subhead", "default": "Buy with confidence. If a piece doesn't land right, send it back within 14 days for a swap or refund." },
+
+    { "type": "header", "content": "How it works" },
+    { "type": "text", "id": "steps_eyebrow", "label": "Eyebrow", "default": "How it works" },
+    { "type": "text", "id": "steps_heading", "label": "Heading", "default": "Four steps. No back-and-forth." },
+
+    { "type": "header", "content": "Conditions — Returnable" },
+    { "type": "text", "id": "yes_eyebrow", "label": "Eyebrow", "default": "Returnable" },
+    { "type": "text", "id": "yes_heading", "label": "Heading", "default": "What we accept." },
+    { "type": "richtext", "id": "yes_list", "label": "List", "info": "Use a bulleted list" },
+
+    { "type": "header", "content": "Conditions — Not eligible" },
+    { "type": "text", "id": "no_eyebrow", "label": "Eyebrow", "default": "Not eligible" },
+    { "type": "text", "id": "no_heading", "label": "Heading", "default": "What we can't take back." },
+    { "type": "richtext", "id": "no_list", "label": "List", "info": "Use a bulleted list" },
+
+    { "type": "header", "content": "Start a return CTA" },
+    { "type": "text",     "id": "cta_eyebrow",        "label": "Eyebrow",            "default": "Ready to return?" },
+    { "type": "text",     "id": "cta_heading",         "label": "Heading",            "default": "Start a return or exchange." },
+    { "type": "textarea", "id": "cta_subhead",          "label": "Subhead",            "default": "Reach out on WhatsApp for the fastest response, or drop us an email." },
+    { "type": "text",     "id": "whatsapp_number",     "label": "WhatsApp number",    "default": "923210900786", "info": "Digits only, no + or spaces. E.g. 923210900786" },
+    { "type": "text",     "id": "whatsapp_message",    "label": "WhatsApp pre-fill",  "default": "Hi, I want to start a return for order #" },
+    { "type": "text",     "id": "email_address",       "label": "Email address",      "default": "info@stitchfit.com.pk" },
+    { "type": "text",     "id": "email_subject",       "label": "Email subject",      "default": "Return Request — Order #" },
+
+    { "type": "header", "content": "Final note" },
+    { "type": "textarea", "id": "final_note", "label": "Note", "default": "Received something faulty? We'll replace it, no questions asked." }
+  ],
+  "blocks": [
+    {
+      "type": "highlight",
+      "name": "Highlight card",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "options": [
+          { "value": "calendar", "label": "Calendar" },
+          { "value": "swap",     "label": "Swap arrows" },
+          { "value": "tag",      "label": "Tag" },
+          { "value": "shield",   "label": "Shield" }
+        ], "default": "calendar" },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "value", "label": "Value" }
+      ]
+    },
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Step title" },
+        { "type": "textarea", "id": "body", "label": "Step body" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SF Returns & Exchange",
+      "category": "Stitch Fit",
+      "blocks": [
+        { "type": "highlight", "settings": { "icon": "calendar", "title": "14-day window",  "value": "Return any unworn piece within 14 days of delivery." } },
+        { "type": "highlight", "settings": { "icon": "swap",     "title": "Exchange or refund", "value": "Swap size, swap colour, or take a full refund — your call." } },
+        { "type": "highlight", "settings": { "icon": "tag",      "title": "Original condition", "value": "Items must be unworn with original tags and packaging." } },
+        { "type": "step", "settings": { "title": "Request",  "body": "Email us at info@stitchfit.com.pk with your order number and the reason for return." } },
+        { "type": "step", "settings": { "title": "Pack",     "body": "Place the item back in its original packaging with the tags still attached." } },
+        { "type": "step", "settings": { "title": "Ship",     "body": "We'll send a return label or arrange a pickup, depending on your location." } },
+        { "type": "step", "settings": { "title": "Refund",   "body": "Once we receive and inspect the item, your refund or exchange lands within 5–7 business days." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,109 @@
+<section class="sf-quality sf-quality--has-bg" data-sf-reveal style="{% if section.settings.image %}background-image: url('{{ section.settings.image | image_url: width: 2400 }}');{% else %}background-image: url('{{ 'quality-hero.jpg' | asset_url }}');{% endif %} background-size: cover; background-position: center; background-repeat: no-repeat;">
+  <div class="sf-quality__head">
+    <div class="sf-eyebrow sf-eyebrow--light">{{ section.settings.eyebrow | default: 'Craft & Quality' }}</div>
+    <h2>{{ section.settings.title | default: 'Quality knitwear made by skilled hands.' }}</h2>
+  </div>
+
+  {%- comment -%} Background image is applied to the section wrapper when `settings.image` is set. Fallback asset `quality-hero.jpg` is used by inline styles if desired via admin (or by leaving settings empty and relying on CSS/asset) {%- endcomment -%}
+
+  <div class="sf-quality__grid" data-sf-stagger>
+    {%- for block in section.blocks -%}
+      <div class="sf-quality__item" data-sf-reveal data-sf-delay="{{ forloop.index0 | times: 150 }}" {{ block.shopify_attributes }}>
+        <div class="sf-quality__icon">
+          {%- case block.settings.icon -%}
+            {%- when 'yarn' -%}
+              <!-- Yarn ball with thread wrap lines -->
+              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="24" cy="24" r="14"/>
+                <path d="M10 24c4-6 14-10 18-4s-4 14-10 10"/>
+                <path d="M14 16c4 2 12 8 10 16"/>
+                <path d="M32 12c-2 4-4 16-8 18"/>
+              </svg>
+            {%- when 'gauge' -%}
+              <!-- Knit gauge swatch pattern -->
+              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="8" y="12" width="32" height="24" rx="3"/>
+                <path d="M16 20c0-2 2-3 4-3s4 1 4 3v4c0 2-2 3-4 3"/>
+                <path d="M28 20c0-2 2-3 4-3s4 1 4 3v4c0 2-2 3-4 3"/>
+                <path d="M20 24h8"/>
+                <path d="M8 30h32"/>
+              </svg>
+            {%- when 'craft' -%}
+              <!-- Hand sewing needle and thread -->
+              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M13 35L35 13"/>
+                <path d="M35 13l-5 1-1 5"/>
+                <ellipse cx="35" cy="13" rx="2.5" ry="2.5" transform="rotate(-45 35 13)"/>
+                <path d="M13 35c-2 2-2 5 0 5s5-2 4-4"/>
+                <path d="M21 27c-4 3-8 4-8 8"/>
+                <path d="M19 25l6-8"/>
+              </svg>
+            {%- else -%}
+              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
+                <circle cx="24" cy="24" r="14"/>
+              </svg>
+          {%- endcase -%}
+        </div>
+        <h3>{{ block.settings.title }}</h3>
+        <p>{{ block.settings.body }}</p>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% stylesheet %}
+  .sf-quality--has-bg { color: #fff; position: relative; }
+  .sf-quality--has-bg::before { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.35); pointer-events: none; }
+  .sf-quality--has-bg .sf-quality__head,
+  .sf-quality--has-bg .sf-quality__grid { position: relative; z-index: 1; }
+  .sf-quality__head { padding: 2rem 1rem; }
+  .sf-quality__grid { padding: 1rem; display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+  .sf-quality__item { background: transparent; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "SF Quality Pillars",
+  "tag": "section",
+  "class": "sf-quality-section",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "image_alt", "label": "Image alt text" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Craft & Quality" },
+    { "type": "text", "id": "title", "label": "Heading", "default": "Quality knitwear made by skilled hands." }
+  ],
+  "blocks": [
+    {
+      "type": "pillar",
+      "name": "Pillar",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "yarn",  "label": "Yarn" },
+            { "value": "gauge", "label": "Gauge" },
+            { "value": "craft", "label": "Craft" }
+          ],
+          "default": "yarn"
+        },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "body", "label": "Body" }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    {
+      "name": "SF Quality Pillars",
+      "category": "Stitch Fit",
+      "blocks": [
+        { "type": "pillar", "settings": { "icon": "yarn",  "title": "Premium Yarn",   "body": "Long-staple fibres selected for softness and durability." } },
+        { "type": "pillar", "settings": { "icon": "gauge", "title": "True Gauge",     "body": "Knit at the right tension. Holds shape wash after wash." } },
+        { "type": "pillar", "settings": { "icon": "craft", "title": "Hand Finished",  "body": "Every piece checked by hand before it ships." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

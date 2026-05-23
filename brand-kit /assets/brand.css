@@ -1,0 +1,91 @@
+/* Stitch Fit — Brand Kit shared stylesheet */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --forest:  #2B3A2E;
+  --cognac:  #A8754C;
+  --bone:    #EBE4D6;
+  --ink:     #1A1F1B;
+  --stone:   #C4B8A4;
+  --camel:   #D4B891;
+  --moss:    #5C6B5A;
+  --paper:   #F5EFE4;
+  --font-display: 'Canela', 'Canela Deck', 'Cormorant Garamond', 'Times New Roman', serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: #D9D2C2;
+  font-family: var(--font-body);
+  color: var(--ink);
+  font-weight: 300;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  padding: 40px 0;
+}
+
+.page {
+  width: 900px;
+  min-height: 1180px;
+  margin: 0 auto 40px;
+  padding: 80px 80px 60px;
+  position: relative;
+  background: var(--bone);
+  box-shadow: 0 30px 60px -20px rgba(0,0,0,0.18);
+}
+.page.alt  { background: var(--paper); }
+.page.dark { background: var(--forest); color: var(--bone); }
+
+/* Page chrome */
+.page-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-bottom: 24px; margin-bottom: 56px;
+  border-bottom: 0.5px solid var(--stone);
+}
+.page.dark .page-header { border-bottom-color: rgba(196,184,164,0.2); }
+.ph-left { display: flex; align-items: center; gap: 12px; }
+.ph-mark {
+  width: 28px; height: 28px; border-radius: 50%;
+  object-fit: cover; object-position: center 30%;
+  border: 0.5px solid var(--cognac);
+}
+.ph-name { font-size: 10px; letter-spacing: 0.24em; font-weight: 400; color: var(--forest); }
+.page.dark .ph-name { color: var(--bone); }
+.ph-section { font-family: var(--font-display); font-style: italic; font-size: 13px; color: var(--moss); letter-spacing: 0.02em; }
+.page.dark .ph-section { color: var(--stone); }
+.ph-num { font-size: 9px; letter-spacing: 0.2em; color: var(--stone); }
+.page.dark .ph-num { color: var(--camel); }
+
+.page-footer {
+  position: absolute; bottom: 32px; left: 80px; right: 80px;
+  display: flex; justify-content: space-between;
+  font-size: 8px; letter-spacing: 0.18em; color: var(--stone);
+  padding-top: 16px; border-top: 0.5px solid var(--stone);
+}
+.page.dark .page-footer { color: var(--camel); border-top-color: rgba(196,184,164,0.15); }
+
+/* Type utilities */
+.display { font-family: var(--font-display); font-weight: 300; line-height: 1.05; letter-spacing: -0.005em; }
+.display.italic { font-style: italic; }
+.h1 { font-size: 56px; }
+.eyebrow { font-size: 9px; letter-spacing: 0.28em; font-weight: 400; color: var(--cognac); text-transform: uppercase; }
+.lead { font-size: 15px; font-weight: 300; line-height: 1.75; color: var(--ink); max-width: 56ch; }
+.body-text { font-size: 13px; font-weight: 300; line-height: 1.8; color: var(--moss); }
+
+.section-intro { margin-bottom: 56px; }
+.section-intro .eyebrow { margin-bottom: 20px; }
+.section-intro .display { margin-bottom: 24px; }
+
+.back-link {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-bottom: 20px;
+  font-size: 10px; letter-spacing: 0.2em; color: var(--cognac);
+  text-decoration: none; text-transform: uppercase;
+}
+.back-link:hover { color: var(--forest); }
+
+@media print {
+  body { background: white; padding: 0; }
+  .page { box-shadow: none; margin: 0; page-break-after: always; }
+}

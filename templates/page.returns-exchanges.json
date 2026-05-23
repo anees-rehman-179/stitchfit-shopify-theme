@@ -1,0 +1,46 @@
+{
+  "sections": {
+    "returns": {
+      "type": "sf-returns",
+      "blocks": {
+        "h1": { "type": "highlight", "settings": { "icon": "calendar", "title": "14-day window",        "value": "Return any unworn piece within 14 days of delivery." } },
+        "h2": { "type": "highlight", "settings": { "icon": "swap",     "title": "Exchange or refund",   "value": "Swap size, swap colour, or take a full refund — your call." } },
+        "h3": { "type": "highlight", "settings": { "icon": "tag",      "title": "Original condition",   "value": "Items must be unworn with original tags and packaging." } },
+        "s1": { "type": "step",      "settings": { "title": "Request", "body": "Email us at info@stitchfit.com.pk with your order number and the reason for return." } },
+        "s2": { "type": "step",      "settings": { "title": "Pack",    "body": "Place the item back in its original packaging with the tags still attached." } },
+        "s3": { "type": "step",      "settings": { "title": "Ship",    "body": "We'll send a return label or arrange a pickup, depending on your location." } },
+        "s4": { "type": "step",      "settings": { "title": "Refund",  "body": "Once we receive and inspect the item, your refund or exchange lands within 5–7 business days." } }
+      },
+      "block_order": ["h1", "h2", "h3", "s1", "s2", "s3", "s4"],
+      "settings": {
+        "hero_eyebrow": "Easy returns",
+        "hero_heading": "Return & Exchange",
+        "hero_subhead": "Buy with confidence. If a piece doesn't land right, send it back within 14 days for a swap or refund.",
+        "steps_eyebrow": "How it works",
+        "steps_heading": "Four steps. No back-and-forth.",
+        "yes_eyebrow": "Returnable",
+        "yes_heading": "What we accept.",
+        "no_eyebrow": "Not eligible",
+        "no_heading": "What we can't take back.",
+        "cta_eyebrow": "Ready to return?",
+        "cta_heading": "Start a return or exchange.",
+        "cta_subhead": "Reach out on WhatsApp for the fastest response, or drop us an email.",
+        "whatsapp_number": "923210900786",
+        "whatsapp_message": "Hi, I want to start a return for order #",
+        "email_address": "info@stitchfit.com.pk",
+        "email_subject": "Return Request — Order #",
+        "final_note": "Received something faulty? We'll replace it, no questions asked."
+      }
+    },
+    "cta": {
+      "type": "sf-cta-band",
+      "settings": {
+        "eyebrow": "Need help",
+        "heading": "Got a question about a return? Reach out.",
+        "cta": "Contact us",
+        "link": "/pages/contact"
+      }
+    }
+  },
+  "order": ["returns", "cta"]
+}

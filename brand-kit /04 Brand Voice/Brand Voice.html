@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Stitch Fit · Brand Voice</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/brand.css">
+<style>
+  .pillar-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 32px; }
+  .pillar {
+    background: var(--paper); border: 0.5px solid var(--stone);
+    padding: 36px 32px; position: relative; min-height: 220px;
+    display: flex; flex-direction: column;
+  }
+  .pillar-num { font-family: var(--font-display); font-style: italic; font-size: 20px; color: var(--cognac); margin-bottom: 8px; }
+  .pillar-title { font-family: var(--font-display); font-size: 28px; line-height: 1.1; color: var(--forest); margin-bottom: 14px; }
+  .pillar-body { font-size: 13px; line-height: 1.75; color: var(--moss); }
+
+  .voice-compare {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    margin-top: 24px; border: 0.5px solid var(--stone);
+  }
+  .vc-col { padding: 28px 30px; min-height: 240px; }
+  .vc-col.we { background: var(--paper); border-right: 0.5px solid var(--stone); }
+  .vc-col.not { background: var(--bone); color: var(--moss); }
+  .vc-label {
+    font-size: 9px; letter-spacing: 0.24em; margin-bottom: 16px;
+    padding-bottom: 12px; border-bottom: 0.5px solid var(--stone);
+  }
+  .we .vc-label { color: var(--cognac); }
+  .not .vc-label { color: var(--moss); }
+  .vc-list { list-style: none; padding: 0; }
+  .vc-list li {
+    font-family: var(--font-display); font-style: italic;
+    font-size: 17px; color: var(--ink); line-height: 1.4;
+    padding: 8px 0; border-bottom: 0.5px dotted var(--stone);
+  }
+  .vc-list li:last-child { border-bottom: none; }
+  .not .vc-list li { text-decoration: line-through; text-decoration-color: var(--cognac); text-decoration-thickness: 0.5px; }
+
+  .copy-card {
+    background: var(--forest); color: var(--bone);
+    padding: 56px 48px; margin-top: 32px;
+    display: grid; grid-template-columns: 90px 1fr;
+    gap: 32px; align-items: start;
+  }
+  .copy-icon {
+    font-family: var(--font-display); font-style: italic; font-size: 56px;
+    color: var(--cognac); line-height: 1;
+  }
+  .copy-headline {
+    font-family: var(--font-display); font-style: italic; font-weight: 300;
+    font-size: 32px; line-height: 1.2; margin-bottom: 16px; color: var(--bone);
+  }
+  .copy-meta { font-size: 9px; letter-spacing: 0.24em; color: var(--camel); margin-bottom: 12px; }
+  .copy-context { font-size: 11px; color: var(--stone); line-height: 1.7; max-width: 50ch; }
+
+  .rules-list {
+    margin-top: 24px;
+    counter-reset: rule;
+  }
+  .rules-list .rule {
+    display: grid; grid-template-columns: 60px 1fr;
+    padding: 22px 0; border-bottom: 0.5px dotted var(--stone);
+  }
+  .rules-list .rule:last-child { border-bottom: none; }
+  .rules-list .rule::before {
+    counter-increment: rule;
+    content: counter(rule, decimal-leading-zero);
+    font-family: var(--font-display); font-style: italic;
+    font-size: 22px; color: var(--cognac);
+  }
+  .rule-title { font-family: var(--font-display); font-size: 18px; color: var(--forest); margin-bottom: 6px; }
+  .rule-body  { font-size: 12px; color: var(--moss); line-height: 1.7; }
+</style>
+</head>
+<body>
+
+<section class="page">
+  <div class="page-header">
+    <div class="ph-left">
+      <img class="ph-mark" src="../assets/stitch-fit-logo.jpeg" alt="">
+      <div class="ph-name">STITCH FIT</div>
+    </div>
+    <div class="ph-section">Brand Voice</div>
+    <div class="ph-num">04</div>
+  </div>
+
+  <a class="back-link" href="../index.html">← Back to Contents</a>
+
+  <div class="section-intro">
+    <div class="eyebrow">FOLDER 04 · BRAND VOICE</div>
+    <h1 class="display h1 italic">The gentleman's register.</h1>
+    <p class="lead" style="margin-top: 24px;">
+      Stitch Fit speaks the way a senior tailor does — calm, sure of itself, never raising its voice. Words are chosen with the same care given to a seam. We sell with composure, not volume.
+    </p>
+  </div>
+
+  <div class="eyebrow">FOUR PILLARS · EVERY SENTENCE MUST HOLD ONE</div>
+  <div class="pillar-grid">
+    <div class="pillar">
+      <div class="pillar-num">i.</div>
+      <div class="pillar-title">Considered</div>
+      <div class="pillar-body">We do not rush a sentence the way we do not rush a stitch. Read every line aloud. Remove the word it does not need.</div>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">ii.</div>
+      <div class="pillar-title">Confident</div>
+      <div class="pillar-body">Declarative, never hedged. We say "this fits" — not "we hope this might suit you." Stand behind the work.</div>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">iii.</div>
+      <div class="pillar-title">Warm</div>
+      <div class="pillar-body">Authority without coldness. A first name in greeting. Plain language for the business at hand. A small joke when the moment allows.</div>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">iv.</div>
+      <div class="pillar-title">Crafted</div>
+      <div class="pillar-body">Choose the older word over the new one. Use the language of the trade — yarn, weave, gauge, seam — without parading it.</div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <div>FOLDER 04 · BRAND VOICE</div>
+    <div>PAGE 01 · PILLARS</div>
+  </div>
+</section>
+
+<section class="page alt">
+  <div class="page-header">
+    <div class="ph-left">
+      <img class="ph-mark" src="../assets/stitch-fit-logo.jpeg" alt="">
+      <div class="ph-name">STITCH FIT</div>
+    </div>
+    <div class="ph-section">We Are / We Are Not</div>
+    <div class="ph-num">04·B</div>
+  </div>
+
+  <div class="section-intro">
+    <div class="eyebrow">A CALIBRATION</div>
+    <h2 class="display" style="font-size: 36px;">A two-column compass.</h2>
+    <p class="lead" style="margin-top: 18px;">When unsure, set your draft beside this page. Move every line on the right one step to the left.</p>
+  </div>
+
+  <div class="voice-compare">
+    <div class="vc-col we">
+      <div class="vc-label">WE ARE</div>
+      <ul class="vc-list">
+        <li>Tailored</li>
+        <li>Quietly assured</li>
+        <li>Specific</li>
+        <li>Generous with whitespace</li>
+        <li>Patient</li>
+        <li>Plainspoken</li>
+      </ul>
+    </div>
+    <div class="vc-col not">
+      <div class="vc-label">WE ARE NOT</div>
+      <ul class="vc-list">
+        <li>Fast-fashion</li>
+        <li>Loud or salesy</li>
+        <li>Vague</li>
+        <li>Crowded or busy</li>
+        <li>Urgent</li>
+        <li>Jargon-heavy</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="margin-top: 56px;">
+    <div class="eyebrow">SIX RULES OF THE PEN</div>
+  </div>
+
+  <div class="rules-list">
+    <div class="rule">
+      <div>
+        <div class="rule-title">Lead with the noun.</div>
+        <div class="rule-body">"Linen. Long-staple, hand-finished. Cut for the warmer months." — not "Our team has crafted this exceptional linen."</div>
+      </div>
+    </div>
+    <div class="rule">
+      <div>
+        <div class="rule-title">Cut every fourth word.</div>
+        <div class="rule-body">Test the sentence after one round of cuts. If meaning survives, keep cutting.</div>
+      </div>
+    </div>
+    <div class="rule">
+      <div>
+        <div class="rule-title">Italics for emphasis, never bold.</div>
+        <div class="rule-body">A whispered <em>this one</em> outperforms a shouted <strong>THIS ONE</strong>.</div>
+      </div>
+    </div>
+    <div class="rule">
+      <div>
+        <div class="rule-title">Names of cloth get reverence.</div>
+        <div class="rule-body">Merino. Cashmere. Pima. Always capitalise the noble fibres. They earned it.</div>
+      </div>
+    </div>
+    <div class="rule">
+      <div>
+        <div class="rule-title">Numbers in long form for ceremony.</div>
+        <div class="rule-body">"Cut from the same loom since nineteen twenty-eight." Numerals for spec sheets only.</div>
+      </div>
+    </div>
+    <div class="rule">
+      <div>
+        <div class="rule-title">No exclamation marks. Ever.</div>
+        <div class="rule-body">The brand never shouts. If a sentence needs an exclamation to land, it was not the right sentence.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <div>FOLDER 04 · BRAND VOICE</div>
+    <div>PAGE 02 · CALIBRATION &amp; RULES</div>
+  </div>
+</section>
+
+<section class="page">
+  <div class="page-header">
+    <div class="ph-left">
+      <img class="ph-mark" src="../assets/stitch-fit-logo.jpeg" alt="">
+      <div class="ph-name">STITCH FIT</div>
+    </div>
+    <div class="ph-section">In Practice</div>
+    <div class="ph-num">04·C</div>
+  </div>
+
+  <div class="section-intro">
+    <div class="eyebrow">SAMPLE COPY · USE OR ADAPT</div>
+    <h2 class="display" style="font-size: 36px;">The voice in context.</h2>
+  </div>
+
+  <div class="copy-card">
+    <div class="copy-icon">"</div>
+    <div>
+      <div class="copy-meta">PRODUCT · DETAIL PAGE</div>
+      <div class="copy-headline">A polo, drawn from a thirty-year pattern. Stitched in Gujranwala.</div>
+      <div class="copy-context">Long-staple cotton, two-ply. Knit on the same gauge our grandfather settled on in 1972. Wears in. Does not wear out.</div>
+    </div>
+  </div>
+
+  <div class="copy-card" style="background: var(--bone); color: var(--ink);">
+    <div class="copy-icon" style="color: var(--cognac);">§</div>
+    <div>
+      <div class="copy-meta" style="color: var(--moss);">HANG TAG · INTERIOR</div>
+      <div class="copy-headline" style="color: var(--forest);">Wash cold. Lie flat. Wear often.</div>
+      <div class="copy-context" style="color: var(--moss);">A garment is happiest in use. Treat it kindly and it will return the favour for years.</div>
+    </div>
+  </div>
+
+  <div class="copy-card" style="background: var(--paper); color: var(--ink);">
+    <div class="copy-icon" style="color: var(--cognac);">&para;</div>
+    <div>
+      <div class="copy-meta" style="color: var(--moss);">EMAIL · WELCOME</div>
+      <div class="copy-headline" style="color: var(--forest);">Welcome to the table.</div>
+      <div class="copy-context" style="color: var(--moss);">You'll hear from us when there is something worth telling — a new cloth in, a season's first cut, a piece returning after years away. Not before.</div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <div>FOLDER 04 · BRAND VOICE</div>
+    <div>PAGE 03 · IN PRACTICE</div>
+  </div>
+</section>
+
+</body>
+</html>

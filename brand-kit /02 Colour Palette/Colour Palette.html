@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Stitch Fit · The Colour Palette</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/brand.css">
+<style>
+  .primary-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; margin-top: 32px; }
+  .swatch { display: flex; flex-direction: column; min-height: 320px; padding: 24px; position: relative; }
+  .swatch.forest { background: var(--forest); color: var(--bone); }
+  .swatch.cognac { background: var(--cognac); color: var(--bone); }
+  .swatch.bone   { background: var(--bone); color: var(--ink); border: 0.5px solid var(--stone); }
+  .sw-name { font-family: var(--font-display); font-style: italic; font-size: 32px; margin-bottom: auto; line-height: 1; }
+  .sw-meta { font-size: 10px; letter-spacing: 0.18em; line-height: 2; opacity: 0.85; }
+  .sw-meta strong { font-weight: 500; }
+  .sw-role {
+    position: absolute; top: 18px; right: 20px;
+    font-size: 8px; letter-spacing: 0.22em;
+    padding: 4px 10px; border: 0.5px solid currentColor; border-radius: 2px;
+    opacity: 0.7;
+  }
+
+  .secondary-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 24px; }
+  .mini-swatch { aspect-ratio: 1 / 1.1; padding: 14px; display: flex; flex-direction: column; justify-content: space-between; }
+  .mini-swatch .label { font-family: var(--font-display); font-style: italic; font-size: 16px; }
+  .mini-swatch .hex { font-size: 8px; letter-spacing: 0.18em; }
+  .ms-stone  { background: var(--stone); color: var(--ink); }
+  .ms-camel  { background: var(--camel); color: var(--ink); }
+  .ms-moss   { background: var(--moss); color: var(--bone); }
+  .ms-paper  { background: var(--paper); color: var(--ink); border: 0.5px solid var(--stone); }
+  .ms-ink    { background: var(--ink); color: var(--bone); }
+
+  .ratio-grid { margin-top: 32px; }
+  .ratio-bar { display: flex; height: 64px; }
+  .rb-forest { flex: 60; background: var(--forest); }
+  .rb-bone   { flex: 25; background: var(--bone); border-top: 0.5px solid var(--stone); border-bottom: 0.5px solid var(--stone); }
+  .rb-cognac { flex: 10; background: var(--cognac); }
+  .rb-stone  { flex: 5;  background: var(--stone); }
+  .ratio-labels { display: flex; margin-top: 12px; font-size: 9px; letter-spacing: 0.18em; color: var(--moss); }
+  .ratio-labels span { white-space: nowrap; padding-right: 12px; }
+
+  .pairing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 24px; }
+  .pair {
+    padding: 36px 28px; min-height: 200px;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .pair-1 { background: var(--forest); color: var(--bone); }
+  .pair-2 { background: var(--bone); color: var(--ink); border: 0.5px solid var(--stone); }
+  .pair-3 { background: var(--cognac); color: var(--bone); }
+  .pair-4 { background: var(--paper); color: var(--forest); border: 0.5px solid var(--stone); }
+  .pair-title { font-family: var(--font-display); font-style: italic; font-size: 26px; line-height: 1.1; }
+  .pair-meta { font-size: 9px; letter-spacing: 0.22em; opacity: 0.75; }
+</style>
+</head>
+<body>
+
+<section class="page">
+  <div class="page-header">
+    <div class="ph-left">
+      <img class="ph-mark" src="../assets/stitch-fit-logo.jpeg" alt="">
+      <div class="ph-name">STITCH FIT</div>
+    </div>
+    <div class="ph-section">The Colour Palette</div>
+    <div class="ph-num">02</div>
+  </div>
+
+  <a class="back-link" href="../index.html">← Back to Contents</a>
+
+  <div class="section-intro">
+    <div class="eyebrow">FOLDER 02 · THE COLOUR PALETTE</div>
+    <h1 class="display h1 italic">Three colours do most of the work.</h1>
+    <p class="lead" style="margin-top: 24px;">
+      Forest holds the brand. Cognac warms it. Bone gives it space to breathe. Everything else is supporting cast — the quiet neutrals that let the protagonists speak.
+    </p>
+  </div>
+
+  <div class="eyebrow">PRIMARY · 95% OF EVERY COMPOSITION</div>
+  <div class="primary-grid">
+    <div class="swatch forest">
+      <div class="sw-role">PRIMARY</div>
+      <div class="sw-name">Forest</div>
+      <div class="sw-meta">
+        <strong>HEX</strong> #2B3A2E<br>
+        <strong>RGB</strong> 43 · 58 · 46<br>
+        <strong>CMYK</strong> 76 · 50 · 80 · 60<br>
+        <strong>PMS</strong> 5535 C
+      </div>
+    </div>
+    <div class="swatch cognac">
+      <div class="sw-role">ACCENT</div>
+      <div class="sw-name">Cognac</div>
+      <div class="sw-meta">
+        <strong>HEX</strong> #A8754C<br>
+        <strong>RGB</strong> 168 · 117 · 76<br>
+        <strong>CMYK</strong> 30 · 58 · 80 · 16<br>
+        <strong>PMS</strong> 7574 C
+      </div>
+    </div>
+    <div class="swatch bone">
+      <div class="sw-role">CANVAS</div>
+      <div class="sw-name">Bone</div>
+      <div class="sw-meta">
+        <strong>HEX</strong> #EBE4D6<br>
+        <strong>RGB</strong> 235 · 228 · 214<br>
+        <strong>CMYK</strong> 7 · 8 · 16 · 0<br>
+        <strong>PMS</strong> Warm Grey 1
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <div>FOLDER 02 · COLOUR PALETTE</div>
+    <div>PAGE 01 · PRIMARY TRIAD</div>
+  </div>
+</section>
+
+<section class="page alt">
+  <div class="page-header">
+    <div class="ph-left">
+      <img class="ph-mark" src="../assets/stitch-fit-logo.jpeg" alt="">
+      <div class="ph-name">STITCH FIT</div>
+    </div>
+    <div class="ph-section">Supporting &amp; Application</div>
+    <div class="ph-num">02·B</div>
+  </div>
+
+  <div class="section-intro">
+    <div class="eyebrow">SUPPORTING NEUTRALS · USE SPARINGLY</div>
+    <h2 class="display" style="font-size: 36px;">A quiet supporting cast.</h2>
+    <p class="lead" style="margin-top: 18px;">These five tones bridge the primaries. Use them for type, borders, paper textures, and depth. Never lead a composition with them.</p>
+  </div>
+
+  <div class="secondary-row">
+    <div class="mini-swatch ms-paper">
+      <div class="label">Paper</div>
+      <div class="hex">#F5EFE4</div>
+    </div>
+    <div class="mini-swatch ms-stone">
+      <div class="label">Stone</div>
+      <div class="hex">#C4B8A4</div>
+    </div>
+    <div class="mini-swatch ms-camel">
+      <div class="label">Camel</div>
+      <div class="hex">#D4B891</div>
+    </div>
+    <div class="mini-swatch ms-moss">
+      <div class="label">Moss</div>
+      <div class="hex">#5C6B5A</div>
+    </div>
+    <div class="mini-swatch ms-ink">
+      <div class="label">Ink</div>
+      <div class="hex">#1A1F1B</div>
+    </div>
+  </div>
+
+  <div style="margin-top: 56px;">
+    <div class="eyebrow">RATIO · THE 60·25·10·5 RULE</div>
+    <div class="ratio-grid">
+      <div class="ratio-bar">
+        <div class="rb-forest"></div>
+        <div class="rb-bone"></div>
+        <div class="rb-cognac"></div>
+        <div class="rb-stone"></div>
+      </div>
+      <div class="ratio-labels">
+        <span style="flex: 60;">60% FOREST · the room</span>
+        <span style="flex: 25;">25% BONE · the air</span>
+        <span style="flex: 10;">10% COGNAC · the warmth</span>
+        <span style="flex: 5;">5% STONE</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 48px;">
+    <div class="eyebrow">SANCTIONED PAIRINGS</div>
+    <div class="pairing-grid">
+      <div class="pair pair-1">
+        <div class="pair-meta">PRIMARY</div>
+        <div class="pair-title">Forest on Bone.<br>Bone on Forest.</div>
+      </div>
+      <div class="pair pair-2">
+        <div class="pair-meta">DOCUMENT</div>
+        <div class="pair-title">Ink on Paper, with Cognac for emphasis.</div>
+      </div>
+      <div class="pair pair-3">
+        <div class="pair-meta">FEATURE</div>
+        <div class="pair-title">Cognac with Bone — for tags and small moments.</div>
+      </div>
+      <div class="pair pair-4">
+        <div class="pair-meta">EDITORIAL</div>
+        <div class="pair-title">Paper as canvas, Forest as authority.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <div>FOLDER 02 · COLOUR PALETTE</div>
+    <div>PAGE 02 · SUPPORTING &amp; APPLICATION</div>
+  </div>
+</section>
+
+</body>
+</html>

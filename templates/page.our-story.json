@@ -1,0 +1,21 @@
+{
+  "sections": {
+    "our_story": {
+      "type": "sf-our-story",
+      "settings": {
+        "hero_heading": "Our Story",
+        "eyebrow": "Our Story",
+        "founder_heading": "Started in 2009 with one knitting machine in Gujranwala.",
+        "founder_body": "<p>We still craft knitwear with the same passion. For many years, we made knitwear for global brands. Now we're bringing the same quality to Pakistan under our own name.</p><p>We are a factory that finally decided to build a brand.</p>",
+        "timeline_heading": "Three moments. One thread.",
+        "year1_title": "First machine",
+        "year1_body": "A single knitting machine in Gujranwala's Small Industrial Estate.",
+        "year2_title": "Export era",
+        "year2_body": "Knitting for global brands. Years of quiet craft, learning by hand.",
+        "year3_title": "Stitch Fit launch",
+        "year3_body": "The same quality, finally under our own name."
+      }
+    }
+  },
+  "order": ["our_story"]
+}

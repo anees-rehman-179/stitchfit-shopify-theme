@@ -1,0 +1,45 @@
+<section class="sf-story">
+  <div class="sf-story__media" data-sf-reveal-left>
+    {%- if section.settings.image -%}
+      <img
+        src="{{ section.settings.image | image_url: width: 1200 }}"
+        width="{{ section.settings.image.width }}"
+        height="{{ section.settings.image.height }}"
+        loading="lazy"
+        alt="{{ section.settings.image_alt | escape }}">
+    {%- else -%}
+      {% render 'sf-placeholder', label: 'FATHER-PHOTO  ·  4:5 ratio', ratio: '4/5' %}
+    {%- endif -%}
+  </div>
+
+  <div class="sf-story__copy" data-sf-reveal-right>
+    <div class="sf-eyebrow">{{ section.settings.eyebrow | default: 'Our Story' }}</div>
+    <h2>{{ section.settings.heading | default: 'Since 1928. Made by hand. Made to last.' }}</h2>
+    <p>{{ section.settings.body | default: 'Started in 2009 with one knitting machine in Gujranwala. For many years, we made knitwear for global brands. Now we are bringing the same quality home, under our own name.' }}</p>
+    {%- if section.settings.cta_label != blank -%}
+      <a href="{{ section.settings.cta_link | default: '/pages/inside-the-factory' }}" class="button button-secondary">
+        {{ section.settings.cta_label }}
+      </a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Stitch Fit Story Teaser",
+  "tag": "section",
+  "class": "sf-story-section",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "image_alt", "label": "Image alt text" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Our Story" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Since 1928. Made by hand. Made to last." },
+    { "type": "textarea", "id": "body", "label": "Body" },
+    { "type": "text", "id": "cta_label", "label": "CTA label", "default": "Inside the factory" },
+    { "type": "url", "id": "cta_link", "label": "CTA link" }
+  ],
+  "presets": [
+    { "name": "Stitch Fit Story Teaser", "category": "Stitch Fit" }
+  ]
+}
+{% endschema %}
