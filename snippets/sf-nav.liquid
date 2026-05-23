@@ -1,0 +1,132 @@
+{%- doc -%}
+  Stitch Fit custom mega-dropdown navigation.
+  Rendered inside header-component via sections/header.liquid injection.
+  Position: fixed overlay. Horizon's header rows are hidden by stitch-fit.css.
+  Cart button delegates to Horizon's hidden cart-icon for drawer access.
+{%- enddoc -%}
+
+
+<nav class="sf-nav" id="sf-nav" aria-label="Main navigation">
+  <div class="sf-nav__inner">
+
+    <!-- Logo -->
+    <a href="{{ routes.root_url }}" class="sf-nav__logo" aria-label="{{ shop.name }}">
+      
+      <img
+        src="{{ 'stitch-fit-logo.jpeg' | asset_url }}"
+        alt="{{ shop.name }}"
+        width="52"
+        height="52"
+        loading="eager"
+        class="sf-nav__logo-img sf-nav__logo-img--light">
+    </a>
+
+    <!-- Desktop nav links -->
+    <ul class="sf-nav__links" role="list">
+
+      <!-- Shop mega dropdown -->
+      <li class="sf-nav__item sf-nav__item--dropdown" id="sf-shop-menu">
+        <button class="sf-nav__link sf-nav__link--toggle" aria-expanded="false" aria-controls="sf-shop-dropdown">
+          Shop
+          <svg class="sf-nav__caret" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+            <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <div class="sf-shop-dropdown" id="sf-shop-dropdown" role="region" aria-label="Shop categories">
+          <div class="sf-shop-dropdown__inner">
+            <div class="sf-shop-dropdown__col">
+              <div class="sf-shop-dropdown__head">Knitwear</div>
+              <a href="/collections/polo-shirts" class="sf-shop-dropdown__link">Polo Shirts</a>
+              <a href="/collections/sweaters-pullovers" class="sf-shop-dropdown__link">Sweaters &amp; Pullovers</a>
+              <a href="/collections/cardigans" class="sf-shop-dropdown__link">Cardigans</a>
+              <a href="/collections/t-shirts-henleys" class="sf-shop-dropdown__link">T-Shirts &amp; Henleys</a>
+              <a href="/collections/all" class="sf-shop-dropdown__link sf-shop-dropdown__link--all">Shop All &rarr;</a>
+            </div>
+            
+          </div>
+        </div>
+      </li>
+
+
+      <!-- Explore dropdown -->
+      <li class="sf-nav__item sf-nav__item--dropdown" id="sf-explore-menu">
+        <button class="sf-nav__link sf-nav__link--toggle sf-nav__link--explore" aria-expanded="false" aria-controls="sf-explore-dropdown">
+          Explore
+          <svg class="sf-nav__caret" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+            <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <div class="sf-shop-dropdown sf-shop-dropdown--explore" id="sf-explore-dropdown" role="region" aria-label="Explore">
+          <div class="sf-shop-dropdown__inner">
+            <div class="sf-shop-dropdown__col">
+              <div class="sf-shop-dropdown__head">Explore</div>
+              <a href="/pages/inside-the-factory" class="sf-shop-dropdown__link">Inside the Factory</a>
+              <a href="/pages/lookbook" class="sf-shop-dropdown__link">Lookbook</a>
+              <a href="/pages/our-story" class="sf-shop-dropdown__link">Our Story</a>
+              <a href="/pages/craft-quality" class="sf-shop-dropdown__link">Craft & Quality</a>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <li class="sf-nav__item">
+        <a href="/pages/size-guide" class="sf-nav__link">Size Guide</a>
+      </li>
+
+    </ul>
+
+    <!-- Right side actions -->
+    <div class="sf-nav__actions">
+      <a href="/pages/contact" class="sf-header-cta sf-nav__cta-pill">Contact Us</a>
+
+      <a href="{{ routes.search_url }}" class="sf-nav__icon-btn" aria-label="Search">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+          <circle cx="7.5" cy="7.5" r="5.5"/>
+          <path d="M16 16l-3.5-3.5"/>
+        </svg>
+      </a>
+
+      <a href="{{ routes.account_url }}" class="sf-nav__icon-btn" aria-label="Account">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+          <circle cx="9" cy="6" r="3.5"/>
+          <path d="M2.5 17c0-3.59 2.91-6.5 6.5-6.5s6.5 2.91 6.5 6.5"/>
+        </svg>
+      </a>
+
+      <button class="sf-nav__icon-btn sf-nav__cart-btn" aria-label="Cart ({{ cart.item_count }} items)">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+          <path d="M1 1h2l2.68 9.39a2 2 0 001.93 1.47h7.52a2 2 0 001.93-1.47L19 5H4"/>
+          <circle cx="7" cy="15.5" r="1.5"/>
+          <circle cx="14" cy="15.5" r="1.5"/>
+        </svg>
+        {%- if cart.item_count > 0 -%}
+          <span class="sf-nav__cart-count" aria-hidden="true">{{ cart.item_count }}</span>
+        {%- endif -%}
+      </button>
+
+      <!-- Mobile hamburger -->
+      <button class="sf-nav__hamburger" id="sf-nav-hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="sf-nav-drawer">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile drawer -->
+  <div class="sf-nav-drawer" id="sf-nav-drawer" aria-hidden="true">
+    <div class="sf-nav-drawer__inner">
+      <a href="/collections/polo-shirts" class="sf-nav-drawer__link">Polo Shirts</a>
+      <a href="/collections/sweaters-pullovers" class="sf-nav-drawer__link">Sweaters &amp; Pullovers</a>
+      <a href="/collections/cardigans" class="sf-nav-drawer__link">Cardigans</a>
+      <a href="/collections/t-shirts-henleys" class="sf-nav-drawer__link">T-Shirts &amp; Henleys</a>
+      <a href="/collections/all" class="sf-nav-drawer__link">Shop All</a>
+      <div class="sf-nav-drawer__divider"></div>
+      <a href="/pages/inside-the-factory" class="sf-nav-drawer__link">Inside the Factory</a>
+      <a href="/pages/lookbook" class="sf-nav-drawer__link">Lookbook</a>
+      <a href="/pages/our-story" class="sf-nav-drawer__link">Our Story</a>
+      <a href="/pages/size-guide" class="sf-nav-drawer__link">Size Guide</a>
+      <div class="sf-nav-drawer__divider"></div>
+      <a href="/pages/contact" class="sf-header-cta sf-nav-drawer__cta">Contact Us</a>
+    </div>
+    <div class="sf-nav-drawer__backdrop" id="sf-nav-backdrop"></div>
+  </div>
+</nav>

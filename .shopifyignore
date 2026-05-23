@@ -1,0 +1,11 @@
+# Ignore temp/editor files
+*.tmp.*
+*.tmp
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Ignore docs and local assets not meant for theme upload
+*.md
+brand-kit/**

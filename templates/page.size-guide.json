@@ -1,0 +1,40 @@
+{
+  "sections": {
+    "size_guide": {
+      "type": "sf-size-guide",
+      "blocks": {
+        "c1": { "type": "category", "settings": { "name": "Polo Shirts", "rows": "XS | 36 | 91 | 26 | 66 | 8 | 20\nS | 38 | 96 | 27 | 68 | 8.5 | 22\nM | 40 | 102 | 28 | 71 | 9 | 23\nL | 42 | 107 | 29 | 73 | 9.5 | 24\nXL | 44 | 112 | 30 | 76 | 10 | 25\nXXL | 46 | 117 | 31 | 78 | 10.5 | 27", "note": "Polo shirts are cut close to the body. Size up for a relaxed fit." } },
+        "c2": { "type": "category", "settings": { "name": "Sweaters", "rows": "XS | 38 | 96 | 27 | 68 | 24 | 61\nS | 40 | 102 | 28 | 71 | 24.5 | 62\nM | 42 | 107 | 29 | 73 | 25 | 63\nL | 44 | 112 | 30 | 76 | 25.5 | 65\nXL | 46 | 117 | 31 | 78 | 26 | 66\nXXL | 48 | 122 | 32 | 81 | 26.5 | 67", "note": "Sweaters allow room for a base layer underneath." } },
+        "c3": { "type": "category", "settings": { "name": "Cardigans", "rows": "XS | 38 | 96 | 27 | 68 | 24 | 61\nS | 40 | 102 | 28 | 71 | 24.5 | 62\nM | 42 | 107 | 29 | 73 | 25 | 63\nL | 44 | 112 | 30 | 76 | 25.5 | 65\nXL | 46 | 117 | 31 | 78 | 26 | 66\nXXL | 48 | 122 | 32 | 81 | 26.5 | 67", "note": "Cardigans are sized for layering. Order your usual size." } },
+        "c4": { "type": "category", "settings": { "name": "T-Shirts", "rows": "XS | 36 | 91 | 26 | 66 | 7 | 18\nS | 38 | 96 | 27 | 68 | 7.5 | 19\nM | 40 | 102 | 28 | 71 | 8 | 20\nL | 42 | 107 | 29 | 73 | 8.5 | 22\nXL | 44 | 112 | 30 | 76 | 9 | 23\nXXL | 46 | 117 | 31 | 78 | 9.5 | 24", "note": "Pre-washed. The size you receive is the size it stays." } },
+        "f1": { "type": "fit", "settings": { "name": "Slim Fit", "body": "Closer through the chest and waist. For a tailored silhouette under blazers and overshirts." } },
+        "f2": { "type": "fit", "settings": { "name": "Regular Fit", "body": "Our default cut. Comfortable through the body with room to move. Wears well on its own." } },
+        "f3": { "type": "fit", "settings": { "name": "Relaxed Fit", "body": "Wider through the chest and dropped shoulders. For an easy, modern silhouette." } }
+      },
+      "block_order": ["c1", "c2", "c3", "c4", "f1", "f2", "f3"],
+      "settings": {
+        "hero_eyebrow": "How to choose",
+        "hero_heading": "Find your perfect fit.",
+        "hero_subhead": "Stitch Fit knitwear is built to a true gauge, pre-washed, and finished by hand. Use this guide to land your size in one go.",
+        "measure_eyebrow": "Measure yourself",
+        "measure_heading": "Four numbers. That's all you need.",
+        "charts_eyebrow": "Size charts",
+        "charts_heading": "Find your size, by category.",
+        "fits_eyebrow": "Three fits",
+        "fits_heading": "Pick the silhouette that suits you.",
+        "care_eyebrow": "Knitwear care",
+        "care_heading": "Make it last."
+      }
+    },
+    "cta": {
+      "type": "sf-cta-band",
+      "settings": {
+        "eyebrow": "Still unsure",
+        "heading": "Drop us a line — we'll help you size it right.",
+        "cta": "Contact us",
+        "link": "/pages/contact"
+      }
+    }
+  },
+  "order": ["size_guide", "cta"]
+}

@@ -174,7 +174,7 @@
               "type": "variant-picker",
               "settings": {
                 "variant_style": "buttons",
-                "show_swatches": false,
+                "show_swatches": true,
                 "alignment": "left",
                 "padding-block-start": 0,
                 "padding-block-end": 0,
@@ -217,6 +217,32 @@
               },
               "block_order": []
             },
+            "trust_line": {
+              "type": "text",
+              "name": "Trust line",
+              "settings": {
+                "text": "<p class=\"sf-trust\"><span class=\"sf-trust__item\"><svg class=\"sf-trust__icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 3l2.5 5.5L20 9.5l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-1L12 3z\"/></svg>Hand finished</span><span class=\"sf-trust__item\"><svg class=\"sf-trust__icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3 7h11v9H3zM14 10h4l3 3v3h-7zM7 19a2 2 0 100-4 2 2 0 000 4zM18 19a2 2 0 100-4 2 2 0 000 4z\"/></svg>Ships in 2–3 days</span><a class=\"sf-trust__item sf-trust__item--link\" href=\"/pages/returns-exchanges\"><svg class=\"sf-trust__icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3 12a9 9 0 109-9M3 12l3-3M3 12l3 3\"/></svg>Easy returns</a></p>",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "0.8125rem",
+                "line_height": "normal",
+                "letter_spacing": "0.03em",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 4,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
             "text_aEtTtq": {
               "type": "text",
               "name": "Product description",
@@ -242,6 +268,100 @@
                 "padding-inline-end": 0
               },
               "blocks": {}
+            },
+            "accordion_sf": {
+              "type": "accordion",
+              "name": "Product details",
+              "settings": {
+                "icon": "caret",
+                "dividers": true,
+                "type_preset": "h6",
+                "inherit_color_scheme": true,
+                "color_scheme": "scheme-1",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "padding-block-start": 16,
+                "padding-block-end": 16,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "row_fabric": {
+                  "type": "_accordion-row",
+                  "settings": {
+                    "heading": "Fabric & Care",
+                    "open_by_default": false
+                  },
+                  "blocks": {
+                    "text_fabric": {
+                      "type": "text",
+                      "settings": {
+                        "text": "<p>Premium knitwear, finished by hand in Gujranwala. Wash cold, lay flat to dry. Do not bleach. Cool iron if needed. Steam to refresh between wears.</p>",
+                        "width": "100%",
+                        "type_preset": "rte"
+                      }
+                    }
+                  },
+                  "block_order": ["text_fabric"]
+                },
+                "row_size": {
+                  "type": "_accordion-row",
+                  "settings": {
+                    "heading": "Size & Fit",
+                    "open_by_default": false
+                  },
+                  "blocks": {
+                    "text_size": {
+                      "type": "text",
+                      "settings": {
+                        "text": "<p>True to size with a relaxed, modern silhouette. Between sizes? Size down for a closer fit, up for a softer drape. <a href=\"/pages/size-guide\">View full size guide →</a></p>",
+                        "width": "100%",
+                        "type_preset": "rte"
+                      }
+                    }
+                  },
+                  "block_order": ["text_size"]
+                },
+                "row_shipping": {
+                  "type": "_accordion-row",
+                  "settings": {
+                    "heading": "Shipping",
+                    "open_by_default": false
+                  },
+                  "blocks": {
+                    "text_shipping": {
+                      "type": "text",
+                      "settings": {
+                        "text": "<p>Ships in 2–3 business days within Pakistan. Free shipping on orders over PKR 10,000. International shipping available at checkout. <a href=\"/pages/shipping\">Shipping details →</a></p>",
+                        "width": "100%",
+                        "type_preset": "rte"
+                      }
+                    }
+                  },
+                  "block_order": ["text_shipping"]
+                },
+                "row_returns": {
+                  "type": "_accordion-row",
+                  "settings": {
+                    "heading": "Returns & Exchanges",
+                    "open_by_default": false
+                  },
+                  "blocks": {
+                    "text_returns": {
+                      "type": "text",
+                      "settings": {
+                        "text": "<p>14-day returns or exchanges on unworn items with tags attached. We make swaps easy. <a href=\"/pages/returns-exchanges\">Return policy →</a></p>",
+                        "width": "100%",
+                        "type_preset": "rte"
+                      }
+                    }
+                  },
+                  "block_order": ["text_returns"]
+                }
+              },
+              "block_order": ["row_fabric", "row_size", "row_shipping", "row_returns"]
             }
           },
           "block_order": [
@@ -249,7 +369,9 @@
             "divider_VJhene",
             "variant_picker_R3rGDr",
             "buy_buttons_eYQEYi",
-            "text_aEtTtq"
+            "trust_line",
+            "text_aEtTtq",
+            "accordion_sf"
           ]
         }
       },

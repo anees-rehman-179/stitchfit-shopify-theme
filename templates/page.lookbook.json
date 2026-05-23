@@ -1,0 +1,31 @@
+{
+  "sections": {
+    "lookbook": {
+      "type": "sf-lookbook-page",
+      "blocks": {
+        "o1": { "type": "outfit", "settings": { "name": "The Office Cardigan", "body": "Soft camel cardigan over a white tee. Knit at true gauge — holds its shape from desk to dinner.", "link_label": "Shop the look" } },
+        "o2": { "type": "outfit", "settings": { "name": "Weekend Polo", "body": "Long-staple cotton polo in deep forest. Looks sharp on its own, layers under a coat for cooler nights.", "link_label": "Shop the look" } },
+        "o3": { "type": "outfit", "settings": { "name": "Winter Sweater", "body": "Heavyweight pullover, hand-linked. Quiet luxury for the cold months — the piece you keep reaching for.", "link_label": "Shop the look" } }
+      },
+      "block_order": ["o1", "o2", "o3"],
+      "settings": {
+        "hero_eyebrow": "Lookbook",
+        "hero_heading": "How it wears.",
+        "intro": "Quiet pieces, built for everyday wear. Photographed on real men, in the streets where this knitwear belongs.",
+        "outfits_eyebrow": "The outfits",
+        "outfits_heading": "Three ways to wear it.",
+        "pullquote": "Wear the vibe."
+      }
+    },
+    "cta": {
+      "type": "sf-cta-band",
+      "settings": {
+        "eyebrow": "The Collection",
+        "heading": "Wear the vibe. Built for life.",
+        "cta": "Shop the collection",
+        "link": "/collections/all"
+      }
+    }
+  },
+  "order": ["lookbook", "cta"]
+}

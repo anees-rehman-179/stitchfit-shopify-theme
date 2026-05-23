@@ -1,0 +1,380 @@
+<article class="sf-policy sf-policy--shipping">
+  {%- comment -%} Hero {%- endcomment -%}
+  <div class="sf-policy__hero" data-sf-reveal>
+    <div class="sf-eyebrow">{{ section.settings.hero_eyebrow | default: 'Delivery' }}</div>
+    <h1>{{ section.settings.hero_heading | default: 'Shipping' }}</h1>
+    {%- if section.settings.hero_subhead != blank -%}
+      <p class="sf-policy__subhead">{{ section.settings.hero_subhead }}</p>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} Highlight cards {%- endcomment -%}
+  {%- assign highlight_blocks = section.blocks | where: 'type', 'highlight' -%}
+  {%- if highlight_blocks.size > 0 -%}
+    <div class="sf-policy__highlights" data-sf-reveal>
+      <div class="sf-policy__highlights-grid" data-sf-stagger>
+        {%- for block in highlight_blocks -%}
+          <div class="sf-policy-card" data-sf-reveal data-sf-delay="{{ forloop.index0 | times: 120 }}" {{ block.shopify_attributes }}>
+            <div class="sf-policy-card__icon" aria-hidden="true">
+              {%- case block.settings.icon -%}
+                {%- when 'truck' -%}
+                  <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 18h32v22H6z"/>
+                    <path d="M38 24h12l8 8v8H38z"/>
+                    <circle cx="18" cy="44" r="5"/>
+                    <circle cx="46" cy="44" r="5"/>
+                  </svg>
+                {%- when 'clock' -%}
+                  <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+                    <circle cx="32" cy="32" r="22"/>
+                    <path d="M32 18v14l10 6"/>
+                  </svg>
+                {%- when 'package' -%}
+                  <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round">
+                    <path d="M32 10l22 12v20L32 54 10 42V22z"/>
+                    <path d="M32 10v22M32 32L10 22M32 32l22-10"/>
+                  </svg>
+                {%- when 'globe' -%}
+                  <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+                    <circle cx="32" cy="32" r="22"/>
+                    <path d="M10 32h44M32 10c6 6 9 14 9 22s-3 16-9 22M32 10c-6 6-9 14-9 22s3 16 9 22"/>
+                  </svg>
+                {%- else -%}
+                  <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.2">
+                    <circle cx="32" cy="32" r="20"/>
+                  </svg>
+              {%- endcase -%}
+            </div>
+            <h3 class="sf-policy-card__title">{{ block.settings.title }}</h3>
+            <p class="sf-policy-card__value">{{ block.settings.value }}</p>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} Domestic delivery {%- endcomment -%}
+  <div class="sf-policy__region" data-sf-reveal>
+    <div class="sf-policy__region-copy">
+      <div class="sf-eyebrow">{{ section.settings.domestic_eyebrow | default: 'Within Pakistan' }}</div>
+      <h2>{{ section.settings.domestic_heading | default: 'Delivered across Pakistan.' }}</h2>
+      <p>{{ section.settings.domestic_body | default: 'Orders dispatched from our Gujranwala facility in 1–2 business days. Estimated delivery times below are from dispatch — not order placement.' }}</p>
+    </div>
+    <div class="sf-policy__region-table">
+      <table class="sf-policy-table">
+        <thead>
+          <tr>
+            <th scope="col">City</th>
+            <th scope="col">Estimated days</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- assign domestic_rows = section.settings.domestic_rows | default: 'Karachi | 2–4\nLahore | 1–2\nIslamabad / Rawalpindi | 1–2\nFaisalabad | 1–3\nMultan | 2–3\nPeshawar | 2–4\nQuetta | 3–5\nOther cities | 3–6' | newline_to_br | split: '<br />' -%}
+          {%- for row in domestic_rows -%}
+            {%- assign clean_row = row | strip -%}
+            {%- if clean_row != blank -%}
+              {%- assign cells = clean_row | split: '|' -%}
+              <tr>
+                {%- for cell in cells -%}
+                  <td>{{ cell | strip }}</td>
+                {%- endfor -%}
+              </tr>
+            {%- endif -%}
+          {%- endfor -%}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  {%- comment -%} International delivery {%- endcomment -%}
+  <div class="sf-policy__region sf-policy__region--alt" data-sf-reveal>
+    <div class="sf-policy__region-copy">
+      <div class="sf-eyebrow">{{ section.settings.intl_eyebrow | default: 'International' }}</div>
+      <h2>{{ section.settings.intl_heading | default: 'Shipped worldwide.' }}</h2>
+      <p>{{ section.settings.intl_body | default: "We ship globally via tracked courier. Customs duties and local taxes are the recipient's responsibility. Estimated delivery times below are from dispatch." }}</p>
+    </div>
+    <div class="sf-policy__region-table">
+      <table class="sf-policy-table">
+        <thead>
+          <tr>
+            <th scope="col">Region</th>
+            <th scope="col">Estimated days</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- assign intl_rows = section.settings.intl_rows | default: 'United Kingdom | 5–8\nEurope | 6–10\nUnited States / Canada | 7–12\nMiddle East | 4–7\nAustralia / New Zealand | 8–14\nRest of world | 10–18' | newline_to_br | split: '<br />' -%}
+          {%- for row in intl_rows -%}
+            {%- assign clean_row = row | strip -%}
+            {%- if clean_row != blank -%}
+              {%- assign cells = clean_row | split: '|' -%}
+              <tr>
+                {%- for cell in cells -%}
+                  <td>{{ cell | strip }}</td>
+                {%- endfor -%}
+              </tr>
+            {%- endif -%}
+          {%- endfor -%}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  {%- comment -%} Detail strip — order tracking + address changes {%- endcomment -%}
+  <div class="sf-policy__detail" data-sf-reveal>
+    <div class="sf-policy__detail-grid">
+      <div class="sf-policy__detail-col">
+        <div class="sf-eyebrow sf-eyebrow--light">{{ section.settings.detail1_eyebrow | default: 'Order tracking' }}</div>
+        <h3>{{ section.settings.detail1_title | default: 'Track every step.' }}</h3>
+        <p>{{ section.settings.detail1_body | default: "You'll receive a tracking link by email and SMS the moment your order ships. Reach out if anything looks off." }}</p>
+      </div>
+      <div class="sf-policy__detail-col">
+        <div class="sf-eyebrow sf-eyebrow--light">{{ section.settings.detail2_eyebrow | default: 'Address changes' }}</div>
+        <h3>{{ section.settings.detail2_title | default: 'Need to change something?' }}</h3>
+        <p>{{ section.settings.detail2_body | default: "Message us within 4 hours of placing the order — once it's with the courier, the address is locked in." }}</p>
+      </div>
+    </div>
+  </div>
+</article>
+
+{% stylesheet %}
+  .sf-policy { background: var(--sf-base); }
+
+  /* Hero */
+  .sf-policy__hero {
+    text-align: center;
+    padding: 96px 24px 48px;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .sf-policy__hero h1 {
+    font-family: var(--sf-font-display);
+    font-weight: 300;
+    font-size: clamp(36px, 5vw, 56px);
+    letter-spacing: 0.04em;
+    color: var(--sf-text);
+    margin: 16px 0 24px;
+  }
+  .sf-policy__subhead {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--sf-text);
+    opacity: 0.8;
+    margin: 0;
+  }
+
+  /* Highlight cards */
+  .sf-policy__highlights {
+    background: var(--sf-card);
+    padding: 64px 48px;
+  }
+  .sf-policy__highlights-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .sf-policy-card {
+    background: var(--sf-base);
+    border-radius: var(--sf-radius-card);
+    padding: 32px 28px;
+    text-align: left;
+  }
+  .sf-policy-card__icon {
+    width: 44px;
+    height: 44px;
+    color: var(--sf-accent);
+    margin-bottom: 20px;
+  }
+  .sf-policy-card__icon svg { width: 100%; height: 100%; display: block; }
+  .sf-policy-card__title {
+    font-family: var(--sf-font-display);
+    font-weight: 400;
+    font-size: 18px;
+    letter-spacing: 0.04em;
+    margin: 0 0 8px;
+  }
+  .sf-policy-card__value {
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--sf-text);
+    opacity: 0.85;
+    margin: 0;
+  }
+
+  /* Region tables */
+  .sf-policy__region {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 64px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 96px 48px;
+    align-items: start;
+  }
+  .sf-policy__region--alt {
+    background: var(--sf-paper);
+    max-width: none;
+    padding: 96px 48px;
+  }
+  .sf-policy__region--alt > * {
+    max-width: 1200px;
+  }
+  .sf-policy__region--alt {
+    grid-template-columns: 1fr 1.2fr;
+  }
+  .sf-policy__region--alt .sf-policy__region-copy,
+  .sf-policy__region--alt .sf-policy__region-table {
+    margin: 0 auto;
+  }
+  .sf-policy__region-copy h2 {
+    font-family: var(--sf-font-display);
+    font-weight: 300;
+    font-size: clamp(28px, 3.4vw, 40px);
+    letter-spacing: 0.03em;
+    margin: 16px 0 20px;
+  }
+  .sf-policy__region-copy p {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--sf-text);
+    opacity: 0.85;
+    margin: 0;
+    max-width: 480px;
+  }
+
+  .sf-policy-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--sf-base);
+    border-radius: var(--sf-radius-card);
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(26,31,27,.04), 0 8px 24px rgba(26,31,27,.06);
+  }
+  .sf-policy-table thead {
+    background: var(--sf-primary);
+    color: var(--sf-base);
+  }
+  .sf-policy-table th {
+    font-family: var(--sf-font-body);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 16px 20px;
+    text-align: left;
+  }
+  .sf-policy-table tbody tr { border-bottom: 1px solid rgba(43, 58, 46, 0.08); }
+  .sf-policy-table tbody tr:last-child { border-bottom: 0; }
+  .sf-policy-table td {
+    padding: 16px 20px;
+    font-size: 15px;
+    color: var(--sf-text);
+  }
+  .sf-policy-table td:first-child { font-weight: 500; color: var(--sf-primary); }
+
+  /* Detail strip */
+  .sf-policy__detail {
+    background: var(--sf-primary);
+    color: var(--sf-base);
+    padding: 80px 48px;
+  }
+  .sf-policy__detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .sf-policy__detail-col h3 {
+    font-family: var(--sf-font-display);
+    font-weight: 300;
+    font-size: clamp(22px, 2.6vw, 30px);
+    letter-spacing: 0.03em;
+    color: var(--sf-base);
+    margin: 16px 0 16px;
+  }
+  .sf-policy__detail-col p {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--sf-base);
+    opacity: 0.85;
+    margin: 0;
+  }
+
+  @media (max-width: 900px) {
+    .sf-policy__highlights-grid { grid-template-columns: 1fr; gap: 16px; }
+    .sf-policy__region { grid-template-columns: 1fr; gap: 32px; padding: 64px 24px; }
+    .sf-policy__region--alt { padding: 64px 24px; }
+    .sf-policy__detail-grid { grid-template-columns: 1fr; gap: 40px; }
+  }
+  @media (max-width: 600px) {
+    .sf-policy__hero { padding: 64px 20px 32px; }
+    .sf-policy__highlights { padding: 48px 20px; }
+    .sf-policy__detail { padding: 64px 20px; }
+    .sf-policy-table th,
+    .sf-policy-table td { padding: 12px 14px; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "SF Shipping",
+  "tag": "section",
+  "class": "sf-shipping-section",
+  "settings": [
+    { "type": "header", "content": "Hero" },
+    { "type": "text", "id": "hero_eyebrow", "label": "Eyebrow", "default": "Delivery" },
+    { "type": "text", "id": "hero_heading", "label": "Heading", "default": "Shipping" },
+    { "type": "textarea", "id": "hero_subhead", "label": "Subhead", "default": "Where your order goes, how long it takes, and what to expect along the way." },
+
+    { "type": "header", "content": "Within Pakistan" },
+    { "type": "text", "id": "domestic_eyebrow", "label": "Eyebrow", "default": "Within Pakistan" },
+    { "type": "text", "id": "domestic_heading", "label": "Heading", "default": "Delivered across Pakistan." },
+    { "type": "textarea", "id": "domestic_body", "label": "Body", "default": "Orders dispatched from our Gujranwala facility in 1–2 business days. Estimated delivery times below are from dispatch — not order placement." },
+    { "type": "textarea", "id": "domestic_rows", "label": "Table rows", "info": "One row per line. Use | to separate columns: City | Days", "default": "Karachi | 2–4\nLahore | 1–2\nIslamabad / Rawalpindi | 1–2\nFaisalabad | 1–3\nMultan | 2–3\nPeshawar | 2–4\nQuetta | 3–5\nOther cities | 3–6" },
+
+    { "type": "header", "content": "International" },
+    { "type": "text", "id": "intl_eyebrow", "label": "Eyebrow", "default": "International" },
+    { "type": "text", "id": "intl_heading", "label": "Heading", "default": "Shipped worldwide." },
+    { "type": "textarea", "id": "intl_body", "label": "Body", "default": "We ship globally via tracked courier. Customs duties and local taxes are the recipient's responsibility. Estimated delivery times below are from dispatch." },
+    { "type": "textarea", "id": "intl_rows", "label": "Table rows", "info": "One row per line. Use | to separate columns: Region | Days", "default": "United Kingdom | 5–8\nEurope | 6–10\nUnited States / Canada | 7–12\nMiddle East | 4–7\nAustralia / New Zealand | 8–14\nRest of world | 10–18" },
+
+    { "type": "header", "content": "Detail strip" },
+    { "type": "text", "id": "detail1_eyebrow", "label": "Column 1 eyebrow", "default": "Order tracking" },
+    { "type": "text", "id": "detail1_title", "label": "Column 1 title", "default": "Track every step." },
+    { "type": "textarea", "id": "detail1_body", "label": "Column 1 body", "default": "You'll receive a tracking link by email and SMS the moment your order ships. Reach out if anything looks off." },
+    { "type": "text", "id": "detail2_eyebrow", "label": "Column 2 eyebrow", "default": "Address changes" },
+    { "type": "text", "id": "detail2_title", "label": "Column 2 title", "default": "Need to change something?" },
+    { "type": "textarea", "id": "detail2_body", "label": "Column 2 body", "default": "Message us within 4 hours of placing the order — once it's with the courier, the address is locked in." }
+  ],
+  "blocks": [
+    {
+      "type": "highlight",
+      "name": "Highlight card",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "options": [
+          { "value": "truck",   "label": "Truck" },
+          { "value": "clock",   "label": "Clock" },
+          { "value": "package", "label": "Package" },
+          { "value": "globe",   "label": "Globe" }
+        ], "default": "truck" },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "value", "label": "Value" }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    {
+      "name": "SF Shipping",
+      "category": "Stitch Fit",
+      "blocks": [
+        { "type": "highlight", "settings": { "icon": "truck",   "title": "Free shipping",         "value": "On orders over PKR 10,000 within Pakistan." } },
+        { "type": "highlight", "settings": { "icon": "clock",   "title": "Quick dispatch",        "value": "Orders ship in 1–2 business days from Gujranwala." } },
+        { "type": "highlight", "settings": { "icon": "package", "title": "Tracked end to end",    "value": "Every order ships with a tracking link by email and SMS." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

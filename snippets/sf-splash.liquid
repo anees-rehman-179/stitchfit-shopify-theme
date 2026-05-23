@@ -1,21 +1,45 @@
 {%- doc -%}
-  Thorgal-style splash. No button. Auto-dissolves after ~2.5s.
-  Lifecycle handled by assets/stitch-fit.js.
+  Stitch Fit cinematic splash.
+  Forest green full-viewport overlay.
+  Sequence: logo → letter reveal → accent line → tagline → est → curtain swipe up.
+  Lifecycle managed by assets/stitch-fit.js (initSplash).
+  Skips on revisit via sessionStorage key 'sf-splash-v1'.
 {%- enddoc -%}
 
 <div class="sf-splash" role="presentation" aria-hidden="true">
-  <div class="sf-splash__inner">
-    <div class="sf-splash__mark">
-      <img
-        src="{{ 'stitch-fit-logo-forest.png' | asset_url }}"
-        alt=""
-        width="220"
-        height="220"
-        loading="eager"
-        decoding="async">
-    </div>
-    <div class="sf-splash__wordmark">STITCH&nbsp;&nbsp;FIT</div>
-    <div class="sf-splash__tagline">Wear the vibe.</div>
-    <div class="sf-splash__est">EST. 1928</div>
+
+  <!-- Logo mark — stitch-fit-logo-forest.png built for dark backgrounds, no white circle -->
+  <div class="sf-splash__logo">
+    <img
+      src="{{ 'stitch-fit-logo.jpeg' | asset_url }}"
+      alt=""
+      width="96"
+      height="96"
+      loading="eager"
+      decoding="sync">
   </div>
+
+  <!-- Letter-by-letter wordmark -->
+  <div class="sf-splash__word" aria-hidden="true">
+    <span class="sf-splash__letter" style="--d: 0ms">S</span>
+    <span class="sf-splash__letter" style="--d: 140ms">T</span>
+    <span class="sf-splash__letter" style="--d: 280ms">I</span>
+    <span class="sf-splash__letter" style="--d: 420ms">T</span>
+    <span class="sf-splash__letter" style="--d: 560ms">C</span>
+    <span class="sf-splash__letter" style="--d: 700ms">H</span>
+    <span class="sf-splash__spacer" aria-hidden="true"></span>
+    <span class="sf-splash__letter" style="--d: 880ms">F</span>
+    <span class="sf-splash__letter" style="--d: 1020ms">I</span>
+    <span class="sf-splash__letter" style="--d: 1160ms">T</span>
+  </div>
+
+  <!-- Cognac accent line — draws left→right after all letters appear -->
+  <div class="sf-splash__line" aria-hidden="true"></div>
+
+  <!-- Tagline in cognac — warm against the forest green -->
+  <div class="sf-splash__tag">"Wear the vibe".</div>
+
+  <!-- Heritage mark — very dim, understated -->
+  <div class="sf-splash__est" aria-hidden="true">Built in-house since 2009</div>
+
 </div>

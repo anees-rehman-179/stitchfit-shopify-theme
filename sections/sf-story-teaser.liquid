@@ -1,5 +1,5 @@
-<section class="sf-story" data-sf-reveal>
-  <div class="sf-story__media">
+<section class="sf-story">
+  <div class="sf-story__media" data-sf-reveal-left>
     {%- if section.settings.image -%}
       <img
         src="{{ section.settings.image | image_url: width: 1200 }}"
@@ -8,11 +8,11 @@
         loading="lazy"
         alt="{{ section.settings.image_alt | escape }}">
     {%- else -%}
-      {% render 'sf-placeholder', label: 'FACTORY-FLOOR  PORTRAIT  4×5', ratio: '4/5' %}
+      {% render 'sf-placeholder', label: 'FATHER-PHOTO  ·  4:5 ratio', ratio: '4/5' %}
     {%- endif -%}
   </div>
 
-  <div class="sf-story__copy">
+  <div class="sf-story__copy" data-sf-reveal-right>
     <div class="sf-eyebrow">{{ section.settings.eyebrow | default: 'Our Story' }}</div>
     <h2>{{ section.settings.heading | default: 'Since 1928. Made by hand. Made to last.' }}</h2>
     <p>{{ section.settings.body | default: 'Started in 2009 with one knitting machine in Gujranwala. For many years, we made knitwear for global brands. Now we are bringing the same quality home, under our own name.' }}</p>

@@ -1,0 +1,178 @@
+<article class="sf-craft-page" data-sf-reveal>
+  {%- comment -%} Hero {%- endcomment -%}
+  <div class="sf-craft-page__hero{% if section.settings.hero_image %} sf-craft-page__hero--with-image{% endif %}">
+    {%- if section.settings.hero_image -%}
+      <img
+        class="sf-craft-page__hero-img"
+        src="{{ section.settings.hero_image | image_url: width: 2400 }}"
+        width="{{ section.settings.hero_image.width }}"
+        height="{{ section.settings.hero_image.height }}"
+        alt=""
+        loading="eager">
+    {%- endif -%}
+    <div class="sf-craft-page__hero-overlay">
+      <div class="sf-eyebrow sf-eyebrow--light">{{ section.settings.eyebrow | default: 'Craft & Quality' }}</div>
+      <h1>{{ section.settings.hero_heading | default: 'What we put into every piece.' }}</h1>
+    </div>
+  </div>
+
+  {%- comment -%} Intro statement {%- endcomment -%}
+  <div class="sf-craft-page__intro" data-sf-reveal>
+    <p>{{ section.settings.intro | default: 'We are a factory first. Every piece we sell carries fifteen years of manufacturing knowledge — the same standards we applied to global brands, now applied to your wardrobe.' }}</p>
+  </div>
+
+  {%- comment -%} Three pillars {%- endcomment -%}
+  <div class="sf-craft-page__pillars">
+    {%- for block in section.blocks -%}
+      <div class="sf-craft-pillar" data-sf-reveal data-sf-delay="{{ forloop.index0 | times: 150 }}" {{ block.shopify_attributes }}>
+        <div class="sf-craft-pillar__icon" aria-hidden="true">
+          {%- case block.settings.icon -%}
+            {%- when 'yarn' -%}
+              <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+                <circle cx="32" cy="32" r="20"/>
+                <path d="M17 24c6 5 12 11 20 8"/>
+                <path d="M19 38c8-3 14 3 20 8"/>
+                <path d="M28 12c0 10 4 20 4 20"/>
+              </svg>
+            {%- when 'gauge' -%}
+              <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+                <circle cx="32" cy="32" r="20"/>
+                <path d="M32 16v16l10 7"/>
+                <circle cx="32" cy="32" r="2" fill="currentColor" stroke="none"/>
+                <path d="M18 44c0-7.73 6.27-14 14-14s14 6.27 14 14" stroke-dasharray="4 3"/>
+              </svg>
+            {%- when 'hand' -%}
+              <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+                <path d="M24 40V24a3 3 0 016 0v10"/>
+                <path d="M30 28a3 3 0 016 0v8"/>
+                <path d="M36 32a3 3 0 016 0v4l-1 6a8 8 0 01-8 7h-1a8 8 0 01-8-8V36"/>
+                <path d="M18 36v-8a3 3 0 016 0"/>
+              </svg>
+            {%- when 'fibre' -%}
+              <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+                <path d="M16 32c0 0 4-12 16-12s16 12 16 12-4 12-16 12S16 32 16 32z"/>
+                <circle cx="32" cy="32" r="5"/>
+                <path d="M32 20v-6M32 50v-6M20 32h-6M50 32h-6"/>
+              </svg>
+            {%- else -%}
+              <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.2">
+                <circle cx="32" cy="32" r="20"/>
+              </svg>
+          {%- endcase -%}
+        </div>
+        <h2 class="sf-craft-pillar__title">{{ block.settings.title }}</h2>
+        <p class="sf-craft-pillar__body">{{ block.settings.body }}</p>
+      </div>
+    {%- endfor -%}
+  </div>
+
+  {%- comment -%} Standards section {%- endcomment -%}
+  <div class="sf-craft-page__standards sf-quality" data-sf-reveal>
+    <div class="sf-quality__head">
+      <div class="sf-eyebrow sf-eyebrow--light">{{ section.settings.standards_eyebrow | default: 'Our Standards' }}</div>
+      <h2>{{ section.settings.standards_heading | default: 'Every piece. Every time.' }}</h2>
+    </div>
+    <div class="sf-craft-page__standards-grid">
+      {%- assign standards = section.settings.standards | default: "Long-staple fibres, selected for hand.|Knit at true gauge — your sweater won't stretch out.|Linked by hand, not machine.|Every seam inspected before shipping.|Pre-washed to minimise shrinkage." | split: '|' -%}
+      {%- for standard in standards -%}
+        <div class="sf-craft-page__standard" data-sf-reveal data-sf-delay="{{ forloop.index0 | times: 80 }}">
+          <span class="sf-craft-page__standard-num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+          <p>{{ standard }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+
+  {%- comment -%} CTA {%- endcomment -%}
+  <div class="sf-craft-page__cta" data-sf-reveal>
+    <div class="sf-cta-box">
+      <h2>{{ section.settings.cta_heading | default: 'Built by the hands that know how.' }}</h2>
+      <a href="{{ section.settings.cta_link | default: '/collections/all' }}" class="button">
+        {{ section.settings.cta_label | default: 'Shop the collection' }}
+      </a>
+    </div>
+  </div>
+</article>
+
+{% stylesheet %}
+  .sf-craft-page__hero--with-image {
+    min-height: 60vh;
+    overflow: hidden;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .sf-craft-page__hero-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+  .sf-craft-page__hero--with-image::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(43, 58, 46, 0.6);
+    z-index: 1;
+  }
+  .sf-craft-page__hero--with-image .sf-craft-page__hero-overlay {
+    position: relative;
+    z-index: 2;
+    padding: 96px 24px;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "SF Craft & Quality",
+  "tag": "section",
+  "class": "sf-craft-page-section",
+  "settings": [
+    { "type": "header", "content": "Hero" },
+    { "type": "image_picker", "id": "hero_image", "label": "Hero image (optional)", "info": "If set, the image replaces the flat forest background. Forest scrim at 60% sits over the image so the text stays legible." },
+    { "type": "text", "id": "eyebrow", "label": "Hero eyebrow" },
+    { "type": "text", "id": "hero_heading", "label": "Hero heading", "default": "What we put into every piece." },
+    { "type": "textarea", "id": "intro", "label": "Intro paragraph" },
+    { "type": "header", "content": "Standards section" },
+    { "type": "text", "id": "standards_eyebrow", "label": "Standards eyebrow" },
+    { "type": "text", "id": "standards_heading", "label": "Standards heading" },
+    { "type": "textarea", "id": "standards", "label": "Standards (pipe-separated)", "info": "Separate each point with | character" },
+    { "type": "header", "content": "CTA" },
+    { "type": "text", "id": "cta_heading", "label": "CTA heading" },
+    { "type": "text", "id": "cta_label", "label": "CTA button label" },
+    { "type": "url", "id": "cta_link", "label": "CTA link" }
+  ],
+  "blocks": [
+    {
+      "type": "pillar",
+      "name": "Quality Pillar",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "options": [
+          { "value": "yarn",   "label": "Yarn ball" },
+          { "value": "gauge",  "label": "Gauge clock" },
+          { "value": "hand",   "label": "Hand" },
+          { "value": "fibre",  "label": "Fibre" }
+        ], "default": "yarn" },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "body", "label": "Body" }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "SF Craft & Quality",
+      "category": "Stitch Fit",
+      "blocks": [
+        { "type": "pillar", "settings": { "icon": "fibre",  "title": "Long-staple Fibres",  "body": "We source yarns chosen for staple length — the longer the fibre, the softer and more durable the knit. No shortcuts in the raw material." } },
+        { "type": "pillar", "settings": { "icon": "gauge",  "title": "True Gauge Knitting",  "body": "Every style is knit at the gauge it was designed for. The right machine, the right stitch count. Your knitwear holds its shape." } },
+        { "type": "pillar", "settings": { "icon": "hand",   "title": "Hand Finished",        "body": "Every seam is linked by hand. Every piece inspected before it ships. Not a robot. A person who cares about the result." } },
+        { "type": "pillar", "settings": { "icon": "yarn",   "title": "Pre-washed",           "body": "All garments are pre-washed before leaving our floor. What you receive is the finished size. No unpleasant surprises." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

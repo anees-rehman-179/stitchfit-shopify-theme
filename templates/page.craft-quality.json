@@ -1,0 +1,25 @@
+{
+  "sections": {
+    "craft_quality": {
+      "type": "sf-craft-quality",
+      "blocks": {
+        "p1": { "type": "pillar", "settings": { "icon": "fibre", "title": "Long-staple Fibres", "body": "We source yarns chosen for staple length — the longer the fibre, the softer and more durable the knit. No shortcuts in the raw material." } },
+        "p2": { "type": "pillar", "settings": { "icon": "gauge", "title": "True Gauge Knitting", "body": "Every style is knit at the gauge it was designed for. The right machine, the right stitch count. Your knitwear holds its shape." } },
+        "p3": { "type": "pillar", "settings": { "icon": "hand", "title": "Hand Finished", "body": "Every seam is linked by hand. Every piece inspected before it ships. Not a robot. A person who cares about the result." } },
+        "p4": { "type": "pillar", "settings": { "icon": "yarn", "title": "Pre-washed", "body": "All garments are pre-washed before leaving our floor. What you receive is the finished size. No unpleasant surprises." } }
+      },
+      "block_order": ["p1","p2","p3","p4"],
+      "settings": {
+        "hero_heading": "What we put into every piece.",
+        "intro": "We are a factory first. Every piece we sell carries fifteen years of manufacturing knowledge — the same standards we applied to global brands, now applied to your wardrobe.",
+        "standards_eyebrow": "Our Standards",
+        "standards_heading": "Every piece. Every time.",
+        "standards": "Long-staple fibres, selected for hand.|Knit at true gauge — your sweater won't stretch out.|Linked by hand, not machine.|Every seam inspected before shipping.|Pre-washed to minimise shrinkage.",
+        "cta_heading": "Built by the hands that know how.",
+        "cta_label": "Shop the collection",
+        "cta_link": "/collections/all"
+      }
+    }
+  },
+  "order": ["craft_quality"]
+}

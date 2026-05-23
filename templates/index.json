@@ -3,7 +3,7 @@
     "sf_hero": {
       "type": "sf-hero-video",
       "settings": {
-        "eyebrow": "STITCH FIT  ·  EST. 1928",
+        "eyebrow": "Stitch Fit  ·  Built in-house since 2009",
         "headline": "Wear the vibe.",
         "subhead": "Knitwear made by hand in Gujranwala. Premium yarn. True gauge. Built to last.",
         "cta_label": "Shop the collection",
@@ -59,6 +59,14 @@
         "eyebrow": "Lookbook",
         "title": "How it wears."
       }
+    },
+    "sf_cta": {
+      "type": "sf-cta-band",
+      "settings": {
+        "heading": "Premium knitwear. Built by hand. Worn for life.",
+        "cta": "Shop the full range",
+        "link": "/collections/all"
+      }
     }
   },
   "order": [
@@ -67,6 +75,7 @@
     "sf_categories",
     "sf_story",
     "sf_quality",
-    "sf_lookbook"
+    "sf_lookbook",
+    "sf_cta"
   ]
 }

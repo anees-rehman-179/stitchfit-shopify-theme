@@ -17,7 +17,8 @@
             loading="lazy"
             alt="">
         {%- else -%}
-          {% render 'sf-placeholder', label: 'LOOKBOOK-0' | append: tile_index, ratio: '3/4' %}
+          {%- assign tile_label = 'LOOKBOOK-' | append: tile_index -%}
+          {% render 'sf-placeholder', label: tile_label, ratio: '3/4' %}
         {%- endif -%}
       </div>
     {%- endfor -%}
