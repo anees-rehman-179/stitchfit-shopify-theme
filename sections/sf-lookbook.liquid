@@ -7,8 +7,14 @@
   <div class="sf-lookbook__grid">
     {%- for tile_index in (1..6) -%}
       {%- assign image_key = 'image_' | append: tile_index -%}
+      {%- assign image_alt_key = 'image_alt_' | append: tile_index -%}
       {%- assign tile_image = section.settings[image_key] -%}
-      <div class="sf-lookbook__tile sf-lookbook__tile--{{ tile_index }}" data-sf-reveal>
+      {%- assign tile_image_alt = section.settings[image_alt_key] -%}
+      <div
+        class="sf-lookbook__tile sf-lookbook__tile--{{ tile_index }}"
+        data-sf-reveal
+        {% if tile_image and tile_image_alt %}data-sf-swap="true"{% endif %}
+      >
         {%- if tile_image -%}
           <img
             src="{{ tile_image | image_url: width: 1000 }}"
@@ -16,6 +22,15 @@
             height="{{ tile_image.height }}"
             loading="lazy"
             alt="">
+          {%- if tile_image_alt -%}
+            <img
+              class="sf-lookbook__img--alt"
+              src="{{ tile_image_alt | image_url: width: 1000 }}"
+              width="{{ tile_image_alt.width }}"
+              height="{{ tile_image_alt.height }}"
+              loading="lazy"
+              alt="">
+          {%- endif -%}
         {%- else -%}
           {%- assign tile_label = 'LOOKBOOK-' | append: tile_index -%}
           {% render 'sf-placeholder', label: tile_label, ratio: '3/4' %}
@@ -43,12 +58,19 @@
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Lookbook" },
     { "type": "text", "id": "title", "label": "Heading", "default": "How it wears." },
     { "type": "header", "content": "Lookbook tiles" },
+    { "type": "paragraph", "content": "Add a second image to any tile to enable hover (desktop) and auto-fade (mobile)." },
     { "type": "image_picker", "id": "image_1", "label": "Tile 1 (large, top-left)" },
+    { "type": "image_picker", "id": "image_alt_1", "label": "Tile 1 — alt image" },
     { "type": "image_picker", "id": "image_2", "label": "Tile 2" },
+    { "type": "image_picker", "id": "image_alt_2", "label": "Tile 2 — alt image" },
     { "type": "image_picker", "id": "image_3", "label": "Tile 3 (tall)" },
+    { "type": "image_picker", "id": "image_alt_3", "label": "Tile 3 — alt image" },
     { "type": "image_picker", "id": "image_4", "label": "Tile 4" },
+    { "type": "image_picker", "id": "image_alt_4", "label": "Tile 4 — alt image" },
     { "type": "image_picker", "id": "image_5", "label": "Tile 5 (wide)" },
-    { "type": "image_picker", "id": "image_6", "label": "Tile 6" }
+    { "type": "image_picker", "id": "image_alt_5", "label": "Tile 5 — alt image" },
+    { "type": "image_picker", "id": "image_6", "label": "Tile 6" },
+    { "type": "image_picker", "id": "image_alt_6", "label": "Tile 6 — alt image" }
   ],
   "presets": [
     { "name": "Stitch Fit Lookbook", "category": "Stitch Fit" }

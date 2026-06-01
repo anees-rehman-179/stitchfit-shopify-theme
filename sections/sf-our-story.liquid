@@ -2,10 +2,12 @@
   {%- comment -%} Hero {%- endcomment -%}
   <div class="sf-story-page__hero" data-sf-reveal>
     {%- if section.settings.hero_image -%}
+      {%- assign hero_image = section.settings.hero_image -%}
+      {%- unless hero_image contains 'http' -%}
+        {%- assign hero_image = hero_image | asset_url -%}
+      {%- endunless -%}
       <img
-        src="{{ section.settings.hero_image | image_url: width: 2000 }}"
-        width="{{ section.settings.hero_image.width }}"
-        height="{{ section.settings.hero_image.height }}"
+        src="{{ hero_image }}"
         alt=""
         loading="eager">
     {%- else -%}
@@ -20,10 +22,12 @@
   <div class="sf-story-page__founder">
     <div class="sf-story-page__founder-media" data-sf-reveal-left>
       {%- if section.settings.founder_image -%}
+        {%- assign founder_image = section.settings.founder_image -%}
+        {%- unless founder_image contains 'http' -%}
+          {%- assign founder_image = founder_image | asset_url -%}
+        {%- endunless -%}
         <img
-          src="{{ section.settings.founder_image | image_url: width: 1200 }}"
-          width="{{ section.settings.founder_image.width }}"
-          height="{{ section.settings.founder_image.height }}"
+          src="{{ founder_image }}"
           alt=""
           loading="lazy">
       {%- else -%}
@@ -77,10 +81,12 @@
   {%- comment -%} Closing full-bleed image {%- endcomment -%}
   <div class="sf-story-page__closing">
     {%- if section.settings.closing_image -%}
+      {%- assign closing_image = section.settings.closing_image -%}
+      {%- unless closing_image contains 'http' -%}
+        {%- assign closing_image = closing_image | asset_url -%}
+      {%- endunless -%}
       <img
-        src="{{ section.settings.closing_image | image_url: width: 2400 }}"
-        width="{{ section.settings.closing_image.width }}"
-        height="{{ section.settings.closing_image.height }}"
+        src="{{ closing_image }}"
         alt=""
         loading="lazy">
     {%- else -%}
@@ -96,12 +102,12 @@
   "class": "sf-our-story-section",
   "settings": [
     { "type": "header", "content": "Hero" },
-    { "type": "image_picker", "id": "hero_image", "label": "Hero image" },
+    { "type": "text", "id": "hero_image", "label": "Hero image filename" },
     { "type": "text", "id": "hero_heading", "label": "Hero heading", "default": "Our Story" },
 
     { "type": "header", "content": "Founder section" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Our Story" },
-    { "type": "image_picker", "id": "founder_image", "label": "Founder / father photo" },
+    { "type": "text", "id": "founder_image", "label": "Founder / father photo filename" },
     { "type": "text", "id": "founder_heading", "label": "Founder heading" },
     { "type": "richtext", "id": "founder_body", "label": "Founder body copy" },
 
@@ -118,7 +124,7 @@
     { "type": "textarea", "id": "year3_body", "label": "2026 body" },
 
     { "type": "header", "content": "Closing image" },
-    { "type": "image_picker", "id": "closing_image", "label": "Closing image (wide)" }
+    { "type": "text", "id": "closing_image", "label": "Closing image filename (wide)" }
   ],
   "presets": [
     { "name": "SF Our Story", "category": "Stitch Fit" }

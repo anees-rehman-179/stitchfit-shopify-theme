@@ -1,0 +1,85 @@
+{%- liquid
+  assign product_obj = product
+  if product_obj == blank
+    assign product_obj = closest.product
+  endif
+
+  if request.visual_preview_mode and product_obj == blank
+    assign product_obj = collections.all.products.first
+  endif
+
+  assign rating_value = product_obj.metafields.reviews.rating.value.rating
+  assign rating_scale_max = product_obj.metafields.reviews.rating.value.scale_max
+  assign rating_count = product_obj.metafields.reviews.rating_count
+
+  if rating_scale_max == blank
+    assign rating_scale_max = 5
+  endif
+
+  assign review_count_num = rating_count | plus: 0
+-%}
+
+{%- if review_count_num > 0 -%}
+<section class="sf-pdp-reviews" data-section-id="{{ section.id }}">
+  <div class="page-width sf-pdp-reviews__inner">
+    <header class="sf-pdp-reviews__header">
+      <h2 class="sf-pdp-reviews__title">{{ section.settings.heading }}</h2>
+    </header>
+
+    <div class="sf-pdp-reviews__grid">
+      <div class="sf-pdp-reviews__summary">
+        {%- if rating_value != blank -%}
+          <div class="sf-pdp-reviews__score">{{ rating_value | round: 1 }}</div>
+          <div class="sf-pdp-reviews__meta">
+            <span class="sf-pdp-reviews__scale">/ {{ rating_scale_max }}</span>
+            {%- if rating_count != blank -%}
+              <span class="sf-pdp-reviews__count">{{ rating_count }} reviews</span>
+            {%- endif -%}
+          </div>
+        {%- else -%}
+          <div class="sf-pdp-reviews__empty">No reviews yet.</div>
+        {%- endif -%}
+      </div>
+
+      <div class="sf-pdp-reviews__content">
+        {%- capture blocks_output -%}
+          {% content_for 'blocks' %}
+        {%- endcapture -%}
+
+        {%- if blocks_output != blank -%}
+          {{- blocks_output -}}
+        {%- else -%}
+          <p class="sf-pdp-reviews__note">
+            Install a reviews app (or connect reviews metafields) to show customer comments here.
+          </p>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "SF Product Reviews",
+  "tag": "section",
+  "class": "sf-pdp-reviews-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Ratings & Reviews"
+    }
+  ],
+  "blocks": [
+    { "type": "@app" }
+  ],
+  "presets": [
+    {
+      "name": "SF Product Reviews",
+      "category": "Stitch Fit"
+    }
+  ]
+}
+{% endschema %}

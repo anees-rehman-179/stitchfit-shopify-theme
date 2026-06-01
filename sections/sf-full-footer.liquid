@@ -42,10 +42,19 @@
     <div class="sf-footer__col">
       <h4 class="sf-footer__heading">Help</h4>
       <ul class="sf-footer__list" role="list">
-        <li><a href="/pages/size-guide">Size Guide</a></li>
-        <li><a href="/pages/shipping">Shipping</a></li>
-        <li><a href="/pages/returns-exchanges">Returns &amp; Exchanges</a></li>
-        <li><a href="/pages/contact">Contact</a></li>
+        {%- assign help_menu = linklists['footer-help'] -%}
+        {%- if help_menu != blank and help_menu.links.size > 0 -%}
+          {%- for link in help_menu.links -%}
+            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+          {%- endfor -%}
+        {%- else -%}
+          <li><a href="/pages/size-guide">Size Guide</a></li>
+          <li><a href="/pages/shipping">Shipping</a></li>
+          <li><a href="/pages/returns-exchanges">Returns &amp; Exchanges</a></li>
+          <li><a href="/pages/contact">Contact</a></li>
+          <li><a href="/pages/privacy-policy">Privacy Policy</a></li>
+          <li><a href="/pages/terms-and-conditions">Terms &amp; Conditions</a></li>
+        {%- endif -%}
       </ul>
     </div>
 
@@ -66,6 +75,17 @@
         </a>
         <span>&copy; Stitch Fit {{ 'now' | date: '%Y' }}</span>
       </div>
+    </div>
+  </div>
+
+  <div class="sf-footer__legal">
+    <div class="sf-footer__legal-inner">
+      <p class="sf-footer__legal-copy">&copy; {{ 'now' | date: '%Y' }} Stitch Fit. All rights reserved.</p>
+      <nav class="sf-footer__legal-links" aria-label="Legal">
+        <a href="/pages/privacy-policy">Privacy Policy</a>
+        <span aria-hidden="true">|</span>
+        <a href="/pages/terms-and-conditions">Terms &amp; Conditions</a>
+      </nav>
     </div>
   </div>
 </footer>

@@ -1,12 +1,22 @@
 <article class="sf-craft-page" data-sf-reveal>
   {%- comment -%} Hero {%- endcomment -%}
+  {%- assign craft_quality_hero_image = section.settings.hero_image -%}
+  {%- if craft_quality_hero_image == blank -%}
+    {%- assign craft_quality_hero_image = 'craft-quality-top-hero-image.png' | asset_url -%}
+  {%- endif -%}
+  {%- assign craft_quality_standards_image = section.settings.standards_side_image -%}
+  {%- if craft_quality_standards_image == blank -%}
+    {%- assign craft_quality_standards_image = 'craft-quality-side-standards-split-screen.jpg' | asset_url -%}
+  {%- endif -%}
+  {%- assign craft_quality_cta_image = section.settings.cta_bg_image -%}
+  {%- if craft_quality_cta_image == blank -%}
+    {%- assign craft_quality_cta_image = 'craft-quality-cta-background.png' | asset_url -%}
+  {%- endif -%}
   <div class="sf-craft-page__hero{% if section.settings.hero_image %} sf-craft-page__hero--with-image{% endif %}">
-    {%- if section.settings.hero_image -%}
+    {%- if craft_quality_hero_image != blank -%}
       <img
         class="sf-craft-page__hero-img"
-        src="{{ section.settings.hero_image | image_url: width: 2400 }}"
-        width="{{ section.settings.hero_image.width }}"
-        height="{{ section.settings.hero_image.height }}"
+        src="{{ craft_quality_hero_image }}"
         alt=""
         loading="eager">
     {%- endif -%}
@@ -66,25 +76,46 @@
     {%- endfor -%}
   </div>
 
-  {%- comment -%} Standards section {%- endcomment -%}
+  {%- comment -%} Standards section with split-screen layout {%- endcomment -%}
   <div class="sf-craft-page__standards sf-quality" data-sf-reveal>
-    <div class="sf-quality__head">
-      <div class="sf-eyebrow sf-eyebrow--light">{{ section.settings.standards_eyebrow | default: 'Our Standards' }}</div>
-      <h2>{{ section.settings.standards_heading | default: 'Every piece. Every time.' }}</h2>
-    </div>
-    <div class="sf-craft-page__standards-grid">
-      {%- assign standards = section.settings.standards | default: "Long-staple fibres, selected for hand.|Knit at true gauge — your sweater won't stretch out.|Linked by hand, not machine.|Every seam inspected before shipping.|Pre-washed to minimise shrinkage." | split: '|' -%}
-      {%- for standard in standards -%}
-        <div class="sf-craft-page__standard" data-sf-reveal data-sf-delay="{{ forloop.index0 | times: 80 }}">
-          <span class="sf-craft-page__standard-num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
-          <p>{{ standard }}</p>
+    <div class="sf-standards-container">
+      <div class="sf-standards-text-col">
+        <div class="sf-quality__head">
+          <div class="sf-eyebrow sf-eyebrow--light">{{ section.settings.standards_eyebrow | default: 'Our Standards' }}</div>
+          <h2>{{ section.settings.standards_heading | default: 'Every piece. Every time.' }}</h2>
         </div>
-      {%- endfor -%}
+        <div class="sf-craft-page__standards-grid">
+          {%- assign standards = section.settings.standards | default: "Long-staple fibres, selected for hand.|Knit at true gauge — your sweater won't stretch out.|Linked by hand, not machine.|Every seam inspected before shipping.|Pre-washed to minimise shrinkage." | split: '|' -%}
+          {%- for standard in standards -%}
+            <div class="sf-craft-page__standard" data-sf-reveal data-sf-delay="{{ forloop.index0 | times: 80 }}">
+              <span class="sf-craft-page__standard-num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+              <p>{{ standard }}</p>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+      {%- if craft_quality_standards_image != blank -%}
+        <div class="sf-standards-image-col">
+          <picture class="sf-standards-image-wrapper">
+            <img
+              class="sf-standards-image"
+              src="{{ craft_quality_standards_image }}"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              alt="Standards lookbook"
+              loading="lazy"
+              width="800"
+              height="1000">
+          </picture>
+        </div>
+      {%- endif -%}
     </div>
   </div>
 
-  {%- comment -%} CTA {%- endcomment -%}
-  <div class="sf-craft-page__cta" data-sf-reveal>
+  {%- comment -%} CTA with background image {%- endcomment -%}
+  <div class="sf-craft-page__cta" data-sf-reveal{% if craft_quality_cta_image != blank %} style="background-image: url('{{ craft_quality_cta_image }}')"{% endif %}>
+    {%- if craft_quality_cta_image != blank -%}
+      <div class="sf-craft-page__cta-overlay"></div>
+    {%- endif -%}
     <div class="sf-cta-box">
       <h2>{{ section.settings.cta_heading | default: 'Built by the hands that know how.' }}</h2>
       <a href="{{ section.settings.cta_link | default: '/collections/all' }}" class="button">
@@ -95,6 +126,7 @@
 </article>
 
 {% stylesheet %}
+  {%- comment -%} Hero Section {%- endcomment -%}
   .sf-craft-page__hero--with-image {
     min-height: 60vh;
     overflow: hidden;
@@ -115,13 +147,226 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(43, 58, 46, 0.6);
+    background: linear-gradient(135deg, rgba(20, 20, 19, 0.4) 0%, rgba(20, 20, 19, 0.35) 100%);
     z-index: 1;
   }
   .sf-craft-page__hero--with-image .sf-craft-page__hero-overlay {
     position: relative;
     z-index: 2;
     padding: 96px 24px;
+  }
+
+  {%- comment -%} Intro Section {%- endcomment -%}
+  .sf-craft-page__intro {
+    padding: 3rem 2rem;
+    text-align: center;
+    max-width: 42rem;
+    margin: 0 auto;
+  }
+  .sf-craft-page__intro p {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: var(--color-foreground);
+  }
+
+  {%- comment -%} Pillars Section {%- endcomment -%}
+  .sf-craft-page__pillars {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+  }
+  .sf-craft-pillar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .sf-craft-pillar__icon {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 1rem;
+    color: var(--sf-primary, #2B3A2E);
+  }
+  .sf-craft-pillar__icon svg path,
+  .sf-craft-pillar__icon svg circle {
+    transition: stroke-width 0.4s cubic-bezier(0.25, 1, 0.5, 1), stroke 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  .sf-craft-pillar:hover .sf-craft-pillar__icon svg path,
+  .sf-craft-pillar:hover .sf-craft-pillar__icon svg circle {
+    stroke-width: 1.5;
+    stroke: var(--sf-primary, #2B3A2E);
+  }
+  .sf-craft-pillar__title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: var(--color-foreground);
+  }
+  .sf-craft-pillar__body {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-foreground);
+    opacity: 0.9;
+  }
+
+  {%- comment -%} Standards Section — Split Screen Layout {%- endcomment -%}
+  .sf-craft-page__standards {
+    background: transparent;
+  }
+  .sf-standards-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    padding: 3rem 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .sf-standards-text-col {
+    display: flex;
+    flex-direction: column;
+  }
+  .sf-quality__head {
+    margin-bottom: 2rem;
+  }
+  .sf-quality__head .sf-eyebrow--light {
+    color: var(--sf-primary, #2B3A2E);
+    margin-bottom: 0.5rem;
+  }
+  .sf-quality__head h2 {
+    font-size: 2rem;
+    line-height: 1.2;
+    color: var(--color-foreground);
+    font-weight: 300;
+    letter-spacing: 0.02em;
+  }
+  .sf-craft-page__standards-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .sf-craft-page__standard {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .sf-craft-page__standard-num {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--sf-primary, #2B3A2E);
+    min-width: 2.5rem;
+    flex-shrink: 0;
+  }
+  .sf-craft-page__standard p {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-foreground);
+    margin: 0;
+  }
+
+  {%- comment -%} Standards Side Image {%- endcomment -%}
+  .sf-standards-image-col {
+    position: relative;
+    overflow: hidden;
+  }
+  .sf-standards-image-wrapper {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .sf-standards-image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    display: block;
+  }
+
+  {%- comment -%} CTA Section with Background {%- endcomment -%}
+  .sf-craft-page__cta {
+    position: relative;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .sf-craft-page__cta-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+  }
+  .sf-cta-box {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: #fff;
+    background: transparent;
+    padding: 0;
+  }
+  .sf-cta-box h2 {
+    font-size: 2rem;
+    line-height: 1.2;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+    margin-bottom: 1.5rem;
+  }
+  .sf-cta-box .button {
+    display: inline-block;
+    padding: 12px 32px;
+    background: var(--sf-primary, #2B3A2E);
+    color: var(--sf-base, #EBE4D6);
+    text-decoration: none;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+  .sf-cta-box .button:hover {
+    background: var(--sf-base, #EBE4D6);
+    color: var(--sf-primary, #2B3A2E);
+  }
+
+  {%- comment -%} Premium Luxury Animation {%- endcomment -%}
+  [data-sf-reveal] {
+    animation: luxuryReveal 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  }
+  @keyframes luxuryReveal {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  {%- comment -%} Responsive Design {%- endcomment -%}
+  @media (max-width: 768px) {
+    .sf-standards-container {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      padding: 2rem 1rem;
+    }
+    .sf-craft-page__pillars {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      padding: 1.5rem;
+    }
+    .sf-quality__head h2 {
+      font-size: 1.5rem;
+    }
+    .sf-craft-page__cta {
+      min-height: 300px;
+      padding: 2rem 1rem;
+    }
+    .sf-cta-box h2 {
+      font-size: 1.5rem;
+    }
   }
 {% endstylesheet %}
 
@@ -132,7 +377,7 @@
   "class": "sf-craft-page-section",
   "settings": [
     { "type": "header", "content": "Hero" },
-    { "type": "image_picker", "id": "hero_image", "label": "Hero image (optional)", "info": "If set, the image replaces the flat forest background. Forest scrim at 60% sits over the image so the text stays legible." },
+    { "type": "image_picker", "id": "hero_image", "label": "Hero image", "info": "Premium luxury overlay with subtle charcoal gradient applied. Dimensions: 2400×1600 recommended for optimal lookbook aesthetic." },
     { "type": "text", "id": "eyebrow", "label": "Hero eyebrow" },
     { "type": "text", "id": "hero_heading", "label": "Hero heading", "default": "What we put into every piece." },
     { "type": "textarea", "id": "intro", "label": "Intro paragraph" },
@@ -140,10 +385,12 @@
     { "type": "text", "id": "standards_eyebrow", "label": "Standards eyebrow" },
     { "type": "text", "id": "standards_heading", "label": "Standards heading" },
     { "type": "textarea", "id": "standards", "label": "Standards (pipe-separated)", "info": "Separate each point with | character" },
+    { "type": "image_picker", "id": "standards_side_image", "label": "Standards Lookbook Image", "info": "Split-screen image for standards section. Aspect ratio 4:5 recommended (e.g., 600×750px)" },
     { "type": "header", "content": "CTA" },
     { "type": "text", "id": "cta_heading", "label": "CTA heading" },
     { "type": "text", "id": "cta_label", "label": "CTA button label" },
-    { "type": "url", "id": "cta_link", "label": "CTA link" }
+    { "type": "url", "id": "cta_link", "label": "CTA link" },
+    { "type": "image_picker", "id": "cta_bg_image", "label": "CTA Background Image", "info": "Full-bleed background for CTA section. Soft dark overlay applied for text legibility. Dimensions: 1200×600 recommended" }
   ],
   "blocks": [
     {

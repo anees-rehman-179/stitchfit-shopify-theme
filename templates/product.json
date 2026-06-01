@@ -1,399 +1,35 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */{
+{
   "sections": {
-    "main": {
-      "type": "product-information",
-      "blocks": {
-        "media-gallery": {
-          "type": "_product-media-gallery",
-          "static": true,
-          "settings": {
-            "media_presentation": "grid",
-            "media_columns": "two",
-            "image_gap": 4,
-            "large_first_image": false,
-            "icons_style": "none",
-            "slideshow_controls_style": "counter",
-            "slideshow_mobile_controls_style": "dots",
-            "thumbnail_position": "right",
-            "thumbnail_width": 44,
-            "aspect_ratio": "adapt",
-            "constrain_to_viewport": true,
-            "media_fit": "contain",
-            "media_radius": 0,
-            "extend_media": false,
-            "zoom": true,
-            "video_loop": false,
-            "hide_variants": true,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "product-details": {
-          "type": "_product-details",
-          "static": true,
-          "settings": {
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "details_position": "flex-start",
-            "gap": 28,
-            "sticky_details_desktop": true,
-            "inherit_color_scheme": true,
-            "color_scheme": "scheme-1",
-            "background_media": "none",
-            "video_position": "cover",
-            "background_image_position": "cover",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 24,
-            "padding-block-end": 24,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "group_icgrde": {
-              "type": "group",
-              "name": "Header",
-              "settings": {
-                "open_in_new_tab": false,
-                "content_direction": "column",
-                "vertical_on_mobile": true,
-                "horizontal_alignment": "flex-start",
-                "vertical_alignment": "center",
-                "align_baseline": false,
-                "horizontal_alignment_flex_direction_column": "flex-start",
-                "vertical_alignment_flex_direction_column": "center",
-                "gap": 12,
-                "width": "fill",
-                "custom_width": 100,
-                "width_mobile": "fill",
-                "custom_width_mobile": 100,
-                "height": "fit",
-                "custom_height": 100,
-                "inherit_color_scheme": true,
-                "color_scheme": "",
-                "background_media": "none",
-                "video_position": "cover",
-                "background_image_position": "cover",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0,
-                "toggle_overlay": false,
-                "overlay_color": "#00000026",
-                "overlay_style": "solid",
-                "gradient_direction": "to top",
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {
-                "text_xrnftG": {
-                  "type": "text",
-                  "name": "Product title",
-                  "settings": {
-                    "text": "<h1>{{ closest.product.title }}</h1>",
-                    "width": "100%",
-                    "max_width": "normal",
-                    "alignment": "left",
-                    "type_preset": "h3",
-                    "font": "var(--font-primary--family)",
-                    "font_size": "",
-                    "line_height": "normal",
-                    "letter_spacing": "normal",
-                    "case": "none",
-                    "wrap": "pretty",
-                    "color": "",
-                    "background": false,
-                    "background_color": "#00000026",
-                    "corner_radius": 0,
-                    "padding-block-start": 0,
-                    "padding-block-end": 0,
-                    "padding-inline-start": 0,
-                    "padding-inline-end": 0
-                  },
-                  "blocks": {}
-                },
-                "price_tVjtKg": {
-                  "type": "price",
-                  "settings": {
-                    "show_sale_price_first": true,
-                    "show_installments": false,
-                    "show_tax_info": false,
-                    "type_preset": "paragraph",
-                    "width": "100%",
-                    "alignment": "left",
-                    "font": "var(--font-body--family)",
-                    "font_size": "1rem",
-                    "line_height": "normal",
-                    "letter_spacing": "normal",
-                    "case": "none",
-                    "color": "var(--color-foreground)",
-                    "padding-block-start": 4,
-                    "padding-block-end": 0,
-                    "padding-inline-start": 0,
-                    "padding-inline-end": 0
-                  },
-                  "blocks": {}
-                }
-              },
-              "block_order": [
-                "text_xrnftG",
-                "price_tVjtKg"
-              ]
-            },
-            "divider_VJhene": {
-              "type": "_divider",
-              "name": "t:names.divider",
-              "settings": {
-                "thickness": 1,
-                "corner_radius": "square",
-                "width_percent": 100,
-                "padding-block-start": 0,
-                "padding-block-end": 0
-              },
-              "blocks": {}
-            },
-            "variant_picker_R3rGDr": {
-              "type": "variant-picker",
-              "settings": {
-                "variant_style": "buttons",
-                "show_swatches": true,
-                "alignment": "left",
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "buy_buttons_eYQEYi": {
-              "type": "buy-buttons",
-              "settings": {
-                "stacking": true,
-                "show_pickup_availability": false,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {
-                "quantity": {
-                  "type": "quantity",
-                  "static": true,
-                  "settings": {},
-                  "blocks": {}
-                },
-                "add-to-cart": {
-                  "type": "add-to-cart",
-                  "static": true,
-                  "settings": {
-                    "style_class": "button"
-                  },
-                  "blocks": {}
-                },
-                "accelerated-checkout": {
-                  "type": "accelerated-checkout",
-                  "static": true,
-                  "settings": {},
-                  "blocks": {}
-                }
-              },
-              "block_order": []
-            },
-            "trust_line": {
-              "type": "text",
-              "name": "Trust line",
-              "settings": {
-                "text": "<p class=\"sf-trust\"><span class=\"sf-trust__item\"><svg class=\"sf-trust__icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 3l2.5 5.5L20 9.5l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-1L12 3z\"/></svg>Hand finished</span><span class=\"sf-trust__item\"><svg class=\"sf-trust__icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3 7h11v9H3zM14 10h4l3 3v3h-7zM7 19a2 2 0 100-4 2 2 0 000 4zM18 19a2 2 0 100-4 2 2 0 000 4z\"/></svg>Ships in 2–3 days</span><a class=\"sf-trust__item sf-trust__item--link\" href=\"/pages/returns-exchanges\"><svg class=\"sf-trust__icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3 12a9 9 0 109-9M3 12l3-3M3 12l3 3\"/></svg>Easy returns</a></p>",
-                "width": "100%",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "0.8125rem",
-                "line_height": "normal",
-                "letter_spacing": "0.03em",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 4,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "text_aEtTtq": {
-              "type": "text",
-              "name": "Product description",
-              "settings": {
-                "text": "{{ closest.product.description }}",
-                "width": "100%",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-primary--family)",
-                "font_size": "",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "accordion_sf": {
-              "type": "accordion",
-              "name": "Product details",
-              "settings": {
-                "icon": "caret",
-                "dividers": true,
-                "type_preset": "h6",
-                "inherit_color_scheme": true,
-                "color_scheme": "scheme-1",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0,
-                "padding-block-start": 16,
-                "padding-block-end": 16,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {
-                "row_fabric": {
-                  "type": "_accordion-row",
-                  "settings": {
-                    "heading": "Fabric & Care",
-                    "open_by_default": false
-                  },
-                  "blocks": {
-                    "text_fabric": {
-                      "type": "text",
-                      "settings": {
-                        "text": "<p>Premium knitwear, finished by hand in Gujranwala. Wash cold, lay flat to dry. Do not bleach. Cool iron if needed. Steam to refresh between wears.</p>",
-                        "width": "100%",
-                        "type_preset": "rte"
-                      }
-                    }
-                  },
-                  "block_order": ["text_fabric"]
-                },
-                "row_size": {
-                  "type": "_accordion-row",
-                  "settings": {
-                    "heading": "Size & Fit",
-                    "open_by_default": false
-                  },
-                  "blocks": {
-                    "text_size": {
-                      "type": "text",
-                      "settings": {
-                        "text": "<p>True to size with a relaxed, modern silhouette. Between sizes? Size down for a closer fit, up for a softer drape. <a href=\"/pages/size-guide\">View full size guide →</a></p>",
-                        "width": "100%",
-                        "type_preset": "rte"
-                      }
-                    }
-                  },
-                  "block_order": ["text_size"]
-                },
-                "row_shipping": {
-                  "type": "_accordion-row",
-                  "settings": {
-                    "heading": "Shipping",
-                    "open_by_default": false
-                  },
-                  "blocks": {
-                    "text_shipping": {
-                      "type": "text",
-                      "settings": {
-                        "text": "<p>Ships in 2–3 business days within Pakistan. Free shipping on orders over PKR 10,000. International shipping available at checkout. <a href=\"/pages/shipping\">Shipping details →</a></p>",
-                        "width": "100%",
-                        "type_preset": "rte"
-                      }
-                    }
-                  },
-                  "block_order": ["text_shipping"]
-                },
-                "row_returns": {
-                  "type": "_accordion-row",
-                  "settings": {
-                    "heading": "Returns & Exchanges",
-                    "open_by_default": false
-                  },
-                  "blocks": {
-                    "text_returns": {
-                      "type": "text",
-                      "settings": {
-                        "text": "<p>14-day returns or exchanges on unworn items with tags attached. We make swaps easy. <a href=\"/pages/returns-exchanges\">Return policy →</a></p>",
-                        "width": "100%",
-                        "type_preset": "rte"
-                      }
-                    }
-                  },
-                  "block_order": ["text_returns"]
-                }
-              },
-              "block_order": ["row_fabric", "row_size", "row_shipping", "row_returns"]
-            }
-          },
-          "block_order": [
-            "group_icgrde",
-            "divider_VJhene",
-            "variant_picker_R3rGDr",
-            "buy_buttons_eYQEYi",
-            "trust_line",
-            "text_aEtTtq",
-            "accordion_sf"
-          ]
-        }
-      },
+    "sf_pdp": {
+      "type": "sf-product-page",
       "settings": {
-        "content_width": "content-center-aligned",
-        "desktop_media_position": "left",
-        "equal_columns": false,
-        "limit_details_width": false,
-        "gap": 48,
-        "color_scheme": "",
-        "padding-block-start": 0,
-        "padding-block-end": 0
+        "atc_label": "Add to Cart",
+        "buy_now_label": "Buy Now",
+        "card1_heading": "Free Delivery",
+        "card1_body": "Enter your Postal Code for Delivery Availability",
+        "card1_link_label": "",
+        "card1_link": "",
+        "card2_heading": "Return Delivery",
+        "card2_body": "Free 14-day Delivery Returns.",
+        "card2_link_label": "Details",
+        "card2_link": "shopify://pages/returns-exchanges",
+        "show_tax_info": false
       }
     },
-    "product_recommendations_qggXJq": {
+    "sf_product_reviews": {
+      "type": "sf-product-reviews",
+      "settings": {
+        "heading": "Ratings & Reviews"
+      }
+    },
+    "product_recommendations": {
       "type": "product-recommendations",
       "blocks": {
-        "text_cbcgyb": {
+        "text_heading": {
           "type": "text",
-          "name": "t:names.header",
+          "name": "Header",
           "settings": {
-            "text": "<h3>You may also like </h3>",
+            "text": "<h3>You may also like</h3>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
@@ -417,7 +53,6 @@
         },
         "static-product-card": {
           "type": "_product-card",
-          "name": "t:names.product_card",
           "static": true,
           "settings": {
             "product_card_gap": 8,
@@ -433,9 +68,8 @@
             "padding-inline-end": 0
           },
           "blocks": {
-            "product_card_gallery_DNizbJ": {
+            "product_card_gallery": {
               "type": "_product-card-gallery",
-              "name": "t:names.product_card_media",
               "settings": {
                 "image_ratio": "adapt",
                 "border": "none",
@@ -449,9 +83,8 @@
               },
               "blocks": {}
             },
-            "product_title_M7MJkb": {
+            "product_title": {
               "type": "product-title",
-              "name": "t:names.product_title",
               "settings": {
                 "width": "100%",
                 "max_width": "normal",
@@ -474,7 +107,7 @@
               },
               "blocks": {}
             },
-            "price_gLWgA6": {
+            "price": {
               "type": "price",
               "settings": {
                 "show_sale_price_first": true,
@@ -497,17 +130,10 @@
               "blocks": {}
             }
           },
-          "block_order": [
-            "product_card_gallery_DNizbJ",
-            "product_title_M7MJkb",
-            "price_gLWgA6"
-          ]
+          "block_order": ["product_card_gallery", "product_title", "price"]
         }
       },
-      "block_order": [
-        "text_cbcgyb"
-      ],
-      "name": "t:names.product_recommendations",
+      "block_order": ["text_heading"],
       "settings": {
         "product": "{{ closest.product }}",
         "recommendation_type": "related",
@@ -529,7 +155,8 @@
     }
   },
   "order": [
-    "main",
-    "product_recommendations_qggXJq"
+    "sf_pdp",
+    "sf_product_reviews",
+    "product_recommendations"
   ]
 }

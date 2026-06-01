@@ -1,0 +1,1329 @@
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign product_title   = product.title
+  assign product_desc    = product.description
+  assign featured_image  = current_variant.featured_image | default: product.featured_image
+
+  assign has_compare     = false
+  if current_variant.compare_at_price > current_variant.price
+    assign has_compare = true
+  endif
+
+  assign color_option_index = nil
+  for opt in product.options_with_values
+    assign opt_lower = opt.name | downcase
+    if opt_lower == 'color' or opt_lower == 'colour'
+      assign color_option_index = forloop.index0
+    endif
+  endfor
+-%}
+
+<section
+  class="sf-pdp"
+  id="sf-pdp-{{ section.id }}"
+  data-product-id="{{ product.id }}"
+  data-section-id="{{ section.id }}"
+>
+
+  {%- comment -%} Breadcrumb {%- endcomment -%}
+  <nav class="sf-pdp__breadcrumb" aria-label="Breadcrumb">
+    <ol class="sf-pdp__breadcrumb-list">
+      <li><a href="{{ routes.root_url }}">Home</a></li>
+      {%- if product.collections.size > 0 -%}
+        {%- assign bc_col = product.collections.first -%}
+        <li aria-hidden="true">/</li>
+        <li><a href="{{ bc_col.url }}">{{ bc_col.title }}</a></li>
+      {%- endif -%}
+      <li aria-hidden="true">/</li>
+      <li aria-current="page">{{ product_title }}</li>
+    </ol>
+  </nav>
+
+  <div class="sf-pdp__grid">
+
+    {%- comment -%}══════════════ LEFT — GALLERY ══════════════{%- endcomment -%}
+    <div class="sf-pdp__gallery" data-sf-reveal>
+
+      {%- comment -%} Vertical thumbnail strip — always shown, padded to ≥4 slots {%- endcomment -%}
+      {%- assign media_count = product.media.size -%}
+      {%- assign thumb_min   = 4 -%}
+      {%- assign pad_count   = 0 -%}
+      {%- if media_count < thumb_min -%}
+        {%- assign pad_count = thumb_min | minus: media_count -%}
+      {%- endif -%}
+      {%- assign fi_src    = product.featured_image | image_url: width: 160 -%}
+      {%- assign fi_main   = product.featured_image | image_url: width: 1200 -%}
+      {%- assign fi_full   = product.featured_image | image_url: width: 1800 -%}
+      {%- assign fi_600    = product.featured_image | image_url: width: 600 -%}
+      {%- assign fi_srcset = fi_600 | append: ' 600w, ' | append: fi_main | append: ' 1200w, ' | append: fi_full | append: ' 1800w' -%}
+
+      <div class="sf-pdp__gallery-thumbs" role="list" aria-label="Product images" data-sf-stagger>
+        {%- for media in product.media limit: 8 -%}
+          <button
+            class="sf-pdp__thumb{% if forloop.first %} is-active{% endif %}"
+            type="button"
+            data-thumb-index="{{ forloop.index0 }}"
+            data-src="{{ media | image_url: width: 1200 }}"
+            data-srcset="{{ media | image_url: width: 600 }} 600w, {{ media | image_url: width: 1200 }} 1200w, {{ media | image_url: width: 1800 }} 1800w"
+            data-full="{{ media | image_url: width: 1800 }}"
+            data-alt="{{ media.alt | default: product_title | escape }}"
+            aria-label="Image {{ forloop.index }} of {{ product.media.size }}"
+            role="listitem"
+          >
+            <img
+              src="{{ media | image_url: width: 160 }}"
+              alt="{{ media.alt | default: product_title | escape }}"
+              width="80"
+              height="80"
+              loading="lazy">
+          </button>
+        {%- endfor -%}
+
+        {%- if pad_count > 0 -%}
+          {%- for i in (1..pad_count) -%}
+            <button
+              class="sf-pdp__thumb sf-pdp__thumb--pad"
+              type="button"
+              data-thumb-index="{{ media_count | plus: forloop.index0 }}"
+              data-src="{{ fi_main }}"
+              data-srcset="{{ fi_srcset }}"
+              data-full="{{ fi_full }}"
+              data-alt="{{ product_title | escape }}"
+              aria-label="Product view {{ forloop.index }}"
+              role="listitem"
+            >
+              <img
+                src="{{ fi_src }}"
+                alt=""
+                width="80"
+                height="80"
+                loading="lazy">
+            </button>
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} Main image {%- endcomment -%}
+      <div class="sf-pdp__gallery-main" id="sf-pdp-main-{{ section.id }}">
+        {%- if featured_image != blank -%}
+          <button
+            type="button"
+            class="sf-pdp__main-zoom-trigger"
+            aria-label="Zoom image"
+            data-full="{{ featured_image | image_url: width: 1800 }}"
+          >
+            <img
+              id="sf-pdp-main-img-{{ section.id }}"
+              class="sf-pdp__main-img"
+              src="{{ featured_image | image_url: width: 1200 }}"
+              srcset="{{ featured_image | image_url: width: 600 }} 600w,
+                      {{ featured_image | image_url: width: 1200 }} 1200w,
+                      {{ featured_image | image_url: width: 1800 }} 1800w"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              width="{{ featured_image.width }}"
+              height="{{ featured_image.height }}"
+              alt="{{ featured_image.alt | default: product_title | escape }}"
+              loading="eager"
+              fetchpriority="high">
+            <span class="sf-pdp__zoom-hint" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+            </span>
+          </button>
+        {%- else -%}
+          <div class="sf-pdp__main-img sf-pdp__main-img--placeholder">
+            {{ 'product-1' | placeholder_svg_tag }}
+          </div>
+        {%- endif -%}
+      </div>
+
+    </div>
+
+    {%- comment -%}══════════════ RIGHT — DETAILS ══════════════{%- endcomment -%}
+    <div class="sf-pdp__details" data-sf-reveal data-sf-stagger>
+
+      <h1 class="sf-pdp__title">{{ product_title }}</h1>
+
+      {%- if product_desc != blank -%}
+        <p class="sf-pdp__excerpt">{{ product_desc | strip_html | truncate: 140 }}</p>
+      {%- endif -%}
+
+      {%- comment -%} Static rating only if metafield set {%- endcomment -%}
+      {%- assign rating_val = product.metafields.reviews.rating.value.rating | default: 0 | times: 1.0 -%}
+      {%- assign rating_count = product.metafields.reviews.rating_count.value | default: 0 -%}
+      {%- if rating_val > 0 and rating_count > 0 -%}
+        <div class="sf-pdp__rating" aria-label="{{ rating_val }} out of 5 stars, {{ rating_count }} reviews">
+          {%- for i in (1..5) -%}
+            {%- if i <= rating_val -%}
+              <svg class="sf-pdp__star sf-pdp__star--full" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            {%- else -%}
+              <svg class="sf-pdp__star sf-pdp__star--empty" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            {%- endif -%}
+          {%- endfor -%}
+          <span class="sf-pdp__rating-count">({{ rating_count }})</span>
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} Price {%- endcomment -%}
+      <div class="sf-pdp__price-wrap">
+        {%- if has_compare -%}
+          <span class="sf-pdp__price sf-pdp__price--sale" id="sf-pdp-price-current">{{ current_variant.price | money }}</span>
+          <span class="sf-pdp__price sf-pdp__price--compare" id="sf-pdp-price-compare">{{ current_variant.compare_at_price | money }}</span>
+          {%- assign pct = current_variant.compare_at_price | minus: current_variant.price | times: 100 | divided_by: current_variant.compare_at_price -%}
+          <span class="sf-pdp__badge">{{ pct }}% OFF</span>
+        {%- else -%}
+          <span class="sf-pdp__price" id="sf-pdp-price-current">{{ current_variant.price | money }}</span>
+          <span class="sf-pdp__price sf-pdp__price--compare" id="sf-pdp-price-compare" style="display:none;"></span>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} Variant options {%- endcomment -%}
+      {%- unless product.has_only_default_variant -%}
+        <div class="sf-pdp__variants">
+          {%- for option in product.options_with_values -%}
+            {%- assign opt_lower = option.name | downcase -%}
+            {%- assign is_color = false -%}
+            {%- if opt_lower == 'color' or opt_lower == 'colour' -%}
+              {%- assign is_color = true -%}
+            {%- endif -%}
+
+            <div class="sf-pdp__option" data-option-index="{{ forloop.index0 }}">
+              <div class="sf-pdp__option-header">
+                <span class="sf-pdp__option-label">
+                  {{ option.name }}:
+                  <strong class="sf-pdp__option-selected" id="sf-opt-val-{{ section.id }}-{{ forloop.index0 }}">{{ option.selected_value }}</strong>
+                </span>
+                {%- if opt_lower == 'size' -%}
+                  <button type="button" class="sf-pdp__size-guide-trigger" aria-haspopup="dialog" aria-controls="sf-size-modal-{{ section.id }}">
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2" y="6" width="16" height="8" rx="1"/><path d="M5 6V4M8 6V4M11 6V4M14 6V4"/></svg>
+                    Size Guide
+                  </button>
+                {%- endif -%}
+              </div>
+
+              <div class="sf-pdp__option-values{% if is_color %} sf-pdp__option-values--swatches{% endif %}">
+                {%- for value in option.values -%}
+                  {%- assign is_selected = false -%}
+                  {%- if value == option.selected_value -%}{%- assign is_selected = true -%}{%- endif -%}
+
+                  {%- if is_color -%}
+                    {%- assign swatch_color = value.swatch.color -%}
+                    {%- if swatch_color == blank -%}
+                      {%- assign swatch_color = value | handle | replace: '-', '' -%}
+                    {%- endif -%}
+                    <button type="button" class="sf-pdp__swatch{% if is_selected %} is-selected{% endif %}"
+                      data-option-index="{{ forloop.parentloop.index0 }}"
+                      data-value="{{ value | escape }}"
+                      aria-label="{{ option.name }}: {{ value }}"
+                      aria-pressed="{{ is_selected }}"
+                      title="{{ value }}"
+                      style="background-color: {{ swatch_color }};"></button>
+                  {%- else -%}
+                    <button type="button" class="sf-pdp__pill{% if is_selected %} is-selected{% endif %}"
+                      data-option-index="{{ forloop.parentloop.index0 }}"
+                      data-value="{{ value | escape }}"
+                      aria-label="{{ option.name }}: {{ value }}"
+                      aria-pressed="{{ is_selected }}">{{ value }}</button>
+                  {%- endif -%}
+
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endunless -%}
+
+      {%- comment -%} Decorative colour fallback (no real Color option exists) {%- endcomment -%}
+      {%- if color_option_index == nil -%}
+        <div class="sf-pdp__option sf-pdp__option--decorative">
+          <div class="sf-pdp__option-header">
+            <span class="sf-pdp__option-label">
+              Available in: <strong id="sf-deco-color-{{ section.id }}">White</strong>
+              <span class="sf-pdp__option-note">visual reference</span>
+            </span>
+          </div>
+          <div class="sf-pdp__option-values sf-pdp__option-values--swatches">
+            <button type="button" class="sf-pdp__swatch sf-pdp__swatch--decorative is-selected" data-deco-color="White"  aria-label="White (visual reference)"  style="background-color:#F5F1E8;"></button>
+            <button type="button" class="sf-pdp__swatch sf-pdp__swatch--decorative" data-deco-color="Grey"   aria-label="Grey (visual reference)"   style="background-color:#9CA0A1;"></button>
+            <button type="button" class="sf-pdp__swatch sf-pdp__swatch--decorative" data-deco-color="Black"  aria-label="Black (visual reference)"  style="background-color:#1A1F1B;"></button>
+            <button type="button" class="sf-pdp__swatch sf-pdp__swatch--decorative" data-deco-color="Navy"   aria-label="Navy (visual reference)"   style="background-color:#1B2A4E;"></button>
+            <button type="button" class="sf-pdp__swatch sf-pdp__swatch--decorative" data-deco-color="Brown"  aria-label="Brown (visual reference)"  style="background-color:#5C3D2E;"></button>
+            <button type="button" class="sf-pdp__swatch sf-pdp__swatch--decorative" data-deco-color="Tan"    aria-label="Tan (visual reference)"    style="background-color:#C8A576;"></button>
+          </div>
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} Stock indicator {%- endcomment -%}
+      <p class="sf-pdp__stock" id="sf-pdp-stock-{{ section.id }}"
+        {%- unless current_variant.available -%}data-state="sold-out"{%- else -%}{%- if current_variant.inventory_quantity > 0 and current_variant.inventory_quantity <= 10 -%}data-state="low"{%- else -%}data-state="ok"{%- endif -%}{%- endunless -%}>
+        {%- unless current_variant.available -%}
+          Sold out
+        {%- else -%}
+          {%- if current_variant.inventory_quantity > 0 and current_variant.inventory_quantity <= 10 -%}
+            Only {{ current_variant.inventory_quantity }} left in stock
+          {%- else -%}
+            In stock — ships in 2–3 days
+          {%- endif -%}
+        {%- endunless -%}
+      </p>
+
+      {%- comment -%} Buy form {%- endcomment -%}
+      <form
+        action="{{ routes.cart_add_url }}"
+        method="post"
+        enctype="multipart/form-data"
+        class="sf-pdp__form"
+        id="sf-pdp-form-{{ section.id }}"
+        novalidate
+      >
+        <input type="hidden" name="id" id="sf-pdp-variant-id-{{ section.id }}" value="{{ current_variant.id }}">
+
+        <div class="sf-pdp__buy-row">
+          <div class="sf-pdp__qty" role="group" aria-label="Quantity">
+            <button type="button" class="sf-pdp__qty-btn" data-action="decrement" aria-label="Decrease quantity">
+              <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><rect x="4" y="9" width="12" height="2" rx="1"/></svg>
+            </button>
+            <input type="number" name="quantity" id="sf-pdp-qty-{{ section.id }}" class="sf-pdp__qty-input" value="1" min="1" max="99" aria-label="Quantity">
+            <button type="button" class="sf-pdp__qty-btn" data-action="increment" aria-label="Increase quantity">
+              <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 4a1 1 0 011 1v4h4a1 1 0 010 2h-4v4a1 1 0 01-2 0v-4H5a1 1 0 010-2h4V5a1 1 0 011-1z"/></svg>
+            </button>
+          </div>
+
+          <button type="submit" class="sf-pdp__atc" id="sf-pdp-atc-{{ section.id }}"
+            {%- unless current_variant.available -%} disabled aria-disabled="true"{%- endunless -%}>
+            {%- if current_variant.available -%}
+              {{ section.settings.atc_label | default: 'Add to Cart' }}
+            {%- else -%}
+              Sold Out
+            {%- endif -%}
+          </button>
+        </div>
+
+        <button type="button" class="sf-pdp__buy-now" id="sf-pdp-buy-now-{{ section.id }}"
+          {%- unless current_variant.available -%} disabled aria-disabled="true"{%- endunless -%}>
+          {{ section.settings.buy_now_label | default: 'Buy Now' }}
+        </button>
+      </form>
+
+      {%- comment -%} Info cards {%- endcomment -%}
+      <div class="sf-pdp__info-cards">
+        <div class="sf-pdp__info-card">
+          <div class="sf-pdp__info-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 3h15v13H1zM16 8h4l3 3v5h-7z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          </div>
+          <div>
+            <p class="sf-pdp__info-card-heading">{{ section.settings.card1_heading | default: 'Free Delivery' }}</p>
+            <p class="sf-pdp__info-card-body">
+              {{ section.settings.card1_body | default: 'Enter your Postal Code for Delivery Availability' }}
+              {%- if section.settings.card1_link != blank -%}
+                <a href="{{ section.settings.card1_link }}" class="sf-pdp__info-card-link">{{ section.settings.card1_link_label | default: 'Check' }}</a>
+              {%- endif -%}
+            </p>
+          </div>
+        </div>
+
+        <div class="sf-pdp__info-card">
+          <div class="sf-pdp__info-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14l-4-4 4-4"/><path d="M5 10h11a4 4 0 010 8h-1"/></svg>
+          </div>
+          <div>
+            <p class="sf-pdp__info-card-heading">{{ section.settings.card2_heading | default: 'Return Delivery' }}</p>
+            <p class="sf-pdp__info-card-body">
+              {{ section.settings.card2_body | default: 'Free 14-day Delivery Returns.' }}
+              {%- if section.settings.card2_link != blank -%}
+                <a href="{{ section.settings.card2_link }}" class="sf-pdp__info-card-link">{{ section.settings.card2_link_label | default: 'Details' }}</a>
+              {%- endif -%}
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>{%- comment -%} end .sf-pdp__details {%- endcomment -%}
+  </div>{%- comment -%} end .sf-pdp__grid {%- endcomment -%}
+
+  {%- comment -%}══════════════ FULL-WIDTH TABS ══════════════{%- endcomment -%}
+  <div class="sf-pdp__info-section" data-sf-reveal>
+    <div class="sf-pdp__tabs" role="tablist" aria-label="Product information">
+      <button type="button" class="sf-pdp__tab is-active" role="tab" aria-selected="true"  data-tab="description">Description</button>
+      <button type="button" class="sf-pdp__tab"            role="tab" aria-selected="false" data-tab="fabric">Fabric &amp; Care</button>
+      <button type="button" class="sf-pdp__tab"            role="tab" aria-selected="false" data-tab="shipping">Shipping</button>
+      <button type="button" class="sf-pdp__tab"            role="tab" aria-selected="false" data-tab="returns">Returns &amp; Exchanges</button>
+    </div>
+
+    <div class="sf-pdp__tab-panels">
+      <div class="sf-pdp__tab-panel is-active" role="tabpanel" data-panel="description">
+        <div class="rte">{{ product_desc }}</div>
+      </div>
+      <div class="sf-pdp__tab-panel" role="tabpanel" data-panel="fabric">
+        {%- if section.settings.fabric_care != blank -%}
+          {{ section.settings.fabric_care }}
+        {%- else -%}
+          <p>Premium knitwear, finished by hand in Gujranwala.</p>
+          <ul>
+            <li>Wash cold (max 30°C), inside out, with similar colours.</li>
+            <li>Lay flat to dry — avoid direct sunlight.</li>
+            <li>Do not bleach. Cool iron if needed.</li>
+            <li>Steam to refresh between wears; dry-clean when in doubt.</li>
+          </ul>
+        {%- endif -%}
+      </div>
+      <div class="sf-pdp__tab-panel" role="tabpanel" data-panel="shipping">
+        {%- if section.settings.shipping_info != blank -%}
+          {{ section.settings.shipping_info }}
+        {%- else -%}
+          <p>We ship across Pakistan and worldwide.</p>
+          <ul>
+            <li>Orders ship in <strong>2–3 business days</strong> from Gujranwala.</li>
+            <li><strong>Free domestic shipping</strong> on orders over PKR 10,000.</li>
+            <li>International rates calculated at checkout.</li>
+            <li>Tracking link sent by email and SMS once dispatched.</li>
+          </ul>
+          <p><a href="/pages/shipping">Full shipping policy →</a></p>
+        {%- endif -%}
+      </div>
+      <div class="sf-pdp__tab-panel" role="tabpanel" data-panel="returns">
+        {%- if section.settings.returns_info != blank -%}
+          {{ section.settings.returns_info }}
+        {%- else -%}
+          <p>We want you to love what you wear.</p>
+          <ul>
+            <li>14-day returns on unworn items with tags attached.</li>
+            <li>Free exchanges for size/colour within Pakistan.</li>
+            <li>Refunds processed within 5–7 business days of receipt.</li>
+          </ul>
+          <p><a href="/pages/returns-exchanges">Return &amp; exchange policy →</a></p>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%}══════════════ SIZE GUIDE MODAL ══════════════{%- endcomment -%}
+  <dialog class="sf-pdp__size-modal" id="sf-size-modal-{{ section.id }}" aria-label="Size Guide" aria-modal="true">
+    <div class="sf-pdp__size-modal-inner">
+      <div class="sf-pdp__size-modal-header">
+        <div>
+          <h2 class="sf-pdp__size-modal-title">Size Guide</h2>
+          <p class="sf-pdp__size-modal-helper">Find your perfect fit — measurements in cm</p>
+        </div>
+        <button class="sf-pdp__size-modal-close" aria-label="Close size guide" type="button">
+          <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"/></svg>
+        </button>
+      </div>
+
+      {%- if section.settings.size_guide_content != blank -%}
+        <div class="sf-pdp__size-modal-intro rte">{{ section.settings.size_guide_content }}</div>
+      {%- endif -%}
+
+      <div class="sf-pdp__size-modal-body">
+        <table class="sf-pdp__size-table">
+          <thead>
+            <tr>
+              <th scope="col">Size</th>
+              <th scope="col">Chest</th>
+              <th scope="col">Waist</th>
+              <th scope="col">Hips</th>
+              <th scope="col">Length</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">XS</th>  <td>82–87</td>   <td>63–68</td>   <td>87–92</td>    <td>66</td></tr>
+            <tr><th scope="row">S</th>   <td>87–92</td>   <td>68–73</td>   <td>92–97</td>    <td>68</td></tr>
+            <tr><th scope="row">M</th>   <td>92–97</td>   <td>73–78</td>   <td>97–102</td>   <td>70</td></tr>
+            <tr><th scope="row">L</th>   <td>97–102</td>  <td>78–83</td>   <td>102–107</td>  <td>72</td></tr>
+            <tr><th scope="row">XL</th>  <td>102–107</td> <td>83–88</td>   <td>107–112</td>  <td>74</td></tr>
+            <tr><th scope="row">XXL</th> <td>107–112</td> <td>88–93</td>   <td>112–117</td>  <td>76</td></tr>
+          </tbody>
+        </table>
+        <p class="sf-pdp__size-modal-tip">
+          <strong>Between sizes?</strong> Size down for a closer fit, up for a softer drape.
+        </p>
+      </div>
+    </div>
+  </dialog>
+
+  {%- comment -%}══════════════ IMAGE LIGHTBOX ══════════════{%- endcomment -%}
+  <dialog class="sf-pdp__lightbox" id="sf-lightbox-{{ section.id }}" aria-label="Image viewer">
+    <button class="sf-pdp__lightbox-close" aria-label="Close" type="button">
+      <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"/></svg>
+    </button>
+    <button class="sf-pdp__lightbox-nav sf-pdp__lightbox-nav--prev" aria-label="Previous image" type="button">
+      <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M12.79 5.23a.75.75 0 010 1.06L9.06 10l3.73 3.71a.75.75 0 11-1.06 1.06l-4.25-4.24a.75.75 0 010-1.06l4.25-4.24a.75.75 0 011.06 0z"/></svg>
+    </button>
+    <img class="sf-pdp__lightbox-img" alt="">
+    <button class="sf-pdp__lightbox-nav sf-pdp__lightbox-nav--next" aria-label="Next image" type="button">
+      <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M7.21 5.23a.75.75 0 011.06 0l4.25 4.24a.75.75 0 010 1.06l-4.25 4.24a.75.75 0 11-1.06-1.06L10.94 10 7.21 6.29a.75.75 0 010-1.06z"/></svg>
+    </button>
+  </dialog>
+
+</section>
+
+{%- comment -%} Pass variant data to JS {%- endcomment -%}
+<script id="sf-pdp-variants-data-{{ section.id }}" type="application/json">
+  [
+    {%- for variant in product.variants -%}
+      {
+        "id": {{ variant.id }},
+        "title": {{ variant.title | json }},
+        "price": {{ variant.price }},
+        "compare_at_price": {{ variant.compare_at_price | default: 0 }},
+        "available": {{ variant.available }},
+        "inventory_quantity": {{ variant.inventory_quantity }},
+        "options": {{ variant.options | json }},
+        "featured_image": {%- if variant.featured_image -%}{{ variant.featured_image | image_url: width: 1200 | json }}{%- else -%}null{%- endif -%},
+        "featured_image_srcset": {%- if variant.featured_image -%}"{{ variant.featured_image | image_url: width: 600 }} 600w, {{ variant.featured_image | image_url: width: 1200 }} 1200w, {{ variant.featured_image | image_url: width: 1800 }} 1800w"{%- else -%}null{%- endif -%},
+        "featured_image_full": {%- if variant.featured_image -%}{{ variant.featured_image | image_url: width: 1800 | json }}{%- else -%}null{%- endif -%},
+        "featured_image_alt": {{ variant.featured_image.alt | default: product.title | json }}
+      }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ]
+</script>
+
+<script id="sf-pdp-media-data-{{ section.id }}" type="application/json">
+  [
+    {%- for media in product.media -%}
+      {
+        "src":    {{ media | image_url: width: 1200 | json }},
+        "srcset": "{{ media | image_url: width: 600 }} 600w, {{ media | image_url: width: 1200 }} 1200w, {{ media | image_url: width: 1800 }} 1800w",
+        "full":   {{ media | image_url: width: 1800 | json }},
+        "alt":    {{ media.alt | default: product.title | json }}
+      }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ]
+</script>
+
+<script>
+(function () {
+  'use strict';
+
+  const sid     = {{ section.id | json }};
+  const section = document.getElementById('sf-pdp-' + sid);
+  if (!section) return;
+
+  const variantsData = JSON.parse(document.getElementById('sf-pdp-variants-data-' + sid).textContent);
+  const mediaData    = JSON.parse(document.getElementById('sf-pdp-media-data-' + sid).textContent);
+
+  // selected option values (in order)
+  const selectedOptions = Array.from(section.querySelectorAll('.sf-pdp__option:not(.sf-pdp__option--decorative)')).map(opt => {
+    const sel = opt.querySelector('.is-selected');
+    return sel ? sel.dataset.value : '';
+  });
+
+  function findVariant() {
+    return variantsData.find(v => v.options.every((o, i) => o === selectedOptions[i])) || null;
+  }
+
+  function formatMoney(cents) {
+    return 'Rs. ' + (cents / 100).toLocaleString('en-PK', { minimumFractionDigits: 2 });
+  }
+
+  function fadeSwapImage(imgEl, src, srcset, alt) {
+    if (!imgEl) return;
+    imgEl.classList.add('is-fading');
+    setTimeout(() => {
+      imgEl.src = src;
+      if (srcset !== undefined) imgEl.srcset = srcset || '';
+      if (alt !== undefined) imgEl.alt = alt || '';
+      requestAnimationFrame(() => imgEl.classList.remove('is-fading'));
+    }, 180);
+  }
+
+  function updateUI(variant) {
+    if (!variant) return;
+
+    const priceEl   = document.getElementById('sf-pdp-price-current');
+    const compareEl = document.getElementById('sf-pdp-price-compare');
+    if (priceEl) priceEl.textContent = formatMoney(variant.price);
+    if (compareEl) {
+      if (variant.compare_at_price > variant.price) {
+        compareEl.textContent = formatMoney(variant.compare_at_price);
+        compareEl.style.display = '';
+      } else {
+        compareEl.style.display = 'none';
+      }
+    }
+
+    const vid = document.getElementById('sf-pdp-variant-id-' + sid);
+    if (vid) vid.value = variant.id;
+
+    // swap main image (with fade)
+    if (variant.featured_image) {
+      const main = document.getElementById('sf-pdp-main-img-' + sid);
+      fadeSwapImage(main, variant.featured_image, variant.featured_image_srcset || '', variant.featured_image_alt || '');
+      const zoomBtn = section.querySelector('.sf-pdp__main-zoom-trigger');
+      if (zoomBtn && variant.featured_image_full) zoomBtn.dataset.full = variant.featured_image_full;
+      section.querySelectorAll('.sf-pdp__thumb').forEach(btn => {
+        btn.classList.toggle('is-active', btn.dataset.src === variant.featured_image);
+      });
+    }
+
+    // ATC & stock
+    const atc    = document.getElementById('sf-pdp-atc-' + sid);
+    const buyNow = document.getElementById('sf-pdp-buy-now-' + sid);
+    if (atc) {
+      atc.disabled    = !variant.available;
+      atc.textContent = variant.available ? (atc.dataset.labelAvail || 'Add to Cart') : 'Sold Out';
+    }
+    if (buyNow) buyNow.disabled = !variant.available;
+
+    const stock = document.getElementById('sf-pdp-stock-' + sid);
+    if (stock) {
+      if (!variant.available) {
+        stock.dataset.state = 'sold-out';
+        stock.textContent = 'Sold out';
+      } else if (variant.inventory_quantity > 0 && variant.inventory_quantity <= 10) {
+        stock.dataset.state = 'low';
+        stock.textContent = 'Only ' + variant.inventory_quantity + ' left in stock';
+      } else {
+        stock.dataset.state = 'ok';
+        stock.textContent = 'In stock — ships in 2–3 days';
+      }
+    }
+  }
+
+  // --- Option button (real variant) clicks ---
+  section.addEventListener('click', function (e) {
+    const btn = e.target.closest('.sf-pdp__option:not(.sf-pdp__option--decorative) .sf-pdp__swatch, .sf-pdp__option:not(.sf-pdp__option--decorative) .sf-pdp__pill');
+    if (!btn) return;
+    e.preventDefault();
+
+    const idx = parseInt(btn.dataset.optionIndex, 10);
+    const val = btn.dataset.value;
+    selectedOptions[idx] = val;
+
+    const group = section.querySelectorAll('.sf-pdp__option:not(.sf-pdp__option--decorative)')[idx];
+    if (group) {
+      group.querySelectorAll('.sf-pdp__swatch, .sf-pdp__pill').forEach(b => {
+        const sel = b.dataset.value === val;
+        b.classList.toggle('is-selected', sel);
+        b.setAttribute('aria-pressed', sel);
+      });
+      const lbl = document.getElementById('sf-opt-val-' + sid + '-' + idx);
+      if (lbl) lbl.textContent = val;
+    }
+
+    btn.classList.remove('sf-tap'); void btn.offsetWidth; btn.classList.add('sf-tap');
+    updateUI(findVariant());
+  });
+
+  // --- Decorative colour clicks ---
+  section.addEventListener('click', function (e) {
+    const btn = e.target.closest('.sf-pdp__swatch--decorative');
+    if (!btn) return;
+    const name = btn.dataset.decoColor;
+    const lbl  = document.getElementById('sf-deco-color-' + sid);
+    if (lbl) lbl.textContent = name;
+    btn.parentElement.querySelectorAll('.sf-pdp__swatch--decorative').forEach(b => b.classList.remove('is-selected'));
+    btn.classList.add('is-selected');
+    btn.classList.remove('sf-tap'); void btn.offsetWidth; btn.classList.add('sf-tap');
+  });
+
+  // --- Thumbnail clicks ---
+  section.addEventListener('click', function (e) {
+    const thumb = e.target.closest('.sf-pdp__thumb');
+    if (!thumb) return;
+    const main = document.getElementById('sf-pdp-main-img-' + sid);
+    fadeSwapImage(main, thumb.dataset.src, thumb.dataset.srcset, thumb.dataset.alt);
+    const zoomBtn = section.querySelector('.sf-pdp__main-zoom-trigger');
+    if (zoomBtn) zoomBtn.dataset.full = thumb.dataset.full || thumb.dataset.src;
+    section.querySelectorAll('.sf-pdp__thumb').forEach(t => t.classList.toggle('is-active', t === thumb));
+  });
+
+  // --- Quantity stepper ---
+  section.addEventListener('click', function (e) {
+    const btn = e.target.closest('.sf-pdp__qty-btn');
+    if (!btn) return;
+    const input = document.getElementById('sf-pdp-qty-' + sid);
+    if (!input) return;
+    let val = parseInt(input.value, 10) || 1;
+    if (btn.dataset.action === 'increment') val = Math.min(val + 1, 99);
+    if (btn.dataset.action === 'decrement') val = Math.max(val - 1, 1);
+    input.value = val;
+  });
+
+  // --- Add to Cart (AJAX) with ✓ Added micro-interaction ---
+  const form = document.getElementById('sf-pdp-form-' + sid);
+  if (form) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const atc = document.getElementById('sf-pdp-atc-' + sid);
+      const orig = atc ? atc.textContent : '';
+      if (atc) { atc.disabled = true; atc.textContent = 'Adding…'; }
+
+      fetch(form.action, {
+        method: 'POST',
+        headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' },
+        body: new FormData(form)
+      })
+      .then(r => r.json())
+      .then(() => {
+        if (atc) {
+          atc.classList.add('is-success');
+          atc.textContent = '✓ Added';
+          setTimeout(() => {
+            atc.classList.remove('is-success');
+            atc.textContent = orig;
+            atc.disabled = false;
+          }, 1400);
+        }
+        document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
+        document.dispatchEvent(new CustomEvent('cart:open',    { bubbles: true }));
+      })
+      .catch(() => {
+        if (atc) { atc.disabled = false; atc.textContent = orig; }
+        form.submit();
+      });
+    });
+  }
+
+  // --- Buy Now ---
+  const buyNow = document.getElementById('sf-pdp-buy-now-' + sid);
+  if (buyNow) {
+    buyNow.addEventListener('click', function () {
+      const vidInput = document.getElementById('sf-pdp-variant-id-' + sid);
+      const qty = document.getElementById('sf-pdp-qty-' + sid);
+      const f = document.createElement('form');
+      f.method = 'POST';
+      f.action = '/cart/add';
+      [['id', vidInput ? vidInput.value : ''], ['quantity', qty ? qty.value : 1], ['return_to', '/checkout']].forEach(([n, v]) => {
+        const inp = document.createElement('input');
+        inp.type = 'hidden'; inp.name = n; inp.value = v;
+        f.appendChild(inp);
+      });
+      document.body.appendChild(f);
+      f.submit();
+    });
+  }
+
+  // --- Size Guide modal ---
+  const sizeModal   = document.getElementById('sf-size-modal-' + sid);
+  const sizeTrigger = section.querySelector('.sf-pdp__size-guide-trigger');
+  if (sizeModal && sizeTrigger) {
+    sizeTrigger.addEventListener('click', () => sizeModal.showModal());
+    sizeModal.querySelector('.sf-pdp__size-modal-close').addEventListener('click', () => sizeModal.close());
+    sizeModal.addEventListener('click', e => { if (e.target === sizeModal) sizeModal.close(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && sizeModal.open) sizeModal.close(); });
+  }
+
+  // --- Lightbox ---
+  const lightbox     = document.getElementById('sf-lightbox-' + sid);
+  const lightboxImg  = lightbox ? lightbox.querySelector('.sf-pdp__lightbox-img') : null;
+  let lightboxIndex = 0;
+
+  function openLightbox(index) {
+    if (!lightbox || !mediaData.length) return;
+    lightboxIndex = (index + mediaData.length) % mediaData.length;
+    const m = mediaData[lightboxIndex];
+    lightboxImg.src = m.full;
+    lightboxImg.srcset = m.srcset;
+    lightboxImg.alt = m.alt;
+    if (!lightbox.open) lightbox.showModal();
+  }
+
+  if (lightbox) {
+    const zoomTrigger = section.querySelector('.sf-pdp__main-zoom-trigger');
+    if (zoomTrigger) {
+      zoomTrigger.addEventListener('click', function (e) {
+        e.preventDefault();
+        const activeThumb = section.querySelector('.sf-pdp__thumb.is-active');
+        const idx = activeThumb ? parseInt(activeThumb.dataset.thumbIndex, 10) : 0;
+        openLightbox(idx);
+      });
+    }
+    lightbox.querySelector('.sf-pdp__lightbox-close').addEventListener('click', () => lightbox.close());
+    lightbox.querySelector('.sf-pdp__lightbox-nav--prev').addEventListener('click', () => openLightbox(lightboxIndex - 1));
+    lightbox.querySelector('.sf-pdp__lightbox-nav--next').addEventListener('click', () => openLightbox(lightboxIndex + 1));
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) lightbox.close(); });
+    document.addEventListener('keydown', e => {
+      if (!lightbox.open) return;
+      if (e.key === 'Escape') lightbox.close();
+      if (e.key === 'ArrowLeft')  openLightbox(lightboxIndex - 1);
+      if (e.key === 'ArrowRight') openLightbox(lightboxIndex + 1);
+    });
+  }
+
+  // --- Tabs ---
+  const tabsRoot = section.querySelector('.sf-pdp__info-section');
+  if (tabsRoot) {
+    tabsRoot.addEventListener('click', function (e) {
+      const tab = e.target.closest('.sf-pdp__tab');
+      if (!tab) return;
+      const name = tab.dataset.tab;
+      tabsRoot.querySelectorAll('.sf-pdp__tab').forEach(t => {
+        const sel = t === tab;
+        t.classList.toggle('is-active', sel);
+        t.setAttribute('aria-selected', sel);
+      });
+      tabsRoot.querySelectorAll('.sf-pdp__tab-panel').forEach(p => {
+        p.classList.toggle('is-active', p.dataset.panel === name);
+      });
+    });
+  }
+
+  // store original ATC label for resetting after success
+  const atcInit = document.getElementById('sf-pdp-atc-' + sid);
+  if (atcInit) atcInit.dataset.labelAvail = atcInit.textContent.trim();
+
+})();
+</script>
+
+{% stylesheet %}
+/* ──────────────────────────────────────────────────────────
+   sf-product-page — scoped stylesheet
+   ────────────────────────────────────────────────────────── */
+.sf-pdp {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+  font-family: var(--sf-font-body, 'Inter', sans-serif);
+}
+
+/* breadcrumb */
+.sf-pdp__breadcrumb { padding: 20px 0 8px; }
+.sf-pdp__breadcrumb-list {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  list-style: none; margin: 0; padding: 0;
+  font-size: 12px; color: #888;
+}
+.sf-pdp__breadcrumb-list a { color: #888; text-decoration: none; }
+.sf-pdp__breadcrumb-list a:hover { color: var(--sf-primary, #2B3A2E); }
+.sf-pdp__breadcrumb-list li:last-child { color: #1A1F1B; font-weight: 500; }
+
+/* two-column grid */
+.sf-pdp__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: start;
+  margin-top: 20px;
+}
+
+/* ── GALLERY ── */
+.sf-pdp__gallery {
+  display: grid;
+  grid-template-columns: 82px 1fr;
+  gap: 10px;
+  position: sticky;
+  top: 80px;
+  align-items: start;
+}
+.sf-pdp__gallery-thumbs {
+  display: flex; flex-direction: column; gap: 8px;
+  max-height: 620px; overflow-y: auto;
+  padding-right: 2px;
+  scrollbar-width: thin;
+}
+.sf-pdp__gallery-thumbs::-webkit-scrollbar { width: 3px; }
+.sf-pdp__gallery-thumbs::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 4px; }
+
+.sf-pdp__thumb {
+  width: 76px; height: 76px;
+  border: 1.5px solid #e5e5e5;
+  border-radius: 8px;
+  overflow: hidden; cursor: pointer; padding: 0;
+  background: #ffffff;
+  transition: border-color 0.15s, border-width 0.1s;
+  flex-shrink: 0;
+}
+.sf-pdp__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.sf-pdp__thumb.is-active,
+.sf-pdp__thumb:hover { border-color: #1A1F1B; border-width: 2px; }
+.sf-pdp__thumb--pad { opacity: 0.5; }
+
+.sf-pdp__gallery-main {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: #ffffff;
+  border: 1px solid #eeeeee;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+  overflow: hidden;
+  position: relative;
+}
+.sf-pdp__main-zoom-trigger {
+  display: block; width: 100%; height: 100%;
+  padding: 0; border: 0; background: transparent;
+  cursor: zoom-in; position: relative;
+}
+.sf-pdp__main-img {
+  width: 100%; height: 100%;
+  object-fit: contain; display: block;
+  transition: transform 0.5s cubic-bezier(.16,1,.3,1), opacity 0.22s ease;
+}
+.sf-pdp__main-img.is-fading { opacity: 0; }
+.sf-pdp__main-zoom-trigger:hover .sf-pdp__main-img { transform: scale(1.04); }
+.sf-pdp__zoom-hint {
+  position: absolute; bottom: 14px; right: 14px;
+  width: 38px; height: 38px;
+  background: rgba(255,255,255,0.92);
+  border-radius: 999px;
+  display: flex; align-items: center; justify-content: center;
+  color: #333;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  opacity: 0; transform: translateY(4px);
+  transition: opacity 0.2s, transform 0.2s;
+}
+.sf-pdp__main-zoom-trigger:hover .sf-pdp__zoom-hint { opacity: 1; transform: translateY(0); }
+.sf-pdp__zoom-hint svg { width: 18px; height: 18px; }
+
+.sf-pdp__main-img--placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+.sf-pdp__main-img--placeholder svg { width: 60%; height: 60%; opacity: 0.2; }
+
+/* ── DETAILS ── */
+.sf-pdp__details { display: flex; flex-direction: column; gap: 20px; }
+
+.sf-pdp__title {
+  font-family: var(--sf-font-display, Georgia, serif);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 500; line-height: 1.1; margin: 0;
+  color: #1A1F1B;
+}
+.sf-pdp__excerpt { font-size: 14px; line-height: 1.6; color: #666; margin: 0; }
+
+.sf-pdp__rating { display: flex; align-items: center; gap: 4px; }
+.sf-pdp__star { width: 18px; height: 18px; }
+.sf-pdp__star--full { color: #f5a623; }
+.sf-pdp__star--empty { color: #ddd; }
+.sf-pdp__rating-count { font-size: 13px; color: #888; margin-left: 6px; }
+
+/* Price */
+.sf-pdp__price-wrap { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.sf-pdp__price {
+  font-family: var(--sf-font-display, Georgia, serif);
+  font-size: 1.9rem; font-weight: 600; color: #1A1F1B;
+}
+.sf-pdp__price--sale { color: var(--sf-accent, #A8754C); }
+.sf-pdp__price--compare {
+  font-size: 1.1rem; font-weight: 400; color: #aaa; text-decoration: line-through;
+}
+.sf-pdp__badge {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+  background: #e74c3c; color: #fff;
+  border-radius: var(--sf-radius-button, 999px); padding: 4px 9px;
+  align-self: center;
+}
+
+/* Options */
+.sf-pdp__variants { display: flex; flex-direction: column; gap: 18px; }
+.sf-pdp__option { display: flex; flex-direction: column; gap: 10px; }
+.sf-pdp__option-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.sf-pdp__option-label { font-size: 13px; font-weight: 500; color: #444; }
+.sf-pdp__option-label strong { color: #1A1F1B; }
+.sf-pdp__option-note {
+  display: inline-block; margin-left: 8px;
+  font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: #aaa; font-weight: 500;
+}
+
+.sf-pdp__option-values { display: flex; flex-wrap: wrap; gap: 10px; }
+
+/* Colour swatches */
+.sf-pdp__swatch {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 2.5px solid transparent;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  cursor: pointer; padding: 0;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08);
+  transition: outline-color 0.15s, transform 0.15s;
+}
+.sf-pdp__swatch:hover { transform: scale(1.15); }
+.sf-pdp__swatch.is-selected {
+  outline-color: var(--sf-primary, #2B3A2E);
+  border-color: #fff;
+}
+
+/* Size & generic pills — pill shape across the whole site */
+.sf-pdp__pill {
+  min-width: 56px; height: 40px;
+  padding: 0 18px;
+  border: 1.5px solid #ddd;
+  border-radius: var(--sf-radius-button, 999px);
+  background: #fff;
+  font-size: 13px; font-weight: 500; color: #333;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+.sf-pdp__pill:hover { border-color: var(--sf-primary, #2B3A2E); }
+.sf-pdp__pill.is-selected {
+  background: var(--sf-primary, #2B3A2E);
+  border-color: var(--sf-primary, #2B3A2E);
+  color: #fff;
+}
+
+/* Size guide trigger */
+.sf-pdp__size-guide-trigger {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: none; border: none; padding: 0;
+  font-size: 12px; font-weight: 500; color: var(--sf-primary, #2B3A2E);
+  text-decoration: underline; text-underline-offset: 2px;
+  cursor: pointer;
+}
+.sf-pdp__size-guide-trigger svg { width: 16px; height: 16px; }
+
+/* Stock indicator */
+.sf-pdp__stock {
+  font-size: 13px; font-weight: 500; margin: 0;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.sf-pdp__stock::before {
+  content: ''; width: 8px; height: 8px; border-radius: 50%;
+  background: #27ae60;
+  box-shadow: 0 0 0 0 currentColor;
+  animation: sf-pdp-pulse 1.8s infinite;
+}
+.sf-pdp__stock[data-state="ok"] { color: #1d6e3a; }
+.sf-pdp__stock[data-state="low"] { color: #b06f00; }
+.sf-pdp__stock[data-state="low"]::before { background: #e67e22; }
+.sf-pdp__stock[data-state="sold-out"] { color: #c0392b; }
+.sf-pdp__stock[data-state="sold-out"]::before { background: #c0392b; animation: none; }
+@keyframes sf-pdp-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(39,174,96,0.45); }
+  70%  { box-shadow: 0 0 0 8px rgba(39,174,96,0); }
+  100% { box-shadow: 0 0 0 0 rgba(39,174,96,0); }
+}
+
+/* Buy form */
+.sf-pdp__form { display: flex; flex-direction: column; gap: 12px; }
+.sf-pdp__buy-row { display: flex; gap: 12px; align-items: stretch; }
+
+/* Quantity */
+.sf-pdp__qty {
+  display: flex; align-items: center;
+  border: 1.5px solid #ddd;
+  border-radius: var(--sf-radius-button, 999px);
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #fff;
+}
+.sf-pdp__qty-btn {
+  width: 44px; height: 52px;
+  border: none; background: #fff;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: #333;
+  transition: background 0.15s;
+}
+.sf-pdp__qty-btn:hover { background: #f5f5f5; }
+.sf-pdp__qty-btn svg { width: 18px; height: 18px; }
+.sf-pdp__qty-input {
+  width: 44px; height: 52px;
+  text-align: center;
+  border: none;
+  font-size: 15px; font-weight: 500;
+  background: transparent;
+  -moz-appearance: textfield;
+}
+.sf-pdp__qty-input::-webkit-inner-spin-button,
+.sf-pdp__qty-input::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+/* Add to Cart — pill */
+.sf-pdp__atc {
+  flex: 1; height: 52px;
+  background: var(--sf-primary, #2B3A2E);
+  color: #fff;
+  border: none;
+  border-radius: var(--sf-radius-button, 999px);
+  font-size: 15px; font-weight: 600; letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.25s;
+}
+.sf-pdp__atc:hover:not(:disabled) { background: #1a2a1d; transform: translateY(-1px); }
+.sf-pdp__atc:disabled { opacity: 0.5; cursor: not-allowed; }
+.sf-pdp__atc.is-success {
+  background: #1d6e3a;
+  box-shadow: 0 0 0 6px rgba(29,110,58,0.18);
+}
+
+/* Buy Now — pill outline */
+.sf-pdp__buy-now {
+  width: 100%; height: 52px;
+  background: #fff;
+  color: var(--sf-primary, #2B3A2E);
+  border: 1.5px solid var(--sf-primary, #2B3A2E);
+  border-radius: var(--sf-radius-button, 999px);
+  font-size: 15px; font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.15s;
+}
+.sf-pdp__buy-now:hover:not(:disabled) {
+  background: var(--sf-primary, #2B3A2E); color: #fff; transform: translateY(-1px);
+}
+.sf-pdp__buy-now:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Tap micro-animation */
+@keyframes sf-tap {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(0.94); }
+  100% { transform: scale(1); }
+}
+.sf-tap { animation: sf-tap 0.22s ease; }
+.sf-pdp__swatch.sf-tap { animation: sf-tap 0.22s ease; }
+
+/* Info cards */
+.sf-pdp__info-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.sf-pdp__info-card {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 14px;
+  border: 1.5px solid #eee;
+  border-radius: 12px;
+  background: #fafaf9;
+}
+.sf-pdp__info-card-icon {
+  flex-shrink: 0; width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  background: #f0ede8; border-radius: 8px;
+  color: var(--sf-accent, #A8754C);
+}
+.sf-pdp__info-card-icon svg { width: 18px; height: 18px; }
+.sf-pdp__info-card-heading { font-size: 13px; font-weight: 600; color: #1A1F1B; margin: 0 0 3px; }
+.sf-pdp__info-card-body { font-size: 12px; color: #666; margin: 0; line-height: 1.45; }
+.sf-pdp__info-card-link { color: var(--sf-primary, #2B3A2E); text-decoration: underline; font-weight: 500; margin-left: 4px; }
+
+/* ── FULL-WIDTH TABS SECTION ── */
+.sf-pdp__info-section {
+  margin-top: 64px;
+  padding-top: 24px;
+}
+.sf-pdp__tabs {
+  display: flex; gap: 0;
+  border-bottom: 1px solid #e5e5e5;
+  overflow-x: auto;
+}
+.sf-pdp__tab {
+  position: relative;
+  padding: 16px 24px;
+  background: none; border: none;
+  font-family: var(--sf-font-body, sans-serif);
+  font-size: 14px; font-weight: 600;
+  color: #888;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.2s;
+}
+.sf-pdp__tab::after {
+  content: '';
+  position: absolute; left: 0; right: 0; bottom: -1px;
+  height: 2px;
+  background: var(--sf-primary, #2B3A2E);
+  transform: scaleX(0); transform-origin: left center;
+  transition: transform 0.3s cubic-bezier(.16,1,.3,1);
+}
+.sf-pdp__tab:hover { color: #444; }
+.sf-pdp__tab.is-active { color: var(--sf-primary, #2B3A2E); }
+.sf-pdp__tab.is-active::after { transform: scaleX(1); }
+
+.sf-pdp__tab-panels { padding-top: 28px; max-width: 70ch; }
+.sf-pdp__tab-panel {
+  display: none;
+  font-size: 15px; line-height: 1.75; color: #444;
+}
+.sf-pdp__tab-panel.is-active {
+  display: block;
+  animation: sf-fade-in 0.4s ease;
+}
+.sf-pdp__tab-panel p, .sf-pdp__tab-panel ul { margin: 0 0 14px; }
+.sf-pdp__tab-panel ul { padding-left: 22px; }
+.sf-pdp__tab-panel li { margin: 6px 0; }
+.sf-pdp__tab-panel a { color: var(--sf-primary, #2B3A2E); text-decoration: underline; text-underline-offset: 2px; }
+@keyframes sf-fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── SIZE MODAL ── */
+.sf-pdp__size-modal {
+  border: none;
+  border-radius: 20px;
+  padding: 0;
+  max-width: 720px; width: 92vw;
+  max-height: 88vh; overflow-y: auto;
+  box-shadow: 0 30px 100px rgba(0,0,0,0.22);
+}
+.sf-pdp__size-modal::backdrop {
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(6px);
+}
+.sf-pdp__size-modal[open] { animation: sf-modal-in 0.25s cubic-bezier(.16,1,.3,1); }
+@keyframes sf-modal-in {
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.sf-pdp__size-modal-inner { padding: 36px 40px 32px; }
+.sf-pdp__size-modal-header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 20px; gap: 16px;
+}
+.sf-pdp__size-modal-title {
+  font-family: var(--sf-font-display, Georgia, serif);
+  font-size: 1.65rem; font-weight: 500; margin: 0;
+  color: #1A1F1B;
+}
+.sf-pdp__size-modal-helper { font-size: 13px; color: #888; margin: 4px 0 0; }
+.sf-pdp__size-modal-close {
+  width: 40px; height: 40px;
+  border: none; background: #f5f5f5;
+  border-radius: var(--sf-radius-button, 999px);
+  cursor: pointer; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s, transform 0.15s;
+}
+.sf-pdp__size-modal-close:hover { background: #e8e8e8; transform: rotate(90deg); }
+.sf-pdp__size-modal-close svg { width: 16px; height: 16px; }
+
+.sf-pdp__size-modal-intro { font-size: 14px; color: #555; margin-bottom: 20px; line-height: 1.6; }
+
+.sf-pdp__size-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 14px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #ececec;
+}
+.sf-pdp__size-table thead th {
+  font-family: var(--sf-font-display, Georgia, serif);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: var(--sf-primary, #2B3A2E);
+  color: #fff;
+  padding: 14px 16px;
+  text-align: left;
+}
+.sf-pdp__size-table tbody th[scope="row"] {
+  font-weight: 700;
+  color: #1A1F1B;
+  background: #faf8f3;
+  text-align: left;
+  padding: 12px 16px;
+  width: 70px;
+}
+.sf-pdp__size-table tbody td {
+  padding: 12px 16px;
+  color: #444;
+  border-top: 1px solid #f0eee9;
+}
+.sf-pdp__size-table tbody tr:nth-child(even) td,
+.sf-pdp__size-table tbody tr:nth-child(even) th { background: #fbf9f4; }
+
+.sf-pdp__size-modal-tip {
+  margin-top: 20px;
+  padding: 14px 16px;
+  background: var(--sf-paper, #F5EFE4);
+  border-radius: 10px;
+  font-size: 13px; color: #555; line-height: 1.5;
+}
+.sf-pdp__size-modal-tip strong { color: #1A1F1B; }
+
+/* ── LIGHTBOX ── */
+.sf-pdp__lightbox {
+  border: none;
+  background: transparent;
+  padding: 0;
+  max-width: 96vw;
+  max-height: 96vh;
+}
+.sf-pdp__lightbox::backdrop {
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(8px);
+}
+.sf-pdp__lightbox[open] {
+  display: flex; align-items: center; justify-content: center;
+  animation: sf-fade-in 0.25s ease;
+}
+.sf-pdp__lightbox-img {
+  max-width: 92vw; max-height: 88vh;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 30px 100px rgba(0,0,0,0.5);
+}
+.sf-pdp__lightbox-close,
+.sf-pdp__lightbox-nav {
+  position: fixed;
+  width: 48px; height: 48px;
+  background: rgba(255,255,255,0.92);
+  border: none;
+  border-radius: var(--sf-radius-button, 999px);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: #1A1F1B;
+  transition: background 0.15s, transform 0.15s;
+  z-index: 2;
+}
+.sf-pdp__lightbox-close { top: 20px; right: 20px; }
+.sf-pdp__lightbox-nav--prev { left: 24px; top: 50%; transform: translateY(-50%); }
+.sf-pdp__lightbox-nav--next { right: 24px; top: 50%; transform: translateY(-50%); }
+.sf-pdp__lightbox-close:hover { background: #fff; transform: rotate(90deg); }
+.sf-pdp__lightbox-nav--prev:hover { background: #fff; transform: translateY(-50%) translateX(-2px); }
+.sf-pdp__lightbox-nav--next:hover { background: #fff; transform: translateY(-50%) translateX(2px); }
+.sf-pdp__lightbox-close svg,
+.sf-pdp__lightbox-nav svg { width: 20px; height: 20px; }
+
+/* ── MOBILE ── */
+@media (max-width: 860px) {
+  .sf-pdp__grid { grid-template-columns: 1fr; gap: 28px; }
+  .sf-pdp__gallery {
+    grid-template-columns: 1fr;
+    position: static;
+  }
+  .sf-pdp__gallery-thumbs {
+    flex-direction: row;
+    max-height: none; overflow-x: auto; overflow-y: hidden;
+    order: 2;
+    padding: 4px 0;
+    gap: 8px;
+  }
+  .sf-pdp__thumb { width: 60px; height: 60px; }
+  .sf-pdp__info-cards { grid-template-columns: 1fr; }
+  .sf-pdp__buy-row { flex-direction: column; }
+  .sf-pdp__qty { width: 100%; justify-content: center; }
+  .sf-pdp__atc { width: 100%; }
+  .sf-pdp__size-modal-inner { padding: 26px 22px; }
+  .sf-pdp__size-table { font-size: 12.5px; }
+  .sf-pdp__size-table thead th,
+  .sf-pdp__size-table tbody td,
+  .sf-pdp__size-table tbody th { padding: 10px 10px; }
+  .sf-pdp__tabs { gap: 0; }
+  .sf-pdp__tab { padding: 14px 18px; font-size: 13px; }
+  .sf-pdp__lightbox-nav--prev { left: 12px; }
+  .sf-pdp__lightbox-nav--next { right: 12px; }
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Stitch Fit PDP",
+  "tag": "section",
+  "class": "sf-pdp-section",
+  "templates": ["product"],
+  "settings": [
+    { "type": "header", "content": "Buttons" },
+    { "type": "text",  "id": "atc_label",      "label": "Add to Cart label",  "default": "Add to Cart" },
+    { "type": "text",  "id": "buy_now_label",   "label": "Buy Now label",      "default": "Buy Now" },
+
+    { "type": "header", "content": "Info cards" },
+    { "type": "text", "id": "card1_heading",   "label": "Card 1 heading",   "default": "Free Delivery" },
+    { "type": "text", "id": "card1_body",       "label": "Card 1 body",       "default": "Enter your Postal Code for Delivery Availability" },
+    { "type": "text", "id": "card1_link_label", "label": "Card 1 link label" },
+    { "type": "url",  "id": "card1_link",       "label": "Card 1 link URL" },
+    { "type": "text", "id": "card2_heading",   "label": "Card 2 heading",   "default": "Return Delivery" },
+    { "type": "text", "id": "card2_body",       "label": "Card 2 body",       "default": "Free 14-day Delivery Returns." },
+    { "type": "text", "id": "card2_link_label", "label": "Card 2 link label", "default": "Details" },
+    { "type": "url",  "id": "card2_link",       "label": "Card 2 link URL" },
+
+    { "type": "header",   "content": "Tab content (leave blank for defaults)" },
+    { "type": "richtext", "id": "fabric_care",    "label": "Fabric & Care content" },
+    { "type": "richtext", "id": "shipping_info",  "label": "Shipping content" },
+    { "type": "richtext", "id": "returns_info",   "label": "Returns content" },
+
+    { "type": "header",   "content": "Size guide" },
+    { "type": "richtext", "id": "size_guide_content", "label": "Intro text", "info": "Rendered above the size table." }
+  ],
+  "presets": [
+    { "name": "Stitch Fit PDP", "category": "Stitch Fit" }
+  ]
+}
+{% endschema %}
