@@ -1,0 +1,52 @@
+<nav class="sf-breadcrumb" aria-label="Breadcrumb">
+  <ol class="sf-breadcrumb__list">
+    <li class="sf-breadcrumb__item">
+      <a href="{{ routes.root_url }}">{{ section.settings.home_label | default: 'Home' }}</a>
+    </li>
+
+    {%- if template contains 'product' -%}
+      {%- assign current_product = product -%}
+      {%- if current_product.collections.size > 0 -%}
+        {%- assign parent_collection = current_product.collections.first -%}
+        <li class="sf-breadcrumb__sep" aria-hidden="true">/</li>
+        <li class="sf-breadcrumb__item">
+          <a href="{{ parent_collection.url }}">{{ parent_collection.title }}</a>
+        </li>
+      {%- else -%}
+        <li class="sf-breadcrumb__sep" aria-hidden="true">/</li>
+        <li class="sf-breadcrumb__item">
+          <a href="{{ routes.all_products_collection_url }}">{{ section.settings.fallback_label | default: 'Shop' }}</a>
+        </li>
+      {%- endif -%}
+      <li class="sf-breadcrumb__sep" aria-hidden="true">/</li>
+      <li class="sf-breadcrumb__item sf-breadcrumb__item--current" aria-current="page">
+        {{ current_product.title }}
+      </li>
+    {%- elsif template contains 'collection' -%}
+      <li class="sf-breadcrumb__sep" aria-hidden="true">/</li>
+      <li class="sf-breadcrumb__item sf-breadcrumb__item--current" aria-current="page">
+        {{ collection.title | default: 'Collection' }}
+      </li>
+    {%- elsif template contains 'page' -%}
+      <li class="sf-breadcrumb__sep" aria-hidden="true">/</li>
+      <li class="sf-breadcrumb__item sf-breadcrumb__item--current" aria-current="page">
+        {{ page.title }}
+      </li>
+    {%- endif -%}
+  </ol>
+</nav>
+
+{% schema %}
+{
+  "name": "Stitch Fit Breadcrumb",
+  "tag": "section",
+  "class": "sf-breadcrumb-section",
+  "settings": [
+    { "type": "text", "id": "home_label", "label": "Home label", "default": "Home" },
+    { "type": "text", "id": "fallback_label", "label": "Fallback parent label", "default": "Shop", "info": "Used when the product is not in any collection." }
+  ],
+  "presets": [
+    { "name": "Stitch Fit Breadcrumb", "category": "Stitch Fit" }
+  ]
+}
+{% endschema %}

@@ -3,10 +3,111 @@
 
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // ---- WISHLIST STORAGE ----
+  (function initWishlist() {
+    const WISHLIST_KEY = 'sf-wishlist-v1';
+    
+    function getWishlist() {
+      try {
+        const data = localStorage.getItem(WISHLIST_KEY);
+        return data ? JSON.parse(data) : {};
+      } catch (e) {
+        return {};
+      }
+    }
+    
+    function saveWishlist(data) {
+      try {
+        localStorage.setItem(WISHLIST_KEY, JSON.stringify(data));
+      } catch (e) { /* localStorage may be unavailable */ }
+    }
+    
+    function hydratePage() {
+      const wishlist = getWishlist();
+      document.querySelectorAll('[data-sf-wishlist="true"]').forEach((btn) => {
+        const productId = btn.getAttribute('data-product-id');
+        if (productId && wishlist[productId]) {
+          btn.classList.add('is-active');
+          btn.setAttribute('aria-pressed', 'true');
+        }
+      });
+    }
+    
+    function handleWishlistClick(btn) {
+      const productId = btn.getAttribute('data-product-id');
+      if (!productId) return;
+      
+      const wishlist = getWishlist();
+      const isActive = btn.classList.contains('is-active');
+      
+      if (isActive) {
+        delete wishlist[productId];
+        btn.classList.remove('is-active');
+        btn.setAttribute('aria-pressed', 'false');
+      } else {
+        wishlist[productId] = true;
+        btn.classList.add('is-active');
+        btn.setAttribute('aria-pressed', 'true');
+      }
+      
+      saveWishlist(wishlist);
+    }
+    
+    // Hydrate on load
+    hydratePage();
+
+    // Single delegated click handler so dynamically-inserted cards work too.
+    document.addEventListener('click', (e) => {
+      const btn = e.target && e.target.closest && e.target.closest('[data-sf-wishlist="true"]');
+      if (!btn) return;
+      e.preventDefault();
+      handleWishlistClick(btn);
+    });
+
+    // Re-hydrate when the DOM changes (collection pagination, section re-render, etc.)
+    if ('MutationObserver' in window) {
+      let queued = false;
+      const queueHydrate = () => {
+        if (queued) return;
+        queued = true;
+        window.requestAnimationFrame(() => {
+          queued = false;
+          hydratePage();
+        });
+      };
+
+      const mo = new MutationObserver((mutations) => {
+        for (const m of mutations) {
+          if (!m.addedNodes || m.addedNodes.length === 0) continue;
+          queueHydrate();
+          break;
+        }
+      });
+
+      mo.observe(document.documentElement, { childList: true, subtree: true });
+    }
+
+    // Also support any theme-level custom events if they exist.
+    document.addEventListener('product-card-rendered', hydratePage);
+  })();
+
+  // Start any videos that were marked to wait for the splash to finish.
+  // Safe to call multiple times; .play() is idempotent on a playing video.
+  function playDeferredVideos() {
+    document.querySelectorAll('video[data-sf-deferred-play]').forEach((v) => {
+      const p = v.play();
+      if (p && typeof p.catch === 'function') p.catch(() => { /* autoplay policy — ignore */ });
+    });
+  }
+
   // ---- SPLASH ----
   (function initSplash() {
     const splash = document.querySelector('.sf-splash');
-    if (!splash) return;
+    if (!splash) {
+      // No splash element (e.g. removed by inline pre-paint script) — start videos now.
+      playDeferredVideos();
+      return;
+    }
 
     const KEY    = 'sf-splash-v1';
     let seen     = false;
@@ -16,6 +117,7 @@
     if (seen) {
       splash.remove();
       document.documentElement.classList.remove('sf-splash-active');
+      playDeferredVideos();
       return;
     }
 
@@ -31,6 +133,7 @@
           splash.remove();
           document.documentElement.classList.remove('sf-splash-active');
           try { sessionStorage.setItem(KEY, '1'); } catch (e) { /* ignore */ }
+          playDeferredVideos();
         }, 400);
       }, 600);
       return;
@@ -48,6 +151,9 @@
       splash.remove();
       document.documentElement.classList.remove('sf-splash-active');
       try { sessionStorage.setItem(KEY, '1'); } catch (e) { /* ignore */ }
+
+      // Hero videos start as the curtain lifts
+      playDeferredVideos();
 
       // Show footer tagline immediately when splash exits
       const footerTagline = document.querySelector('.sf-footer__tagline');
@@ -86,6 +192,48 @@
     }, { rootMargin: '0px 0px -8% 0px', threshold: 0.06 });
 
     targets.forEach((el) => io.observe(el));
+  })();
+
+  // ---- COLLECTION GRID STAGGER ----
+  (function initGridStagger() {
+    const grid = document.querySelector('.product-grid');
+    if (!grid) return;
+
+    const items = Array.from(grid.querySelectorAll(':scope > li'));
+    if (!items.length) return;
+
+    if (reduce || !('IntersectionObserver' in window)) {
+      items.forEach((el) => el.classList.add('is-revealed'));
+      return;
+    }
+
+    // Batch items that share the same visual row (within 20px of each other)
+    // and assign staggered delays within each row.
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const delay = Number(el.dataset.sfDelay || 0);
+        setTimeout(() => el.classList.add('is-revealed'), delay);
+        io.unobserve(el);
+      });
+    }, { rootMargin: '0px 0px -5% 0px', threshold: 0.04 });
+
+    // Group by approximate row (top offset)
+    const rows = {};
+    items.forEach((el) => {
+      const top = Math.round(el.getBoundingClientRect().top / 20) * 20;
+      if (!rows[top]) rows[top] = [];
+      rows[top].push(el);
+    });
+
+    Object.values(rows).forEach((row) => {
+      row.forEach((el, i) => {
+        el.setAttribute('data-sf-reveal', '');
+        el.style.setProperty('--sf-delay', (i * 80) + 'ms');
+        io.observe(el);
+      });
+    });
   })();
 
   // ---- HERO TEXT REVEAL ----
@@ -190,6 +338,8 @@
     }
   })();
 
+  // Mobile categories now use CSS vertical marquee (bottom -> top), desktop remains horizontal.
+
   // ---- SF-NAV: Mobile drawer + Shop dropdown toggle ----
   (function initSfNav() {
     const nav = document.getElementById('sf-nav');
@@ -269,6 +419,235 @@
           window.location.href = '/cart';
         }
       });
+    }
+  })();
+
+  // ---- CARD IMAGE FX: mobile auto-cycle + universal lightbox ----
+  (function initCardFx() {
+    const MOBILE_QUERY = window.matchMedia('(max-width: 900px)');
+    const CYCLE_MS = 3000;
+
+    // ---- Lightbox ----
+    let lightbox = null;
+    let lightboxImg = null;
+    let lightboxCaption = null;
+    let lightboxState = { sources: [], index: 0, alt: '' };
+
+    function buildLightbox() {
+      if (lightbox) return;
+      lightbox = document.createElement('div');
+      lightbox.className = 'sf-lightbox';
+      lightbox.setAttribute('role', 'dialog');
+      lightbox.setAttribute('aria-modal', 'true');
+      lightbox.setAttribute('aria-label', 'Image viewer');
+      lightbox.setAttribute('hidden', '');
+      lightbox.innerHTML =
+        '<div class="sf-lightbox__backdrop" data-sf-lb-close></div>' +
+        '<button class="sf-lightbox__close" type="button" aria-label="Close" data-sf-lb-close>&times;</button>' +
+        '<button class="sf-lightbox__nav sf-lightbox__nav--prev" type="button" aria-label="Previous image" data-sf-lb-prev>&#8249;</button>' +
+        '<button class="sf-lightbox__nav sf-lightbox__nav--next" type="button" aria-label="Next image" data-sf-lb-next>&#8250;</button>' +
+        '<figure class="sf-lightbox__stage"><img class="sf-lightbox__img" alt=""><figcaption class="sf-lightbox__caption"></figcaption></figure>';
+      document.body.appendChild(lightbox);
+
+      lightboxImg = lightbox.querySelector('.sf-lightbox__img');
+      lightboxCaption = lightbox.querySelector('.sf-lightbox__caption');
+
+      lightbox.addEventListener('click', (e) => {
+        if (e.target.closest('[data-sf-lb-close]')) closeLightbox();
+        else if (e.target.closest('[data-sf-lb-prev]')) showLightboxIndex(lightboxState.index - 1);
+        else if (e.target.closest('[data-sf-lb-next]')) showLightboxIndex(lightboxState.index + 1);
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (lightbox.hasAttribute('hidden')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') showLightboxIndex(lightboxState.index - 1);
+        if (e.key === 'ArrowRight') showLightboxIndex(lightboxState.index + 1);
+      });
+    }
+
+    function showLightboxIndex(i) {
+      const sources = lightboxState.sources;
+      if (!sources.length) return;
+      const len = sources.length;
+      const next = ((i % len) + len) % len;
+      lightboxState.index = next;
+      lightboxImg.src = sources[next];
+      lightboxImg.alt = lightboxState.alt || '';
+      lightbox.classList.toggle('sf-lightbox--multi', len > 1);
+      if (lightboxCaption) lightboxCaption.textContent = len > 1 ? (next + 1) + ' / ' + len : '';
+    }
+
+    function openLightbox(sources, startIndex, alt) {
+      buildLightbox();
+      lightboxState = { sources: sources.filter(Boolean), index: 0, alt: alt || '' };
+      if (!lightboxState.sources.length) return;
+      showLightboxIndex(startIndex || 0);
+      lightbox.removeAttribute('hidden');
+      document.documentElement.classList.add('sf-lightbox-open');
+    }
+
+    function closeLightbox() {
+      if (!lightbox) return;
+      lightbox.setAttribute('hidden', '');
+      document.documentElement.classList.remove('sf-lightbox-open');
+    }
+
+    // Upgrade <img> src to a higher-res variant when it's a Shopify CDN URL.
+    function upgradeShopifyUrl(url, width) {
+      if (!url) return url;
+      try {
+        const u = new URL(url, window.location.origin);
+        if (!/cdn\.shopify\.com|shopify\.com/.test(u.hostname) && !u.pathname.includes('/cdn/')) return url;
+        u.searchParams.set('width', String(width || 1600));
+        return u.toString();
+      } catch (e) { return url; }
+    }
+
+    function collectSources(container) {
+      const imgs = container.querySelectorAll('img');
+      const out = [];
+      const seen = new Set();
+      imgs.forEach((img) => {
+        const src = img.currentSrc || img.src;
+        if (!src) return;
+        const big = upgradeShopifyUrl(src, 1800);
+        if (seen.has(big)) return;
+        seen.add(big);
+        out.push(big);
+      });
+      return out;
+    }
+
+    // Click anywhere on the host image area to open the lightbox.
+    // Skips hosts that wrap a navigation link so product/collection card clicks still navigate.
+    function attachImageClickToZoom(host) {
+      if (!host || host.dataset.sfClickZoom === '1') return;
+      if (host.querySelector('a[href]')) return; // don't hijack links
+      host.dataset.sfClickZoom = '1';
+      const cs = window.getComputedStyle(host);
+      if (cs.position === 'static') host.style.position = 'relative';
+      host.addEventListener('click', (e) => {
+        if (e.target.closest('a, button')) return;
+        const sources = collectSources(host);
+        if (!sources.length) return;
+        const firstImg = host.querySelector('img');
+        openLightbox(sources, 0, firstImg ? firstImg.alt : '');
+      });
+    }
+
+    // ---- Mobile auto-cycle for product card-galleries ----
+    const cyclers = new WeakMap();
+
+    function startCycle(gallery, offset) {
+      if (cyclers.has(gallery)) return;
+      const slideshow = gallery.querySelector('slideshow-component');
+      if (!slideshow) return;
+      const slides = slideshow.querySelectorAll('slideshow-slide');
+      if (slides.length < 2) return;
+
+      let flipped = false;
+      const tick = () => {
+        if (!document.body.contains(gallery)) { stopCycle(gallery); return; }
+        try {
+          if (flipped) {
+            if (typeof slideshow.previous === 'function') slideshow.previous(undefined, { animate: false });
+          } else {
+            if (typeof slideshow.next === 'function') slideshow.next(undefined, { animate: false });
+          }
+          flipped = !flipped;
+        } catch (e) { /* slideshow may not be ready */ }
+      };
+      const startTimer = setTimeout(() => {
+        tick();
+        const id = setInterval(tick, CYCLE_MS);
+        cyclers.set(gallery, { id, type: 'interval' });
+      }, offset || 0);
+      cyclers.set(gallery, { id: startTimer, type: 'timeout' });
+    }
+
+    function stopCycle(gallery) {
+      const rec = cyclers.get(gallery);
+      if (!rec) return;
+      if (rec.type === 'timeout') clearTimeout(rec.id);
+      else clearInterval(rec.id);
+      cyclers.delete(gallery);
+    }
+
+    function stopAllCycles() {
+      document.querySelectorAll('.card-gallery').forEach(stopCycle);
+    }
+
+    function startAllCycles() {
+      const galleries = document.querySelectorAll('.card-gallery');
+      galleries.forEach((g, i) => startCycle(g, (i % 5) * 400));
+    }
+
+    function applyMobileBehavior() {
+      if (MOBILE_QUERY.matches && !reduce) startAllCycles();
+      else stopAllCycles();
+    }
+
+    // ---- Lookbook two-image crossfade ----
+    function initLookbookSwap() {
+      document.querySelectorAll('.sf-lookbook__tile[data-sf-swap]').forEach((tile) => {
+        const imgs = tile.querySelectorAll('img');
+        if (imgs.length < 2) return;
+        // Desktop: hover toggles class. Mobile: timer toggles class.
+        const toggle = (on) => tile.classList.toggle('is-alt', on);
+        tile.addEventListener('mouseenter', () => { if (!MOBILE_QUERY.matches) toggle(true); });
+        tile.addEventListener('mouseleave', () => { if (!MOBILE_QUERY.matches) toggle(false); });
+
+        let state = false;
+        const tick = () => {
+          if (!MOBILE_QUERY.matches || reduce) return;
+          state = !state;
+          toggle(state);
+        };
+        setInterval(tick, CYCLE_MS);
+      });
+    }
+
+    // ---- Scan & wire up ----
+    function scan(root) {
+      const r = root || document;
+      // Lookbook tiles — click the image to open the lightbox
+      r.querySelectorAll('.sf-lookbook__tile').forEach((g) => attachImageClickToZoom(g));
+      // Editorial / hero images opted-in via data-sf-zoomable
+      r.querySelectorAll('[data-sf-zoomable]').forEach((g) => attachImageClickToZoom(g));
+      // Product card galleries and collection cards keep their navigation behavior —
+      // no zoom wiring here so taps follow the product/collection link as before.
+    }
+
+    function boot() {
+      scan(document);
+      initLookbookSwap();
+      applyMobileBehavior();
+
+      // Re-scan when product cards are loaded dynamically (collection filter, quick-add, etc.)
+      const mo = new MutationObserver((mutations) => {
+        let dirty = false;
+        for (const m of mutations) {
+          if (m.addedNodes && m.addedNodes.length) { dirty = true; break; }
+        }
+        if (dirty) {
+          scan(document);
+          if (MOBILE_QUERY.matches && !reduce) startAllCycles();
+        }
+      });
+      mo.observe(document.body, { childList: true, subtree: true });
+
+      if (MOBILE_QUERY.addEventListener) {
+        MOBILE_QUERY.addEventListener('change', applyMobileBehavior);
+      } else if (MOBILE_QUERY.addListener) {
+        MOBILE_QUERY.addListener(applyMobileBehavior);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', boot, { once: true });
+    } else {
+      boot();
     }
   })();
 })();

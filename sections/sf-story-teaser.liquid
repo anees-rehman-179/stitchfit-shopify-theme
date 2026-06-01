@@ -8,7 +8,12 @@
         loading="lazy"
         alt="{{ section.settings.image_alt | escape }}">
     {%- else -%}
-      {% render 'sf-placeholder', label: 'FATHER-PHOTO  ·  4:5 ratio', ratio: '4/5' %}
+      <img
+        src="{{ 'home-page-factory-image.png' | asset_url }}"
+        width="800"
+        height="533"
+        loading="lazy"
+        alt="{{ section.settings.image_alt | default: 'Stitch Fit factory image' | escape }}">
     {%- endif -%}
   </div>
 

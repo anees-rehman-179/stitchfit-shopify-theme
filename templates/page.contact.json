@@ -1,13 +1,17 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */{
+{
   "sections": {
+    "hero": {
+      "type": "sf-contact-hero",
+      "settings": {
+        "eyebrow": "We're here to help",
+        "heading": "Get in touch",
+        "subhead": "Have a question about a product, order, or our process? Reach us through any channel below — we typically reply within one business day.",
+        "whatsapp": "+92 321 0900786",
+        "phone": "+92 321 0900786",
+        "email": "info@stitchfit.com.pk",
+        "overlay_opacity": 45
+      }
+    },
     "main": {
       "type": "main-page",
       "blocks": {
@@ -15,11 +19,11 @@
           "type": "text",
           "name": "t:names.title",
           "settings": {
-            "text": "<h1>{{ closest.page.title }}</h1>",
+            "text": "<h2>{{ closest.page.title }}</h2>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "center",
-            "type_preset": "h2",
+            "type_preset": "h3",
             "font": "var(--font-primary--family)",
             "font_size": "",
             "line_height": "normal",
@@ -64,88 +68,40 @@
           "blocks": {}
         }
       },
-      "block_order": [
-        "title",
-        "content"
-      ],
+      "block_order": ["title", "content"],
       "settings": {
         "content_direction": "column",
-        "gap": 32,
+        "gap": 24,
         "color_scheme": "",
-        "padding-block-start": 40,
+        "padding-block-start": 48,
         "padding-block-end": 0
       }
     },
-    "form": {
-      "type": "section",
-      "blocks": {
-        "contact_form_UwiCkQ": {
-          "type": "contact-form",
-          "settings": {
-            "width": "custom",
-            "custom_width": 50,
-            "width_mobile": "custom",
-            "custom_width_mobile": 100,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "submit-button": {
-              "type": "contact-form-submit-button",
-              "static": true,
-              "settings": {
-                "label": "Submit",
-                "style_class": "button",
-                "width": "fit-content",
-                "custom_width": 100,
-                "width_mobile": "fit-content",
-                "custom_width_mobile": 100
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": []
-        }
-      },
-      "block_order": [
-        "contact_form_UwiCkQ"
-      ],
-      "name": "t:names.contact_form",
+    "contact_block": {
+      "type": "sf-contact-block",
       "settings": {
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "flex-start",
-        "vertical_alignment": "center",
-        "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "center",
-        "vertical_alignment_flex_direction_column": "center",
-        "gap": 32,
-        "section_width": "page-width",
-        "section_height": "",
-        "section_height_custom": 50,
-        "color_scheme": "scheme-1",
-        "background_media": "none",
-        "video_position": "cover",
-        "background_image_position": "cover",
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_radius": 0,
-        "toggle_overlay": false,
-        "overlay_color": "#00000026",
-        "overlay_style": "solid",
-        "gradient_direction": "to top",
-        "padding-block-start": 32,
-        "padding-block-end": 84
+        "eyebrow": "Visit us",
+        "heading": "Talk to us",
+        "address": "Climax Knitting Industry, S.I.E #1, Plot 94-B, Near Jinnah Road, Gujranwala, Punjab 52250",
+        "phone": "+92 321 0900786",
+        "email": "info@stitchfit.com.pk",
+        "submit_label": "Send message"
+      }
+    },
+    "cta": {
+      "type": "sf-cta-band",
+      "settings": {
+        "eyebrow": "Stitch Fit",
+        "heading": "Premium knitwear. Built by hand. Worn for life.",
+        "cta": "Shop the collection",
+        "link": "/collections/all"
       }
     }
   },
   "order": [
+    "hero",
     "main",
-    "form"
+    "contact_block",
+    "cta"
   ]
 }

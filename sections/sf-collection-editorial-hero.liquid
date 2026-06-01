@@ -1,0 +1,143 @@
+{%- liquid
+  assign heading = section.settings.heading
+  assign subhead = section.settings.subhead
+-%}
+
+<section class="sf-collection-editorial-hero" data-section-id="{{ section.id }}">
+  <div class="page-width sf-collection-editorial-hero__inner">
+    <div class="sf-collection-editorial-hero__stage">
+      <div class="sf-collection-editorial-hero__grid" role="list">
+        {%- if section.blocks.size > 0 -%}
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign tile_image = block.settings.image
+              assign tile_link = block.settings.link
+              assign tile_label = block.settings.label
+
+              if tile_image == blank and collection != blank and collection.products_count > 0
+                assign fallback_product = collection.products[forloop.index0]
+                if fallback_product != blank
+                  assign tile_image = fallback_product.featured_media.preview_image
+                  assign tile_link = fallback_product.url
+                  assign tile_label = fallback_product.title
+                endif
+              endif
+            -%}
+
+            {%- capture tile_content -%}
+              {%- if tile_image != blank -%}
+                {{- tile_image | image_url: width: 900 | image_tag:
+                  loading: 'eager',
+                  fetchpriority: 'high',
+                  widths: '360,540,720,900',
+                  sizes: '(min-width: 990px) 18vw, 40vw',
+                  class: 'sf-collection-editorial-hero__img'
+                -}}
+              {%- else -%}
+                {{- 'collection-1' | placeholder_svg_tag: 'sf-collection-editorial-hero__img sf-collection-editorial-hero__placeholder' -}}
+              {%- endif -%}
+
+              {%- if tile_label != blank -%}
+                <span class="sf-collection-editorial-hero__label">{{ tile_label }}</span>
+              {%- endif -%}
+            {%- endcapture -%}
+
+            {%- if tile_link != blank -%}
+              <a class="sf-collection-editorial-hero__tile" href="{{ tile_link }}" role="listitem" {{ block.shopify_attributes }}>
+                {{- tile_content -}}
+              </a>
+            {%- else -%}
+              <div class="sf-collection-editorial-hero__tile" role="listitem" {{ block.shopify_attributes }}>
+                {{- tile_content -}}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- elsif collection != blank and collection.products_count > 0 -%}
+          {%- for p in collection.products limit: 5 -%}
+            <a class="sf-collection-editorial-hero__tile" href="{{ p.url }}" role="listitem">
+              {%- if p.featured_media != blank -%}
+                {{- p.featured_media.preview_image | image_url: width: 900 | image_tag:
+                  loading: 'eager',
+                  fetchpriority: 'high',
+                  widths: '360,540,720,900',
+                  sizes: '(min-width: 990px) 18vw, 40vw',
+                  class: 'sf-collection-editorial-hero__img'
+                -}}
+              {%- else -%}
+                {{- 'collection-1' | placeholder_svg_tag: 'sf-collection-editorial-hero__img sf-collection-editorial-hero__placeholder' -}}
+              {%- endif -%}
+              <span class="sf-collection-editorial-hero__label">{{ p.title }}</span>
+            </a>
+          {%- endfor -%}
+        {%- else -%}
+          {%- for i in (1..5) -%}
+            <div class="sf-collection-editorial-hero__tile" role="listitem">
+              {{- 'collection-1' | placeholder_svg_tag: 'sf-collection-editorial-hero__img sf-collection-editorial-hero__placeholder' -}}
+            </div>
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+
+      <div class="sf-collection-editorial-hero__overlay" aria-hidden="false">
+        {%- if heading != blank -%}
+          <h1 class="sf-collection-editorial-hero__heading">{{ heading }}</h1>
+        {%- endif -%}
+        {%- if subhead != blank -%}
+          <p class="sf-collection-editorial-hero__subhead">{{ subhead }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "SF Editorial Hero",
+  "tag": "section",
+  "class": "sf-collection-editorial-hero-section",
+  "max_blocks": 5,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Step into style"
+    },
+    {
+      "type": "text",
+      "id": "subhead",
+      "label": "Subheading"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tile",
+      "name": "Tile",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Featured"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SF Editorial Hero",
+      "category": "Stitch Fit"
+    }
+  ]
+}
+{% endschema %}

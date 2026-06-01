@@ -64,8 +64,8 @@
       <table class="sf-policy-table">
         <thead>
           <tr>
-            <th scope="col">City</th>
-            <th scope="col">Estimated days</th>
+            <th scope="col">{{ section.settings.domestic_col1 | default: 'City' }}</th>
+            <th scope="col">{{ section.settings.domestic_col2 | default: 'Estimated days' }}</th>
           </tr>
         </thead>
         <tbody>
@@ -87,6 +87,7 @@
   </div>
 
   {%- comment -%} International delivery {%- endcomment -%}
+  {%- if section.settings.show_intl -%}
   <div class="sf-policy__region sf-policy__region--alt" data-sf-reveal>
     <div class="sf-policy__region-copy">
       <div class="sf-eyebrow">{{ section.settings.intl_eyebrow | default: 'International' }}</div>
@@ -118,6 +119,7 @@
       </table>
     </div>
   </div>
+  {%- endif -%}
 
   {%- comment -%} Detail strip — order tracking + address changes {%- endcomment -%}
   <div class="sf-policy__detail" data-sf-reveal>
@@ -332,9 +334,12 @@
     { "type": "text", "id": "domestic_eyebrow", "label": "Eyebrow", "default": "Within Pakistan" },
     { "type": "text", "id": "domestic_heading", "label": "Heading", "default": "Delivered across Pakistan." },
     { "type": "textarea", "id": "domestic_body", "label": "Body", "default": "Orders dispatched from our Gujranwala facility in 1–2 business days. Estimated delivery times below are from dispatch — not order placement." },
-    { "type": "textarea", "id": "domestic_rows", "label": "Table rows", "info": "One row per line. Use | to separate columns: City | Days", "default": "Karachi | 2–4\nLahore | 1–2\nIslamabad / Rawalpindi | 1–2\nFaisalabad | 1–3\nMultan | 2–3\nPeshawar | 2–4\nQuetta | 3–5\nOther cities | 3–6" },
+    { "type": "text", "id": "domestic_col1", "label": "Table column 1 header", "default": "City" },
+    { "type": "text", "id": "domestic_col2", "label": "Table column 2 header", "default": "Estimated days" },
+    { "type": "textarea", "id": "domestic_rows", "label": "Table rows", "info": "One row per line. Use | to separate columns", "default": "Karachi | 2–4\nLahore | 1–2\nIslamabad / Rawalpindi | 1–2\nFaisalabad | 1–3\nMultan | 2–3\nPeshawar | 2–4\nQuetta | 3–5\nOther cities | 3–6" },
 
     { "type": "header", "content": "International" },
+    { "type": "checkbox", "id": "show_intl", "label": "Show international section", "default": false },
     { "type": "text", "id": "intl_eyebrow", "label": "Eyebrow", "default": "International" },
     { "type": "text", "id": "intl_heading", "label": "Heading", "default": "Shipped worldwide." },
     { "type": "textarea", "id": "intl_body", "label": "Body", "default": "We ship globally via tracked courier. Customs duties and local taxes are the recipient's responsibility. Estimated delivery times below are from dispatch." },

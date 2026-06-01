@@ -77,9 +77,14 @@
             {{ option_id_attribute }}
           >
             <legend>
-              {{ product_option.name | escape -}}
-              {%- if variant_style == 'swatch' -%}
-                <span class="variant-option__swatch-value">{{ product_option.selected_value }}</span>
+              <span>
+                {{ product_option.name | escape -}}
+                {%- if variant_style == 'swatch' -%}
+                  <span class="variant-option__swatch-value">{{ product_option.selected_value }}</span>
+                {%- endif %}
+              </span>
+              {%- if product_option.name == 'Size' -%}
+                <a href="/pages/size-guide" class="variant-option__size-guide" target="_blank" rel="noopener noreferrer">Size guide</a>
               {%- endif %}
             </legend>
             {%- for product_option_value in product_option.values -%}

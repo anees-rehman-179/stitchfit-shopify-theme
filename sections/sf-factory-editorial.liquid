@@ -1,16 +1,66 @@
 <article class="sf-factory">
+  <script>
+    document.body.classList.add('sf-factory-page');
+  </script>
   {%- comment -%} Hero {%- endcomment -%}
   <div class="sf-factory__hero" data-sf-reveal>
-    {%- if section.settings.hero_image -%}
-      <img
-        src="{{ section.settings.hero_image | image_url: width: 2000 }}"
-        width="{{ section.settings.hero_image.width }}"
-        height="{{ section.settings.hero_image.height }}"
-        alt=""
-        loading="eager">
+    {%- assign factory_video_desktop = section.settings.video_desktop -%}
+    {%- assign factory_video_mobile = section.settings.video_mobile -%}
+    
+    {%- if factory_video_desktop == blank -%}
+      {%- assign factory_video_desktop = 'inside-factory-hero-desktop.mp4' | asset_url -%}
+    {%- elsif factory_video_desktop contains 'http' -%}
+      {%- comment -%} It's already a full URL {%- endcomment -%}
     {%- else -%}
-      {% render 'sf-placeholder', label: 'FACTORY-HERO  WIDE  16×9', ratio: '16/9' %}
+      {%- comment -%} It's a filename, convert to asset URL {%- endcomment -%}
+      {%- assign factory_video_desktop = factory_video_desktop | asset_url -%}
     {%- endif -%}
+    
+    {%- if factory_video_mobile != blank -%}
+      {%- unless factory_video_mobile contains 'http' -%}
+        {%- assign factory_video_mobile = factory_video_mobile | asset_url -%}
+      {%- endunless -%}
+    {%- endif -%}
+    
+    {%- if factory_video_desktop != blank or factory_video_mobile != blank -%}
+      <video
+        class="sf-factory__hero-video desktop-video"
+        muted
+        loop
+        playsinline
+        preload="auto"
+        data-sf-deferred-play
+        {% if section.settings.hero_image %}poster="{{ section.settings.hero_image | image_url: width: 2000 }}"{% endif %}>
+        {%- if factory_video_desktop != blank -%}
+          <source src="{{ factory_video_desktop }}" type="video/mp4">
+        {%- endif -%}
+      </video>
+
+      {%- if factory_video_mobile != blank -%}
+        <video
+          class="sf-factory__hero-video mobile-video"
+          muted
+          loop
+          playsinline
+          preload="auto"
+          data-sf-deferred-play
+          {% if section.settings.hero_image %}poster="{{ section.settings.hero_image | image_url: width: 2000 }}"{% endif %}>
+          <source src="{{ factory_video_mobile }}" type="video/mp4">
+        </video>
+      {%- else -%}
+        <video
+          class="sf-factory__hero-video mobile-video"
+          muted
+          loop
+          playsinline
+          preload="auto"
+          data-sf-deferred-play
+          {% if section.settings.hero_image %}poster="{{ section.settings.hero_image | image_url: width: 2000 }}"{% endif %}>
+          <source src="{{ factory_video_desktop }}" type="video/mp4">
+        </video>
+      {%- endif -%}
+    {%- endif -%}
+
     <div class="sf-factory__hero-overlay">
       <h1 class="sf-factory__hero-headline">{{ section.settings.hero_heading | default: 'Inside the factory.' }}</h1>
     </div>
@@ -28,56 +78,49 @@
 
   {%- comment -%} Three-portrait gallery — machine details {%- endcomment -%}
   <div class="sf-factory__gallery sf-factory__gallery--three" data-sf-reveal>
-    {%- for n in (1..3) -%}
-      {%- assign img_key = 'gallery1_image_' | append: n -%}
-      {%- assign img = section.settings[img_key] -%}
-      <div class="sf-factory__tile">
-        {%- if img -%}
-          <img
-            src="{{ img | image_url: width: 1000 }}"
-            width="{{ img.width }}"
-            height="{{ img.height }}"
-            alt=""
-            loading="lazy">
-        {%- else -%}
-          {% render 'sf-placeholder', label: 'MACHINE-DETAIL-' | append: n, ratio: '4/5' %}
-        {%- endif -%}
-      </div>
-    {%- endfor -%}
+    <div class="sf-factory__tile">
+      <img src="{{ 'machine-detail-1.png' | asset_url }}" alt="Machine detail 1" loading="lazy">
+    </div>
+    <div class="sf-factory__tile">
+      <img src="{{ 'machine-detail-2.png' | asset_url }}" alt="Machine detail 2" loading="lazy">
+    </div>
+    <div class="sf-factory__tile">
+      <img src="{{ 'machine-detail-3.png' | asset_url }}" alt="Machine detail 3" loading="lazy">
+    </div>
   </div>
 
-  {%- comment -%} Full-bleed factory floor {%- endcomment -%}
+  {%- comment -%} Contained editorial image (16:9 desktop / 3:2 mobile) {%- endcomment -%}
   <div class="sf-factory__fullbleed" data-sf-reveal>
-    {%- if section.settings.fullbleed_image -%}
-      <img
-        src="{{ section.settings.fullbleed_image | image_url: width: 2400 }}"
-        width="{{ section.settings.fullbleed_image.width }}"
-        height="{{ section.settings.fullbleed_image.height }}"
-        alt=""
-        loading="lazy">
-    {%- else -%}
-      {% render 'sf-placeholder', label: 'FACTORY-FLOOR-WIDE  16×9', ratio: '16/9' %}
-    {%- endif -%}
+    <div class="sf-factory__fullbleed-inner" data-sf-zoomable>
+      {%- if section.settings.fullbleed_image -%}
+        <img
+          src="{{ section.settings.fullbleed_image | image_url: width: 2400 }}"
+          width="{{ section.settings.fullbleed_image.width }}"
+          height="{{ section.settings.fullbleed_image.height }}"
+          alt=""
+          loading="lazy">
+      {%- else -%}
+        <img
+          src="{{ 'home-page-factory-image.png' | asset_url }}"
+          width="800"
+          height="533"
+          alt="Factory floor"
+          loading="lazy">
+      {%- endif -%}
+    </div>
   </div>
 
   {%- comment -%} Mixed-row gallery {%- endcomment -%}
   <div class="sf-factory__gallery sf-factory__gallery--mixed" data-sf-reveal>
-    {%- for n in (1..3) -%}
-      {%- assign img_key = 'gallery2_image_' | append: n -%}
-      {%- assign img = section.settings[img_key] -%}
-      <div class="sf-factory__tile">
-        {%- if img -%}
-          <img
-            src="{{ img | image_url: width: 1400 }}"
-            width="{{ img.width }}"
-            height="{{ img.height }}"
-            alt=""
-            loading="lazy">
-        {%- else -%}
-          {% render 'sf-placeholder', label: 'WORKER-HANDS-' | append: n, ratio: '3/4' %}
-        {%- endif -%}
-      </div>
-    {%- endfor -%}
+    <div class="sf-factory__tile">
+      <img src="{{ 'working-hands-1.png' | asset_url }}" alt="Working hands 1" loading="lazy">
+    </div>
+    <div class="sf-factory__tile">
+      <img src="{{ 'working-hands-2.png' | asset_url }}" alt="Working hands 2" loading="lazy">
+    </div>
+    <div class="sf-factory__tile">
+      <img src="{{ 'working-hands-3.png' | asset_url }}" alt="Working hands 3" loading="lazy">
+    </div>
   </div>
 
   {%- comment -%} Closing italic statement {%- endcomment -%}
@@ -87,7 +130,7 @@
 </article>
 
 {% stylesheet %}
-  .sf-factory__hero img,
+  .sf-factory__hero-video,
   .sf-factory__fullbleed img,
   .sf-factory__tile img {
     width: 100%;
@@ -95,14 +138,67 @@
     object-fit: cover;
     display: block;
   }
-  .sf-factory__hero img { position: absolute; inset: 0; }
-  .sf-factory__hero { position: relative; }
+  
+  .sf-factory__hero-video { 
+    position: absolute; 
+    inset: 0;
+    object-position: center center;
+  }
+
+  /* Hide mobile video on desktop */
+  .sf-factory__hero-video.mobile-video { display: none; }
+  .sf-factory__hero-video.desktop-video { display: block; }
+
+  .sf-factory__hero { 
+    position: relative;
+  }
+  
   .sf-factory__tile {
     aspect-ratio: 4 / 5;
     border-radius: var(--sf-radius-card);
     overflow: hidden;
   }
   .sf-factory__gallery--mixed .sf-factory__tile:nth-child(2) { aspect-ratio: 3 / 4; }
+
+  /* Desktop: 9:16 aspect ratio with blurry sides background */
+  @media (min-width: 901px) {
+    .sf-factory__hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--sf-primary);
+      filter: blur(25px) brightness(0.85);
+      z-index: 0;
+    }
+
+    .sf-factory__hero-video.desktop-video { 
+      display: block !important;
+      aspect-ratio: 9/16;
+      object-fit: contain;
+      position: relative;
+      z-index: 1;
+    }
+  }
+
+  /* Mobile: full screen with no borders */
+  @media (max-width: 900px) {
+    .sf-factory__hero-video.desktop-video { display: none !important; }
+    .sf-factory__hero-video.mobile-video { 
+      display: block !important;
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+    }
+
+    .sf-factory__hero {
+      aspect-ratio: 4 / 5;
+      height: auto;
+      min-height: 0;
+    }
+    .sf-factory__hero-video {
+      object-position: center top;
+    }
+  }
 {% endstylesheet %}
 
 {% schema %}
@@ -112,7 +208,9 @@
   "class": "sf-factory-section",
   "settings": [
     { "type": "header", "content": "Hero" },
-    { "type": "image_picker", "id": "hero_image", "label": "Hero image (wide)" },
+    { "type": "text", "id": "video_desktop", "label": "Desktop Video (filename or URL)", "info": "e.g. inside-factory-hero-desktop.mp4" },
+    { "type": "text", "id": "video_mobile", "label": "Mobile Video (filename or URL)", "info": "e.g. inside the factory hero banner mobile.mp4" },
+    { "type": "image_picker", "id": "hero_image", "label": "Hero image (poster)" },
     { "type": "text", "id": "hero_heading", "label": "Hero heading", "default": "Inside the factory." },
 
     { "type": "header", "content": "Editorial intro" },

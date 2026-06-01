@@ -1,22 +1,61 @@
 <section class="sf-hero" data-sf-reveal>
   <div class="sf-hero__media">
     {%- comment -%}
-      Prefer a configured video URL. If none is set, fall back to the theme asset `home-page-hero.mp4`.
+      Prefer a configured video URL or filename. If none is set, fall back to the theme asset `home-hero-desktop.mp4`.
+      If the value is just a filename (no http), convert it using asset_url.
     {%- endcomment -%}
     {%- assign hero_video = section.settings.video -%}
+    {%- assign hero_video_mobile = section.settings.video_mobile -%}
+    
     {%- if hero_video == blank -%}
       {%- assign hero_video = 'home-page-hero.mp4' | asset_url -%}
+    {%- elsif hero_video contains 'http' -%}
+      {%- comment -%} It's already a full URL {%- endcomment -%}
+    {%- else -%}
+      {%- comment -%} It's a filename, convert to asset URL {%- endcomment -%}
+      {%- assign hero_video = hero_video | asset_url -%}
+    {%- endif -%}
+    
+    {%- if hero_video_mobile != blank -%}
+      {%- unless hero_video_mobile contains 'http' -%}
+        {%- assign hero_video_mobile = hero_video_mobile | asset_url -%}
+      {%- endunless -%}
     {%- endif -%}
 
-    {%- if hero_video != blank -%}
-      <video
-        autoplay
-        muted
-        loop
-        playsinline
-        {% if section.settings.poster %}poster="{{ section.settings.poster | image_url: width: 1920 }}"{% endif %}>
-        <source src="{{ hero_video }}" type="video/mp4">
-      </video>
+    {%- if hero_video != blank or hero_video_mobile != blank -%}
+      {%- if hero_video != blank -%}
+        <video class="desktop-video"
+          muted
+          loop
+          playsinline
+          preload="auto"
+          data-sf-deferred-play
+          {% if section.settings.poster %}poster="{{ section.settings.poster | image_url: width: 1920 }}"{% endif %}>
+          <source src="{{ hero_video }}" type="video/mp4">
+        </video>
+      {%- endif -%}
+
+      {%- if hero_video_mobile != blank -%}
+        <video class="mobile-video"
+          muted
+          loop
+          playsinline
+          preload="auto"
+          data-sf-deferred-play
+          {% if section.settings.poster %}poster="{{ section.settings.poster | image_url: width: 1920 }}"{% endif %}>
+          <source src="{{ hero_video_mobile }}" type="video/mp4">
+        </video>
+      {%- elsif hero_video != blank -%}
+        <video class="mobile-video"
+          muted
+          loop
+          playsinline
+          preload="auto"
+          data-sf-deferred-play
+          {% if section.settings.poster %}poster="{{ section.settings.poster | image_url: width: 1920 }}"{% endif %}>
+          <source src="{{ hero_video }}" type="video/mp4">
+        </video>
+      {%- endif -%}
     {%- elsif section.settings.poster -%}
       <img
         src="{{ section.settings.poster | image_url: width: 1920 }}"
@@ -59,7 +98,8 @@
   "tag": "section",
   "class": "sf-hero-section",
   "settings": [
-    { "type": "url", "id": "video", "label": "Video URL (.mp4)", "info": "Direct .mp4 URL. Leave blank to show placeholder or poster only." },
+    { "type": "text", "id": "video", "label": "Video (filename or URL)", "info": "e.g., home-hero-desktop.mp4 or https://example.com/video.mp4. Leave blank to use default." },
+    { "type": "text", "id": "video_mobile", "label": "Mobile Video (filename or URL)", "info": "Optional. Use specific video for mobile viewports." },
     { "type": "image_picker", "id": "poster", "label": "Poster image (fallback / pre-video)" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "STITCH FIT  ·  BUILT IN-HOUSE SINCE 2009" },
     { "type": "text", "id": "headline", "label": "Headline", "default": "Wear the vibe." },

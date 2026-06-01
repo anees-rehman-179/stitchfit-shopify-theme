@@ -32,6 +32,16 @@ class MarqueeComponent extends Component {
     this.#duplicateContent();
 
     this.#setSpeed(speed);
+    // initialize mobile circular animation if requested
+    try {
+      const mobileStyle = this.getAttribute('data-mobile-style');
+      const isSmall = window.matchMedia && window.matchMedia('(max-width: 600px)').matches;
+      if (mobileStyle === 'circular' && isSmall) {
+        this.#initMobileCircular();
+      }
+    } catch (e) {
+      // ignore
+    }
 
     window.addEventListener('resize', this.#handleResize);
     this.addEventListener('pointerenter', this.#slowDown);
@@ -43,6 +53,8 @@ class MarqueeComponent extends Component {
     window.removeEventListener('resize', this.#handleResize);
     this.removeEventListener('pointerenter', this.#slowDown);
     this.removeEventListener('pointerleave', this.#speedUp);
+    // cleanup mobile circular animation if active
+    try { this.#destroyMobileCircular(); } catch (e) {}
   }
 
   /**
@@ -220,6 +232,93 @@ class MarqueeComponent extends Component {
     for (let i = 0; i < itemsToRemove; i++) {
       content.lastElementChild?.remove();
     }
+  }
+
+  /* Mobile circular animation: position items on a circle and animate via requestAnimationFrame */
+  #mobileRaf = null;
+  #mobileAngle = 0;
+  #mobileItems = [];
+  #mobileRadius = 0;
+  #mobileCenter = { x: 0, y: 0 };
+
+  #initMobileCircular() {
+    const wrapper = this.refs.wrapper;
+    const content = this.refs.content;
+    if (!wrapper || !content) return;
+
+    // stop any CSS-driven animations
+    wrapper.getAnimations().forEach((a) => a.cancel());
+
+    wrapper.style.position = 'relative';
+    wrapper.style.display = 'block';
+    wrapper.style.overflow = 'visible';
+
+    const items = Array.from(content.children).filter(Boolean);
+    this.#mobileItems = items;
+
+    items.forEach((item) => {
+      item.style.position = 'absolute';
+      item.style.left = '50%';
+      item.style.top = '50%';
+      item.style.transform = 'translate(-50%, -50%)';
+      item.style.willChange = 'transform';
+      item.style.pointerEvents = 'auto';
+    });
+
+    const rect = wrapper.getBoundingClientRect();
+    this.#mobileCenter = { x: rect.width / 2, y: rect.height / 2 };
+    this.#mobileRadius = Math.max(40, Math.min(rect.width, rect.height) / 3);
+
+    this.#placeMobileItems(0);
+    this.#mobileAngle = 0;
+    this.#mobileLoop();
+
+    this._mobileResizeHandler = () => {
+      const r = wrapper.getBoundingClientRect();
+      this.#mobileCenter = { x: r.width / 2, y: r.height / 2 };
+      this.#mobileRadius = Math.max(40, Math.min(r.width, r.height) / 3);
+      this.#placeMobileItems(this.#mobileAngle);
+    };
+    window.addEventListener('resize', this._mobileResizeHandler);
+  }
+
+  #placeMobileItems(offsetAngle) {
+    const n = this.#mobileItems.length || 1;
+    for (let i = 0; i < n; i++) {
+      const item = this.#mobileItems[i];
+      const angle = (i / n) * Math.PI * 2 + offsetAngle;
+      const x = Math.cos(angle) * this.#mobileRadius + this.#mobileCenter.x;
+      const y = Math.sin(angle) * this.#mobileRadius + this.#mobileCenter.y;
+      item.style.transform = `translate(calc(${x}px - 50%), calc(${y}px - 50%))`;
+    }
+  }
+
+  #mobileLoop = () => {
+    const wrapper = this.refs.wrapper;
+    if (!wrapper || this.#mobileItems.length === 0) return;
+
+    const speedFactor = Number(this.getAttribute('data-speed-factor')) || 25;
+    const delta = (0.0008 * speedFactor);
+    this.#mobileAngle += delta;
+
+    this.#placeMobileItems(this.#mobileAngle);
+
+    this.#mobileRaf = requestAnimationFrame(this.#mobileLoop);
+  }
+
+  #destroyMobileCircular() {
+    if (this.#mobileRaf) cancelAnimationFrame(this.#mobileRaf);
+    this.#mobileRaf = null;
+    if (this._mobileResizeHandler) window.removeEventListener('resize', this._mobileResizeHandler);
+    (this.#mobileItems || []).forEach((item) => {
+      item.style.position = '';
+      item.style.left = '';
+      item.style.top = '';
+      item.style.transform = '';
+      item.style.willChange = '';
+      item.style.pointerEvents = '';
+    });
+    this.#mobileItems = [];
   }
 }
 

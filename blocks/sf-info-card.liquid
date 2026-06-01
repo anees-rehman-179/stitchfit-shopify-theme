@@ -1,0 +1,71 @@
+{% liquid
+  assign icon_svgs = ',truck,return,lock,heart,plane,leaf,recycle,shirt,washing,stopwatch,chat_bubble,question_mark,map_pin,'
+%}
+
+<div class="sf-info-card" {{ block.shopify_attributes }}>
+  <div class="sf-info-card__icon" aria-hidden="true">
+    {%- if block.settings.icon_image != blank -%}
+      <img src="{{ block.settings.icon_image | image_url: width: 64 }}" alt="" width="32" height="32">
+    {%- elsif block.settings.icon != 'none' -%}
+      {% render 'icon', icon: block.settings.icon %}
+    {%- else -%}
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 7h11v9H3zM14 10h4l3 3v3h-7zM7 19a2 2 0 100-4 2 2 0 000 4zM18 19a2 2 0 100-4 2 2 0 000 4z"/>
+      </svg>
+    {%- endif -%}
+  </div>
+  <div class="sf-info-card__body">
+    {%- if block.settings.heading != blank -%}
+      <h4 class="sf-info-card__heading">{{ block.settings.heading }}</h4>
+    {%- endif -%}
+    {%- if block.settings.body != blank -%}
+      <p class="sf-info-card__text">{{ block.settings.body }}</p>
+    {%- endif -%}
+    {%- if block.settings.link_label != blank and block.settings.link_url != blank -%}
+      <a class="sf-info-card__link" href="{{ block.settings.link_url }}">{{ block.settings.link_label }} →</a>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Stitch Fit Info Card",
+  "class": "sf-info-card-block",
+  "settings": [
+    {
+      "type": "select",
+      "id": "icon",
+      "label": "Icon",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "truck", "label": "Truck (delivery)" },
+        { "value": "return", "label": "Return" },
+        { "value": "lock", "label": "Lock (secure)" },
+        { "value": "heart", "label": "Heart" },
+        { "value": "plane", "label": "Plane" },
+        { "value": "leaf", "label": "Leaf" },
+        { "value": "recycle", "label": "Recycle" },
+        { "value": "shirt", "label": "Shirt" },
+        { "value": "washing", "label": "Washing" },
+        { "value": "stopwatch", "label": "Stopwatch" },
+        { "value": "chat_bubble", "label": "Chat bubble" },
+        { "value": "question_mark", "label": "Question mark" },
+        { "value": "map_pin", "label": "Map pin" }
+      ],
+      "default": "truck"
+    },
+    { "type": "image_picker", "id": "icon_image", "label": "Icon image (overrides icon)" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Free Delivery" },
+    { "type": "textarea", "id": "body", "label": "Body text", "default": "Enter your postal code for delivery availability." },
+    { "type": "text", "id": "link_label", "label": "Link label" },
+    { "type": "url", "id": "link_url", "label": "Link URL" }
+  ],
+  "presets": [
+    {
+      "name": "Stitch Fit Info Card",
+      "category": "Stitch Fit",
+      "settings": { "icon": "truck", "heading": "Free Delivery", "body": "Enter your postal code for delivery availability." }
+    }
+  ]
+}
+{% endschema %}

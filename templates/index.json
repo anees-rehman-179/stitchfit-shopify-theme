@@ -3,6 +3,8 @@
     "sf_hero": {
       "type": "sf-hero-video",
       "settings": {
+        "video": "home hero desktop.mp4",
+        "video_mobile": "home-page-hero.mp4",
         "eyebrow": "Stitch Fit  ·  Built in-house since 2009",
         "headline": "Wear the vibe.",
         "subhead": "Knitwear made by hand in Gujranwala. Premium yarn. True gauge. Built to last.",

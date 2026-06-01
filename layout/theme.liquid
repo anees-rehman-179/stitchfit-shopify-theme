@@ -6,6 +6,14 @@
   lang="{{ request.locale.iso_code }}"
 >
   <head>
+    <script>
+      try {
+        if (sessionStorage.getItem('sf-splash-v1')) {
+          document.documentElement.classList.add('sf-splash-skip');
+        }
+      } catch (e) {}
+    </script>
+
     {%- if settings.favicon != blank -%}
       <link
         rel="icon"
@@ -138,6 +146,8 @@
     {% if settings.quick_add or settings.mobile_quick_add %}
       {% render 'quick-add-modal' %}
     {% endif %}
+
+    {% render 'sf-whatsapp-fab' %}
 
     <script src="{{ 'stitch-fit.js' | asset_url }}" defer></script>
   </body>

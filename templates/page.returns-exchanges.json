@@ -3,40 +3,42 @@
     "returns": {
       "type": "sf-returns",
       "blocks": {
-        "h1": { "type": "highlight", "settings": { "icon": "calendar", "title": "14-day window",        "value": "Return any unworn piece within 14 days of delivery." } },
-        "h2": { "type": "highlight", "settings": { "icon": "swap",     "title": "Exchange or refund",   "value": "Swap size, swap colour, or take a full refund — your call." } },
-        "h3": { "type": "highlight", "settings": { "icon": "tag",      "title": "Original condition",   "value": "Items must be unworn with original tags and packaging." } },
-        "s1": { "type": "step",      "settings": { "title": "Request", "body": "Email us at info@stitchfit.com.pk with your order number and the reason for return." } },
-        "s2": { "type": "step",      "settings": { "title": "Pack",    "body": "Place the item back in its original packaging with the tags still attached." } },
-        "s3": { "type": "step",      "settings": { "title": "Ship",    "body": "We'll send a return label or arrange a pickup, depending on your location." } },
-        "s4": { "type": "step",      "settings": { "title": "Refund",  "body": "Once we receive and inspect the item, your refund or exchange lands within 5–7 business days." } }
+        "h1": { "type": "highlight", "settings": { "icon": "swap",     "title": "Exchange only",        "value": "We exchange — no refunds under any circumstances. Swap for size, colour, or another style." } },
+        "h2": { "type": "highlight", "settings": { "icon": "shield",   "title": "Defective or wrong items", "value": "Contact us within 48 hours of delivery. We cover return shipping and dispatch a replacement immediately." } },
+        "h3": { "type": "highlight", "settings": { "icon": "tag",      "title": "Original condition",   "value": "For size/style swaps: unused, unwashed, tags intact, original packaging. Customer pays return shipping." } },
+        "s1": { "type": "step",      "settings": { "title": "Reach out", "body": "Email info@stitchfit.com.pk or WhatsApp +92 321 0900786 with your order number." } },
+        "s2": { "type": "step",      "settings": { "title": "Confirm",   "body": "We confirm eligibility and send return instructions tailored to your case." } },
+        "s3": { "type": "step",      "settings": { "title": "Ship back", "body": "Send the item to: Climax Knitting Industry, S.I.E #1, Plot 94-B, Near Jinnah Road, Gujranwala, Punjab 52250." } },
+        "s4": { "type": "step",      "settings": { "title": "Exchange",  "body": "Your exchange is dispatched within 2–3 business days of receipt." } }
       },
       "block_order": ["h1", "h2", "h3", "s1", "s2", "s3", "s4"],
       "settings": {
-        "hero_eyebrow": "Easy returns",
-        "hero_heading": "Return & Exchange",
-        "hero_subhead": "Buy with confidence. If a piece doesn't land right, send it back within 14 days for a swap or refund.",
+        "hero_eyebrow": "Exchange policy",
+        "hero_heading": "Returns & Exchanges",
+        "hero_subhead": "Stitch Fit operates an exchange-only policy. No refunds under any circumstances — but we'll happily swap your piece for a different size, colour, or style.",
         "steps_eyebrow": "How it works",
         "steps_heading": "Four steps. No back-and-forth.",
-        "yes_eyebrow": "Returnable",
+        "yes_eyebrow": "Eligible for exchange",
         "yes_heading": "What we accept.",
+        "yes_list": "<ul><li>Defective or incorrectly shipped items (within 48 hours of delivery — we pay return shipping)</li><li>Unused items with original tags attached</li><li>Items in original, unopened packaging</li><li>Items that have not been washed, worn, or altered</li></ul>",
         "no_eyebrow": "Not eligible",
         "no_heading": "What we can't take back.",
-        "cta_eyebrow": "Ready to return?",
-        "cta_heading": "Start a return or exchange.",
-        "cta_subhead": "Reach out on WhatsApp for the fastest response, or drop us an email.",
+        "no_list": "<ul><li>Washed, worn, or altered items</li><li>Items returned without original tags or packaging</li><li>Requests submitted more than 48 hours after delivery (for defective items)</li><li>Refund requests — we do not issue refunds under any circumstances</li></ul>",
+        "cta_eyebrow": "Ready to exchange?",
+        "cta_heading": "Start your exchange.",
+        "cta_subhead": "WhatsApp is fastest — usually replied to within a few hours. Email works too.",
         "whatsapp_number": "923210900786",
-        "whatsapp_message": "Hi, I want to start a return for order #",
+        "whatsapp_message": "Hi, I'd like to start an exchange for order #",
         "email_address": "info@stitchfit.com.pk",
-        "email_subject": "Return Request — Order #",
-        "final_note": "Received something faulty? We'll replace it, no questions asked."
+        "email_subject": "Exchange Request — Order #",
+        "final_note": "Received something faulty or wrong? Let us know within 48 hours — we'll cover return shipping and send the right piece out immediately."
       }
     },
     "cta": {
       "type": "sf-cta-band",
       "settings": {
         "eyebrow": "Need help",
-        "heading": "Got a question about a return? Reach out.",
+        "heading": "Got a question about an exchange? Reach out.",
         "cta": "Contact us",
         "link": "/pages/contact"
       }
